@@ -1,0 +1,39 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>NoteWorks</title>
+   
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+    {%load static %}
+    <link rel="stylesheet" href = "{%static 'app/app.css' %}">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+</head>
+<body>
+    <nav class="navbar navbar-expand-sm bg-body-tertiary"id="navbar-custom">
+        <a class="navbar-brand" href="{% url 'home' %}"><div id="brand" class="navbarm" style="margin-left:40px">
+            <img src="{% static 'app/noteIcon.png' %}" alt="Logo" class="d-inline-block align-text-top" id = "logo">
+            NoteWorks
+        </div></a>
+        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
+            <form class="d-flex" role="search" action = "{%url 'search'%}" method="get">
+                {% csrf_token %}
+                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                <button class="btn btn-outline-success" type="submit">Search</button>
+            </form>
+            <ul class = "navbar-nav ms-auto">
+                <a href= "#" class = "navbarm"><button type="button" class="btn btn-primary">Account</button></a>
+                <a href= "{% url 'logout' %}" class= "navbarm" style="margin-right:25px"><button type="button" class="btn btn-primary">Logout</button></a>
+            </ul>
+        </div>
+    </nav>
+   
+    {% block content %}{% endblock %}
+</body>
+
+
+
+   
+    

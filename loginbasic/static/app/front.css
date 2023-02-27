@@ -1,0 +1,28 @@
+.frontpage{
+    color: white;
+    text-align: center;  
+}
+#navbar-custom {
+    background-color: black !important;
+    color: white; 
+}
+#brand{
+    color: white; 
+}
+.navbarm{
+    margin: 25px 7px 25px 7px
+}
+.info {
+    text-align: center; 
+}
+.front{ 
+    background-color: black; 
+}
+.fbutton{
+    padding:15px; 
+}
+#logo{
+    background-color: black; 
+    width:30px; 
+    height:30px; 
+}

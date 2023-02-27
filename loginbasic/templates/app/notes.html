@@ -1,0 +1,22 @@
+
+{% extends 'app/userBase.html' %}
+
+{% block content%}
+<div class="ubutton"><a href = {% url 'new'%}><button type="button" class="btn btn-primary">New Note</button></a></div>
+
+<div class="container-fluid text-center grid">
+  {% for section in notes %}
+    <div class="row">
+    {%for note in section%}
+      <div class = "col-md-3 boxes">
+      <a href = {%url "detail" note.id%}>
+        {% load static %}
+        <img src = "{% static 'app/noteIcon.png' %}" class="logoNote">
+      </a>
+      <p>{{note.title}}</p>
+      </div>
+    {% endfor %}
+    </div>
+  {% endfor %}
+</div>
+{% endblock %}

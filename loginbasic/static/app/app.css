@@ -1,0 +1,45 @@
+.navbarm{
+    margin: 25px 7px 25px 7px
+}
+.ubutton{
+    margin:25px 0px 0px 40px;
+}
+div.item {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+img {
+    width: 100px;
+    height: 100px;
+    background-color: grey;
+}
+.caption {
+    display: block;
+}
+
+.grid{
+    margin:40px auto; 
+}
+
+.boxes{
+    text-align:center; 
+}
+.logoNote{
+    background-color: white; 
+    width:150px; 
+    height:150px; 
+    padding:30px; 
+    border: 2px solid #111;
+    border-radius: 25px;
+}
+#noteEdit{
+    margin:20px 40px; 
+}
+
+#logo{
+    background-color: white; 
+    width:30px; 
+    height:30px; 
+}

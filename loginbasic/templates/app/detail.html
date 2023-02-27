@@ -1,0 +1,16 @@
+{% extends 'app/userBase.html' %}
+{% block content %}
+<div class="text-center" style="margin-top:40px">
+    <h1>{{title}}</h1>
+    <p>Last Opened: {{lastAccessed}}</p>
+
+    <form action="{% url "save" id%}" method="post" id="notes">
+        {% csrf_token %}
+        {% comment "" %}    <input type = "text" id= "notes" name="text" value="{{text}}" onkeydown="if (event.keyCode == 13) { alert('enter');return false;}">  
+        {% endcomment %}
+        <textarea form = "notes" name="text" cols="100" rows="35">{{text}}</textarea>
+        <p><input type="submit" value="Submit"></p>
+    </form>
+</div>
+
+{% endblock%}

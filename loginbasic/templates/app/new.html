@@ -1,0 +1,28 @@
+{% extends "app/userBase.html" %}
+
+{% block content %}
+    <div class="container">
+        <form action="{% url 'new' %}" method="post">
+            {% csrf_token %}
+            <div class="col-md-8 col-md-offset-2">
+                <div class="panel panel-default">
+                    <div class="panel-heading">Create a new Note</div>
+                    <div class="panel-body">
+                        {% if error_message %}
+                            <p class="bg-danger p-d ml-b">{{ error_message }}</p>
+                        {% endif %}
+                        <div class="form-group clearfix">
+                            <label for="title" class="col-md-4 control-label text-right">Title</label>
+                            <div class="col-md-6">
+                                <input name="title" value="" type="text" class="form-control" style="height:10px" />
+                            </div>
+                        </div>
+                        <div class="col-md-6 col-md-offset-4">
+                            <input name="Create" type="submit" value="create" class="btn btn-success" /> &nbsp;
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </form>
+    </div>
+{% endblock %}
