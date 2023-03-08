@@ -1,16 +1,24 @@
 {% extends 'app/userBase.html' %}
 {% block content %}
-<div class="text-center" style="margin-top:40px">
-    <h1>{{title}}</h1>
-    <p>Last Opened: {{lastAccessed}}</p>
-
-    <form action="{% url "save" id%}" method="post" id="notes">
-        {% csrf_token %}
-        {% comment "" %}    <input type = "text" id= "notes" name="text" value="{{text}}" onkeydown="if (event.keyCode == 13) { alert('enter');return false;}">  
-        {% endcomment %}
-        <textarea form = "notes" name="text" cols="100" rows="35">{{text}}</textarea>
-        <p><input type="submit" value="Submit"></p>
-    </form>
+<nav class="navbar">
+</nav>
+<div class="container-fluid text-center" style="margin-top:40px">
+    <div class="row align-items-center justify-content-center">
+        <h1>{{title}}</h1>
+        <p>Last Opened: {{lastAccessed}}</p>
+    </div>
+    <div class="row align-items-center justify-content-center">
+        <div class="col-10">
+            <div id="textedit">
+                <form action="{% url "save" id%}" method="post" id="notes">
+                    {% csrf_token %}
+                    {% comment "" %}    <input type = "text" id= "notes" name="text" value="{{text}}" onkeydown="if (event.keyCode == 13) { alert('enter');return false;}">  
+                    {% endcomment %}
+                    <p><input type="submit" value="Save"></p>
+                    <textarea form="notes" name="text" cols="100" rows="35" id="textbox">{{text}}</textarea>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
-
 {% endblock%}

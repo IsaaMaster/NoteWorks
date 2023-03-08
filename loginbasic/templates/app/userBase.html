@@ -2,20 +2,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>NoteWorks</title>
+    <title>NoteWorks5</title>
    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     {%load static %}
     <link rel="stylesheet" href = "{%static 'app/app.css' %}">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-sm bg-body-tertiary"id="navbar-custom">
+    <nav class="navbar navbar-expand-sm bg-body-tertiary sticky-top"id="navbar-custom">
         <a class="navbar-brand" href="{% url 'home' %}"><div id="brand" class="navbarm" style="margin-left:40px">
             <img src="{% static 'app/noteIcon.png' %}" alt="Logo" class="d-inline-block align-text-top" id = "logo">
-            NoteWorks
+            NoteWorks5
         </div></a>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <form class="d-flex" role="search" action = "{%url 'search'%}" method="get">
@@ -30,7 +30,8 @@
         </div>
     </nav>
    
-    {% block content %}{% endblock %}
+    {% block content %}
+    {% endblock %}
 </body>
 
 

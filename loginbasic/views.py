@@ -10,9 +10,10 @@ import datetime
 # Create your views here.
 
 def format3(items):
+    PERROW = 4
     items2d = []
     for i in range(len(items)):
-        if(i%3 == 0):
+        if(i%PERROW == 0):
             items2d.append([])
         items2d[-1].append(items[i])
     return items2d

@@ -15,9 +15,7 @@
 .info {
     text-align: center; 
 }
-.front{ 
-    background-color: black; 
-}
+
 .fbutton{
     padding:15px; 
 }
@@ -26,3 +24,25 @@
     width:30px; 
     height:30px; 
 }
+#top{ 
+    background-color: black; 
+    padding:50px; 
+}
+#middle {
+    background-image: url("background2.jpg"); /* The image used */
+    background-color: #cccccc; /* Used if the image is unavailable */
+    height: 500px; /* You must set a specified height */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Do not repeat the image */
+    background-size: cover; /* Resize the background image to cover the entire container */
+  }
+  #bottom {
+    background-color: white;
+    color: black;
+    padding: 75px;
+  }
+  #middletext{
+    border:5px solid white;
+    margin:0px 100px; 
+    padding:25px; 
+  }

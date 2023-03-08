@@ -6,14 +6,14 @@
 
 <div class="container-fluid text-center grid">
   {% for section in notes %}
-    <div class="row">
+    <div class="row align-items-center justify-content-center">
     {%for note in section%}
       <div class = "col-md-3 boxes">
-      <a href = {%url "detail" note.id%}>
-        {% load static %}
-        <img src = "{% static 'app/noteIcon.png' %}" class="logoNote">
-      </a>
-      <p>{{note.title}}</p>
+        <a href = {%url "detail" note.id%}>
+          {% load static %}
+          <img src = "{% static 'app/noteIcon.png' %}" class="logoNote">
+        </a>
+        <p>{{note.title}}</p>
       </div>
     {% endfor %}
     </div>

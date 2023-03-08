@@ -1,10 +1,28 @@
 {% extends "app/base.html" %}
 {% block content %}
-<section>
-  <h1 class = "frontpage">NoteWorks. Simple. Elegant. Clean.</h1>
-  <h1 class = "frontpage">Join today for free.</h1>
-  <a class= "frontpage fbutton" href= "{% url 'register' %}"><p><button type="button" class="btn btn-primary">Sign Up</button></p></a>
-</section>
-s
+<div class = "container-fluid text-center frontpage">
+  <div class = "row" id="top">
+    <div class = "col">
+      <h1>NoteWorks 5. Notes Reimagined.</h1>
+      <h1>Bigger. Better. Faster.</h1>
+      <h1>Join today for free.</h1>
+      <a class= "frontpage fbutton" href= "{% url 'register' %}"><p><button type="button" class="btn btn-primary">Sign Up</button></p></a>
+    </div>
+  </div>
+  {%load static%}
+  <div class="row text-center align-items-center justify-content-center" id="middle">
+    <div class ="col text-center" id="middletext">
+      <h1>All your notes in one place.</h1>
+      <h1>Now with NW5 deep search text engine.</h1>
+      <h3>Try now.</h3>
+    </div>
+  </div>
+  <div class="row text-center align-items-center justify-content-center" id="bottom">
+    <div class ="col text-center">
+      <h1>Next Generation AI techonology.</h1>
+      <h2>Learn more.</h1>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
