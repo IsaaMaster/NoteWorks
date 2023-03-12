@@ -6,17 +6,8 @@ from django.contrib.auth.models import User
 from .forms import RegisterForm
 import datetime
 
-
+from .helpers import *
 # Create your views here.
-
-def format3(items):
-    PERROW = 4
-    items2d = []
-    for i in range(len(items)):
-        if(i%PERROW == 0):
-            items2d.append([])
-        items2d[-1].append(items[i])
-    return items2d
 
 def index(request):
     if (request.user.is_authenticated):
@@ -136,28 +127,25 @@ def saveNote(request, note_id):
     if request.method == 'POST':
         notes = Note.objects.filter(id=note_id)
         text = request.POST["text"]
+        print(request.POST)
         for note in notes:
 
             note.text = text
             note.save()
     return redirect('notes')        
 
-def searchEngine(notes, text):
-    return []
+
 def search(request):
-
-
     print(request.method)
     if request.method == 'GET':
         search = request.GET["search"]
-        found = []
-        notes = Note.objects.filter(owner=request.user).values()
-        print(notes)
-        for note in notes:
-            if note["title"] == search:
-                found.append(note)
-        return render(request, "app/notes.html", context={"notes": format3(found)})
+        notes = Note.objects.filter(owner=request.user).values()  
+        return render(request, "app/notes.html", context={"notes": format3(searchEngine(notes, search))})
     return redirect('home')
+
+def delete(request, note_id):
+    Note.objects.filter(id=note_id).delete()
+    return redirect('notes')
 
 
 

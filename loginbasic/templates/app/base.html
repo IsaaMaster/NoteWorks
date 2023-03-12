@@ -2,30 +2,45 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>NoteWorks5 - Home</title>
-   
+    <title>NoteWorks5</title>
+    {% load static %}
+    <link rel="shortcut icon" href="{% static 'app/favicon.ico' %}"/>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
     {% load static %}
     <link rel="stylesheet" href="{% static 'app/front.css' %}">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 
 <body style="background-color:black">
     <nav class="navbar navbar-expand-sm bg-body-tertiary sticky-top" id="navbar-custom">
-        <a class="navbar-brand" href="{% url 'home' %}"><div id="brand" class="navbarm" style="margin-left:40px">
-            <img src="{% static 'app/whiteNoteIcon.png' %}" alt="Logo" class="d-inline-block align-text-top" id="logo" style="width:30px">
-            NoteWorks5
-        </div></a>
-        <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
-            <ul class = "navbar-nav ms-auto">
-                <li class="nav-item"><a href= "{% url 'loginpage' %}" class="navbarm"><button type="button" class="btn btn-secondary">Login</button></a></li>
-                <li class="nav-item"><a href= "{% url 'register' %}" class="navbarm" style="margin-right:25px" ><button type="button" class="btn btn-primary">Sign Up</button></a></li>
-            </ul>
-          </div>
+        <div class="container-fluid">
+            <a class="navbar-brand" href="{% url 'home' %}"><div id="brand" class="navbarm" style="margin-left:40px">
+                <img src="{% static 'app/whiteNoteIcon.png' %}" alt="Logo" class="d-inline-block align-text-top" id="logo" style="width:30px">
+                NoteWorks 5
+            </div></a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle navigation">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="menuItems">
+                <ul class = "navbar-nav ms-auto mb-2 mb-lg-0">
+                    <li class="nav-item">
+                        <a href= "{% url 'loginpage' %}" class="navbarm nav-link active"><button type="button" class="btn btn-secondary">Login</button></a>
+                    </li>
+                    <li class="nav-item">
+                        <a href= "{% url 'register' %}" class="navbarm nav-link" style="margin-right:25px" tabindex="-1" aria-disabled="true"><button type="button" class="btn btn-primary">Sign Up</button></a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
-   
+
     {% block content %}{% endblock %}
+    <div class="container-fluid">
+    </div>
+   
+  
 
 </body>
 

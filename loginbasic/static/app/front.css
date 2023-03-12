@@ -10,14 +10,14 @@
     color: white; 
 }
 .navbarm{
-    margin: 25px 7px 25px 7px
+    margin: 0px 0px; 
 }
 .info {
     text-align: center; 
 }
 
 .fbutton{
-    padding:15px; 
+    padding:2px 2px;
 }
 #logo{
     background-color: black; 
@@ -26,12 +26,20 @@
 }
 #top{ 
     background-color: black; 
-    padding:50px; 
+    margin-top: 5px;
+}
+#top2{
+  background-image: url("Computer\ backgroud1.jpg");
+  height:500px; 
+  scale: 100%;
+  background-position: center; /* Center the image */
+  background-repeat: no-repeat; /* Do not repeat the image */
+  background-size: cover;
 }
 #middle {
-    background-image: url("background2.jpg"); /* The image used */
+    background-image: url("background3.jpg"); /* The image used */
     background-color: #cccccc; /* Used if the image is unavailable */
-    height: 500px; /* You must set a specified height */
+    height: 575px; /* You must set a specified height */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Do not repeat the image */
     background-size: cover; /* Resize the background image to cover the entire container */
@@ -45,4 +53,14 @@
     border:5px solid white;
     margin:0px 100px; 
     padding:25px; 
+  }
+  #homelink{
+    color: white; 
+    text-decoration: none;
+  }
+
+  #contact{
+    background-color: grey;
+    color: white;
+    padding: 30px; 
   }

@@ -1,8 +1,13 @@
 .navbarm{
-    margin: 25px 7px 25px 7px
+    margin: 0px 0px; 
 }
+
+#searchBar{
+    margin-top:10px; 
+}
+
 .ubutton{
-    margin:25px 0px 0px 40px;
+    margin: 25px 0px 0px 40px;
 }
 div.item {
     vertical-align: top;
@@ -20,19 +25,19 @@ img {
 }
 
 .grid{
-    margin:50px auto; 
+    margin:25px auto; 
 }
 
 .boxes{
     text-align:center; 
+    text-decoration: none;
+    color:black; 
+    margin:0px 10px;    
 }
 .logoNote{
-    background-color: white; 
-    width:150px; 
-    height:150px; 
-    padding:30px; 
-    border: 2px solid #111;
-    border-radius: 25px;
+    background-color: whitesmoke; 
+    width:20px; 
+    height:20px; 
 }
 #noteEdit{
     margin:20px 40px; 
@@ -46,4 +51,17 @@ img {
 #textbox{
     padding:45px; 
     border-radius: 75px;
+    width: 90%;
+    height: 1000px; 
+}
+#titleinput{
+    height:35px; 
+    margin:10px 0px;
+}
+.customBtn{
+    background-color:grey;
+    border-color: grey;
+}
+#noteCard{
+    border-radius: 25px;
 }

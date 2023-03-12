@@ -8,12 +8,20 @@
   {% for section in notes %}
     <div class="row align-items-center justify-content-center">
     {%for note in section%}
-      <div class = "col-md-3 boxes">
-        <a href = {%url "detail" note.id%}>
-          {% load static %}
-          <img src = "{% static 'app/noteIcon.png' %}" class="logoNote">
-        </a>
-        <p>{{note.title}}</p>
+      <div class = "col-md-3 boxes text-center">
+        <a href = {%url "detail" note.id%} class="boxes">
+          <div class="card text-center bg-light mb-3" id="noteCard" style="min-height:12rem;">
+            <div class="card-header">
+              {% load static %}
+              <img src = "{% static 'app/noteIcon.png' %}" class="logoNote">
+              Note
+            </div>
+            <div class="card-body">
+              <h5 class="card-title">{{note.title}}</h5>
+              <p class="card-text"></p>
+            </div>
+          </div>  
+        </a>    
       </div>
     {% endfor %}
     </div>
