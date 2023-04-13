@@ -1,5 +1,5 @@
-def format3(items):
-    PERROW = 3
+def format3(items, row=3):
+    PERROW = row
     items2d = []
     for i in range(len(items)):
         if(i%PERROW == 0):

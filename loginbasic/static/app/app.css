@@ -1,3 +1,9 @@
+:root{
+    --primary-color: #0A4699; 
+    --secondary-color-1: #E9B900; 
+    --secondary-color-2: #E95900;
+  }
+  
 .navbarm{
     margin: 0px 0px; 
 }
@@ -7,7 +13,7 @@
 }
 
 .ubutton{
-    margin: 25px 0px 0px 40px;
+    margin: 0px 0px 0px 30px;
 }
 div.item {
     vertical-align: top;
@@ -25,15 +31,15 @@ img {
 }
 
 .grid{
-    margin:25px auto; 
+    margin: 30px 0px; 
 }
 
-.boxes{
-    text-align:center; 
-    text-decoration: none;
-    color:black; 
-    margin:0px 10px;    
+.notebox{
+    text-decoration:none;
+    color:black;  
 }
+
+
 .logoNote{
     background-color: whitesmoke; 
     width:20px; 
@@ -65,3 +71,47 @@ img {
 #noteCard{
     border-radius: 25px;
 }
+#backbutton{
+    height:30px;
+    width:30px;  
+    background-color: white;
+    margin-right:60px
+}
+
+#folderTitle{
+    text-align:center; 
+    margin-top:20px; 
+}
+#foldertitles{
+    text-decoration: none;
+    color:black;
+}
+
+.color-0 { color: var(--primary-color) }	/* Main Primary color */
+
+
+.button1{
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+  }
+  .button1:hover{
+    background-color: gray;
+    border-color: gray;
+  }
+  
+  .button2{
+    background-color: var(--secondary-color-2);
+    border-color: var(--secondary-color-2);
+  }
+  .button2:hover{
+    background-color: grey;
+    border-color: grey;
+  }
+
+  #newButtonPanel{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+  }
+

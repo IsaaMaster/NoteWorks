@@ -3,14 +3,16 @@ from django.urls import path
 from . import views
 urlpatterns = [
     path("", views.index, name="home"), 
-    path("notes/", views.notes, name="notes"),
-    path("notes/<int:note_id>/", views.detail, name="detail"),
-    path("notes/new", views.createNewNote, name="new"),  
+    path("notes/<int:folder_id>/", views.notes, name="notes"),
+    path("note/<int:note_id>/", views.detail, name="detail"),
+    path("notes/<int:folder_id>/newNote", views.createNewNote, name="newNote"),
+    path("notes/<int:folder_id>/newFolder", views.createNewFolder, name="newFolder"),   
     path("login", views.loginpage, name="loginpage"),
     path("userlogintrue", views.user_login, name="userlogin"), 
     path("register", views.user_registration, name='register'),
     path("save/<int:note_id>/", views.saveNote, name="save"),
     path("search/", views.search, name="search"), 
-    path("delete/<int:note_id>", views.delete, name="delete"), 
-
+    path("delete/<int:note_id>/", views.delete, name="delete"),
+    path('account/', views.account, name='account'), 
+    path('update_account/', views.update_account, name='update_account')
 ]

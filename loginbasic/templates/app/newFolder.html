@@ -2,11 +2,11 @@
 
 {% block content %}
     <div class="container">
-        <form action="{% url 'new' %}" method="post">
+        <form action="{% url 'newFolder' folder %}" method="post">
             {% csrf_token %}
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h3>Create a new Note</h3></div>
+                    <div class="panel-heading"><h3>Create new folder</h3></div>
                     <div class="panel-body">
                         {% if error_message %}
                             <p class="bg-danger p-d ml-b">{{ error_message }}</p>

@@ -1,3 +1,11 @@
+:root{
+  --primary-color: #0A4699; 
+  --secondary-color-1: #E9B900; 
+  --secondary-color-2: #E95900;
+}
+
+
+
 .frontpage{
     color: white;
     text-align: center;  
@@ -60,7 +68,35 @@
   }
 
   #contact{
-    background-color: grey;
-    color: white;
-    padding: 30px; 
+    background-color: lightgray;
+    color: black;
+    padding: 10px; 
   }
+
+.color-0 { color: var(--primary-color)}	/* Main Primary color  */
+.color-2 { color: var(--secondary-color-2)}	/* Secondary color 2 */
+
+.signUpButton{
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+.signUpButton:hover{
+  background-color: gray;
+  border-color: gray;
+}
+
+.loginButton{
+  background-color: grey;
+  border-color: grey;
+}
+.loginButton:hover{
+  background-color: var(--primary-color);
+  border-color:var(--primary-color);
+}
+
+.section{
+  background-color:lightgrey; 
+  border:1px solid lightgrey; 
+  border-radius: 25px;
+  padding: 5px; 
+}

@@ -2,29 +2,61 @@
 {% extends 'app/userBase.html' %}
 
 {% block content%}
-<div class="ubutton"><a href = {% url 'new'%}><button type="button" class="btn btn-primary">New Note</button></a></div>
+{% load static %}
 
-<div class="container-fluid text-center grid">
-  {% for section in notes %}
-    <div class="row align-items-center justify-content-center">
-    {%for note in section%}
-      <div class = "col-md-3 boxes text-center">
-        <a href = {%url "detail" note.id%} class="boxes">
-          <div class="card text-center bg-light mb-3" id="noteCard" style="min-height:12rem;">
-            <div class="card-header">
-              {% load static %}
-              <img src = "{% static 'app/noteIcon.png' %}" class="logoNote">
-              Note
-            </div>
-            <div class="card-body">
-              <h5 class="card-title">{{note.title}}</h5>
-              <p class="card-text"></p>
-            </div>
-          </div>  
-        </a>    
+
+<h1 id  = "folderTitle">{{folder_title}}</h1>
+<div class="ubutton">
+  {% if not folder_id == 0 %}
+  <a href = "{% url 'notes' prevFolder%}"><img src ="{% static 'app/arrow-left-circle.png' %}" id="backbutton"></a>
+  {%else%}
+  <span style="margin-right:90px; display:inline-block"></span>
+  {% endif %}  
+</div>
+
+<div id = "newButtonPanel">
+  <a href = {% url 'newFolder' folder_id%}><button type="button" class="btn btn-secondary button2">New Folder</button></a>
+  <a href = {% url 'newNote' folder_id%}><button type="button" class="btn btn-primary button1" style="margin:0px 10px">New Note</button></a>
+</div>
+
+<div class = "container-fluid grid">
+  <div class="row">
+    <div class="col-lg-3">
+      <div class="card">
+        <div class="card-header">
+          <h3 class="card-title">Folders</h3>
+        </div>
+        <div class="card-body">
+          <div class="list-group">
+            {% for folder in folders %}
+              <a href="{% url 'notes' folder.id %}" class="list-group-item list-group-item-action">{{ folder.title }}</a>
+            {% empty %}
+              <p>No folders found. Create a new one now!</p>
+            {% endfor %}
+          </div>
+        </div>
       </div>
-    {% endfor %}
     </div>
-  {% endfor %}
+    <div class="col-lg-9">
+      <div class="row">
+        {% for note in notes %}
+          <div class="col-lg-4 mb-4">
+            <a href="{% url 'detail' note.id %}" class="notebox">
+            <div class="card">
+              <div class="card-body">
+                <h5 class="card-title">{{ note.title }}</h5>
+                <p class="card-text">{{ note.text|truncatechars:50 }}</p>
+                <a href="{% url 'detail' note.id %}" class="btn btn-primary button1">Open</a>
+              </div>
+            </div>
+          </a>
+          </div>
+        {% empty %}
+          <p>No notes found. Write your first one!</p>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
 </div>
 {% endblock %}
+

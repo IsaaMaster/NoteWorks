@@ -1,45 +1,111 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Note
+from .models import Note, Folder
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .forms import RegisterForm
 import datetime
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 from .helpers import *
-# Create your views here.
+
 
 def index(request):
     if (request.user.is_authenticated):
-        return redirect('notes')
+        return redirect('notes', folder_id=0)
     return render(request, "app/home.html")
 
-def notes(request):
+def notes(request, folder_id):
     if not request.user.is_authenticated:
         return redirect('home')
+    userfolders = Folder.objects.filter(owner=request.user)
+    folder = Folder.objects.filter(id=folder_id)
 
-    notes = Note.objects.filter(owner=request.user).values().order_by('-lastAccessed')
-   
-  
-    context = {"notes": format3(notes)}
-    
+    if(folder_id != 0  and (len(folder) == 0 or folder[0] not in userfolders)):
+        return redirect('home')
+    prevFolder = 0
+    if(folder_id == 0):
+        title = "My Stuff"
+    else:
+        title = folder.values()[0]["title"]
+        prevFolder = folder.values()[0]["folder"]
+
+    notes = Note.objects.filter(owner=request.user, folder=folder_id).values().order_by('-lastAccessed')
+    folders = Folder.objects.filter(owner=request.user, folder=folder_id).values()
+    context = {"notes": notes, "prevFolder":prevFolder, "folder_title": title, "folder_id": folder_id, "folders": folders}
 
     return render(request, "app/notes.html", context=context)
 
 def detail(request, note_id):
     if not request.user.is_authenticated:
         return redirect('home')
+    userNotes = Note.objects.filter(owner=request.user)
     notes = Note.objects.filter(id=note_id)
+    if(len(notes) == 0 or notes[0] not in userNotes):
+        return redirect('home')
+
     for note in notes:
         note.save()
     context = notes.values()[0]; 
    
     return render(request, "app/detail.html", context)
+
 def loginpage(request):
     return render(request, 'app/login.html')
 
 def registerpage(request):
     return render(request, 'app/register.html')
+
+
+def createNewNote(request, folder_id):
+    if request.method == 'POST':
+        title = request.POST['title']
+        if len(title) == 0:
+            title = "unnamed"
+        note = Note(title=title, text='', owner = request.user, folder = folder_id)
+        note.save()
+        return redirect('detail', note_id = note.id)
+    else:
+        return render(request, 'app/newNote.html', context={"folder":folder_id}) 
+    
+def createNewFolder(request, folder_id):
+    if request.method == 'POST': 
+        title = request.POST['title']
+        if(len(title) == 0):
+            title = "unnamed"
+        folder = Folder(title=title, folder=folder_id, owner=request.user) 
+        folder.save()
+        return redirect('notes', folder_id = folder.id)
+    else:
+        return render(request, 'app/newFolder.html', context = {"folder":folder_id})
+
+def saveNote(request, note_id):
+    notes = Note.objects.filter(id=note_id)
+    if request.method == 'POST':
+        text = request.POST["text"]
+        print(request.POST)
+        for note in notes:
+            note.text = text
+            note.save()
+    return redirect('notes', folder_id = notes.values()[0]["folder"])        
+
+
+def search(request):
+    print(request.method)
+    if request.method == 'GET':
+        search = request.GET["search"]
+        notes = Note.objects.filter(owner=request.user).values()  
+        return render(request, "app/notes.html", context={"notes": format3(searchEngine(notes, search))})
+    return redirect('home')
+
+def delete(request, note_id):
+    notes = Note.objects.filter(id=note_id)
+    folder = notes.values()[0]["folder"]
+    notes.delete()
+    return redirect('notes', folder_id = folder)
+
+
 
 
 def user_registration(request):
@@ -82,7 +148,7 @@ def user_registration(request):
                 login(request, user)
                
                 # redirect to accounts page:
-                return redirect("notes")
+                return redirect("notes", folder_id = 0)
 
    # No post data availabe, let's just show the page.
     else:
@@ -101,7 +167,7 @@ def user_login(request):
             # Save session as cookie to login the user
             login(request, user)
             # Success, now let's login the user.
-            return redirect('notes')
+            return redirect('notes', folder_id = 0)
         else:
             # Incorrect credentials, let's throw an error to the screen.
             return render(request, 'app/login.html', {'error_message': 'Incorrect username and / or password.'})
@@ -109,43 +175,36 @@ def user_login(request):
         # No post data availabe, let's just show the page to the user.
         return render(request, 'app/login.html')
 
+def account(request):
+    return render(request, 'app/account.html')
 
-def createNewNote(request):
+@login_required
+def update_account(request):
     if request.method == 'POST':
-        title = request.POST['title']
-        if len(title) == 0:
-            title = "unnamed"
-        note = Note(title=title, text='', owner = request.user)
-        note.save()
-        return redirect('detail', note_id = note.id)
-    
+        # get the form data from the request
+        username = request.POST.get('username')
+        email = request.POST.get('email')
+        first_name = request.POST.get('first_name')
+        last_name = request.POST.get('last_name')
 
-    else:
-        return render(request, 'app/new.html')
+        # update the user's information
+        user = request.user
+        user.username = username
+        user.email = email
+        user.first_name = first_name
+        user.last_name = last_name
+        user.save()
 
-def saveNote(request, note_id):
-    if request.method == 'POST':
-        notes = Note.objects.filter(id=note_id)
-        text = request.POST["text"]
-        print(request.POST)
-        for note in notes:
+        # display a success message
+        messages.success(request, 'Your account information has been updated.')
 
-            note.text = text
-            note.save()
-    return redirect('notes')        
+        # redirect the user to the home page
+        return redirect('home')
+
+    # if the request method is not POST, render the account page template
+    return render(request, 'account.html')
 
 
-def search(request):
-    print(request.method)
-    if request.method == 'GET':
-        search = request.GET["search"]
-        notes = Note.objects.filter(owner=request.user).values()  
-        return render(request, "app/notes.html", context={"notes": format3(searchEngine(notes, search))})
-    return redirect('home')
-
-def delete(request, note_id):
-    Note.objects.filter(id=note_id).delete()
-    return redirect('notes')
 
 
 

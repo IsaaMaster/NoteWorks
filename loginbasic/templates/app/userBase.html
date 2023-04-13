@@ -26,15 +26,15 @@
             <div class="collapse navbar-collapse" id="navSection">
                 <form class="d-flex" id='searchBar' style="margin-top:5px" role="search" action = "{%url 'search'%}" method="get">
                     {% csrf_token %}
-                    <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="search">
+                    <input class="form-control me-2" type="search" placeholder="Find Notes or Folders" aria-label="Search" name="search">
                     <button class="btn btn-outline-success" type="submit">Search</button>
                 </form>
                 <ul class = "navbar-nav ms-auto">
                     <li class = "nav-item">
-                        <a href= "#" class = "navbarm nav-link active" aria-current="page"><button type="button" class="btn btn-primary customBtn">Account</button></a>
+                        <a href= "{%url 'account'%}" class = "navbarm nav-link active" aria-current="page"><button type="button" class="btn btn-primary customBtn button1">Account</button></a>
                     </li>
                     <li class = "nav-item">
-                        <a href= "{% url 'logout' %}" class= "navbarm nav-link"><button type="button" class="btn btn-primary">Logout</button></a>
+                        <a href= "{% url 'logout' %}" class= "navbarm nav-link"><button type="button" class="btn btn-primary button1">Logout</button></a>
                     </li>        
                 </ul>
             </div>
