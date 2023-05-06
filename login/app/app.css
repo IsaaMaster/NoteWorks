@@ -1,0 +1,161 @@
+:root {
+    --primary-color: #2962ff;
+    --secondary-color-1: #6b8e23;
+    --secondary-color-2: #ffcc80;
+}
+
+
+
+.navbarm {
+    margin: 0px 0px;
+}
+
+#searchBar {
+    margin-top: 10px;
+}
+
+.ubutton {
+    margin: 0px 0px 0px 30px;
+}
+
+div.item {
+    vertical-align: top;
+    display: inline-block;
+    text-align: center;
+    width: 120px;
+}
+
+img {
+    width: 100px;
+    height: 100px;
+    background-color: grey;
+}
+
+.caption {
+    display: block;
+}
+
+.grid {
+    margin: 30px 0px;
+}
+
+.notebox {
+    text-decoration: none;
+    color: black;
+}
+
+
+.logoNote {
+    background-color: whitesmoke;
+    width: 20px;
+    height: 20px;
+}
+
+#noteEdit {
+    margin: 20px 40px;
+}
+
+#logo {
+    background-color: white;
+    width: 30px;
+    height: 30px;
+}
+
+#textbox {
+    padding: 60px;
+    border-radius: 75px;
+    border-color: white;
+    width: 90%;
+    height: 1000px;
+}
+
+#textbox:onclick {
+    border-color: white;
+}
+
+#titleinput {
+    height: 35px;
+    margin: 10px 0px;
+}
+
+.customBtn {
+    background-color: grey;
+    border-color: grey;
+}
+
+#noteCard {
+    border-radius: 25px;
+}
+
+#backbutton {
+    height: 30px;
+    width: 30px;
+    background-color: white;
+    margin-right: 60px
+}
+
+#folderTitle {
+    text-align: center;
+    margin-top: 20px;
+}
+
+#foldertitles {
+    text-decoration: none;
+    color: black;
+}
+
+.color-0 {
+    color: var(--primary-color)
+}
+
+/* Main Primary color */
+
+
+.button1 {
+    background-color: var(--primary-color);
+    border-color: var(--primary-color);
+}
+
+.button1:hover {
+    background-color: gray;
+    border-color: gray;
+}
+
+.button2 {
+    background-color: var(--secondary-color-2);
+    border-color: var(--secondary-color-2);
+}
+
+.button2:hover {
+    background-color: grey;
+    border-color: grey;
+}
+
+
+
+#newButtonPanel {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+body {
+    background-color: #f5f5f5;
+}
+
+textarea {
+    /* Hide the default scroll bar */
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+/* For Firefox */
+textarea::-webkit-scrollbar {
+    display: none;
+}
+
+.card {
+    border-radius: 20px;
+}
+
