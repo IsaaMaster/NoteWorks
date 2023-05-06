@@ -1,102 +1,132 @@
-:root{
-  --primary-color: #0A4699; 
-  --secondary-color-1: #E9B900; 
-  --secondary-color-2: #E95900;
+:root {
+  --primary-color: #2962ff;
+  --secondary-color-1: #E9B900;
+  --secondary-color-2: #ffcc80;
 }
 
 
 
-.frontpage{
-    color: white;
-    text-align: center;  
+
+.frontpage {
+  color: white;
+  text-align: center;
 }
+
 #navbar-custom {
-    background-color: black !important;
-    color: white; 
-}
-#brand{
-    color: white; 
-}
-.navbarm{
-    margin: 0px 0px; 
-}
-.info {
-    text-align: center; 
+  background-color: black !important;
+  color: white;
 }
 
-.fbutton{
-    padding:2px 2px;
+#brand {
+  color: white;
 }
-#logo{
-    background-color: black; 
-    width:30px; 
-    height:30px; 
+
+.navbarm {
+  margin: 0px 0px;
 }
-#top{ 
-    background-color: black; 
-    margin-top: 5px;
+
+.info {
+  text-align: center;
 }
-#top2{
+
+.fbutton {
+  padding: 2px 2px;
+}
+
+#logo {
+  background-color: black;
+  width: 30px;
+  height: 30px;
+}
+
+#top {
+  background-color: black;
+  margin-top: 5px;
+}
+
+#top2 {
   background-image: url("Computer\ backgroud1.jpg");
-  height:500px; 
+  height: 600px;
   scale: 100%;
-  background-position: center; /* Center the image */
-  background-repeat: no-repeat; /* Do not repeat the image */
+  background-position: center;
+  /* Center the image */
+  background-repeat: no-repeat;
+  /* Do not repeat the image */
   background-size: cover;
 }
+
 #middle {
-    background-image: url("background3.jpg"); /* The image used */
-    background-color: #cccccc; /* Used if the image is unavailable */
-    height: 575px; /* You must set a specified height */
-    background-position: center; /* Center the image */
-    background-repeat: no-repeat; /* Do not repeat the image */
-    background-size: cover; /* Resize the background image to cover the entire container */
-  }
-  #bottom {
-    background-color: white;
-    color: black;
-    padding: 75px;
-  }
-  #middletext{
-    border:5px solid white;
-    margin:0px 100px; 
-    padding:25px; 
-  }
-  #homelink{
-    color: white; 
-    text-decoration: none;
-  }
+  background-image: url("background3.jpg");
+  /* The image used */
+  background-color: #cccccc;
+  /* Used if the image is unavailable */
+  height: 575px;
+  /* You must set a specified height */
+  background-position: center;
+  /* Center the image */
+  background-repeat: no-repeat;
+  /* Do not repeat the image */
+  background-size: cover;
+  /* Resize the background image to cover the entire container */
+}
 
-  #contact{
-    background-color: lightgray;
-    color: black;
-    padding: 10px; 
-  }
+#bottom {
+  background-color: white;
+  color: black;
+  padding: 75px;
+}
 
-.color-0 { color: var(--primary-color)}	/* Main Primary color  */
-.color-2 { color: var(--secondary-color-2)}	/* Secondary color 2 */
+#middletext {
+  border: 5px solid white;
+  margin: 0px 100px;
+  padding: 25px;
+}
 
-.signUpButton{
+#homelink {
+  color: white;
+  text-decoration: none;
+}
+
+#contact {
+  background-color: lightgray;
+  color: black;
+  padding: 10px;
+}
+
+.color-0 {
+  color: var(--primary-color)
+}
+
+/* Main Primary color  */
+.color-2 {
+  color: var(--secondary-color-2)
+}
+
+/* Secondary color 2 */
+
+.signUpButton {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
-.signUpButton:hover{
+
+.signUpButton:hover {
   background-color: gray;
   border-color: gray;
 }
 
-.loginButton{
+.loginButton {
   background-color: grey;
   border-color: grey;
 }
-.loginButton:hover{
+
+.loginButton:hover {
   background-color: var(--primary-color);
-  border-color:var(--primary-color);
+  border-color: var(--primary-color);
 }
 
-.section{
-  background-color:lightgrey; 
-  border:1px solid lightgrey; 
+.section {
+  background-color: lightgrey;
+  border: 1px solid lightgrey;
   border-radius: 25px;
-  padding: 5px; 
+  padding: 5px;
 }

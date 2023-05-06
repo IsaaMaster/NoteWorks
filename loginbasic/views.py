@@ -62,7 +62,7 @@ def createNewNote(request, folder_id):
     if request.method == 'POST':
         title = request.POST['title']
         if len(title) == 0:
-            title = "unnamed"
+            title = "Unnamed Note"
         note = Note(title=title, text='', owner = request.user, folder = folder_id)
         note.save()
         return redirect('detail', note_id = note.id)
@@ -73,7 +73,7 @@ def createNewFolder(request, folder_id):
     if request.method == 'POST': 
         title = request.POST['title']
         if(len(title) == 0):
-            title = "unnamed"
+            title = "Unnamed Folder"
         folder = Folder(title=title, folder=folder_id, owner=request.user) 
         folder.save()
         return redirect('notes', folder_id = folder.id)
