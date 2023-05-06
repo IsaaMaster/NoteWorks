@@ -16,43 +16,50 @@ def index(request):
         return redirect('notes', folder_id=0)
     return render(request, "app/home.html")
 
+
 def notes(request, folder_id):
     if not request.user.is_authenticated:
         return redirect('home')
     userfolders = Folder.objects.filter(owner=request.user)
     folder = Folder.objects.filter(id=folder_id)
 
-    if(folder_id != 0  and (len(folder) == 0 or folder[0] not in userfolders)):
+    if (folder_id != 0 and (len(folder) == 0 or folder[0] not in userfolders)):
         return redirect('home')
     prevFolder = 0
-    if(folder_id == 0):
+    if (folder_id == 0):
         title = "My Stuff"
     else:
         title = folder.values()[0]["title"]
         prevFolder = folder.values()[0]["folder"]
 
-    notes = Note.objects.filter(owner=request.user, folder=folder_id).values().order_by('-lastAccessed')
-    folders = Folder.objects.filter(owner=request.user, folder=folder_id).values()
-    context = {"notes": notes, "prevFolder":prevFolder, "folder_title": title, "folder_id": folder_id, "folders": folders}
+    notes = Note.objects.filter(
+        owner=request.user, folder=folder_id).values().order_by('-lastAccessed')
+    folders = Folder.objects.filter(
+        owner=request.user, folder=folder_id).values()
+    context = {"notes": notes, "prevFolder": prevFolder,
+               "folder_title": title, "folder_id": folder_id, "folders": folders}
 
     return render(request, "app/notes.html", context=context)
+
 
 def detail(request, note_id):
     if not request.user.is_authenticated:
         return redirect('home')
     userNotes = Note.objects.filter(owner=request.user)
     notes = Note.objects.filter(id=note_id)
-    if(len(notes) == 0 or notes[0] not in userNotes):
+    if (len(notes) == 0 or notes[0] not in userNotes):
         return redirect('home')
 
     for note in notes:
         note.save()
-    context = notes.values()[0]; 
-   
+    context = notes.values()[0]
+
     return render(request, "app/detail.html", context)
+
 
 def loginpage(request):
     return render(request, 'app/login.html')
+
 
 def registerpage(request):
     return render(request, 'app/register.html')
@@ -63,22 +70,24 @@ def createNewNote(request, folder_id):
         title = request.POST['title']
         if len(title) == 0:
             title = "Unnamed Note"
-        note = Note(title=title, text='', owner = request.user, folder = folder_id)
+        note = Note(title=title, text='', owner=request.user, folder=folder_id)
         note.save()
-        return redirect('detail', note_id = note.id)
+        return redirect('detail', note_id=note.id)
     else:
-        return render(request, 'app/newNote.html', context={"folder":folder_id}) 
-    
+        return render(request, 'app/newNote.html', context={"folder": folder_id})
+
+
 def createNewFolder(request, folder_id):
-    if request.method == 'POST': 
+    if request.method == 'POST':
         title = request.POST['title']
-        if(len(title) == 0):
+        if (len(title) == 0):
             title = "Unnamed Folder"
-        folder = Folder(title=title, folder=folder_id, owner=request.user) 
+        folder = Folder(title=title, folder=folder_id, owner=request.user)
         folder.save()
-        return redirect('notes', folder_id = folder.id)
+        return redirect('notes', folder_id=folder.id)
     else:
-        return render(request, 'app/newFolder.html', context = {"folder":folder_id})
+        return render(request, 'app/newFolder.html', context={"folder": folder_id})
+
 
 def saveNote(request, note_id):
     notes = Note.objects.filter(id=note_id)
@@ -88,30 +97,29 @@ def saveNote(request, note_id):
         for note in notes:
             note.text = text
             note.save()
-    return redirect('notes', folder_id = notes.values()[0]["folder"])        
+    return redirect('notes', folder_id=notes.values()[0]["folder"])
 
 
 def search(request):
     print(request.method)
     if request.method == 'GET':
         search = request.GET["search"]
-        notes = Note.objects.filter(owner=request.user).values()  
+        notes = Note.objects.filter(owner=request.user).values()
         return render(request, "app/notes.html", context={"notes": format3(searchEngine(notes, search))})
     return redirect('home')
+
 
 def delete(request, note_id):
     notes = Note.objects.filter(id=note_id)
     folder = notes.values()[0]["folder"]
     notes.delete()
-    return redirect('notes', folder_id = folder)
-
-
+    return redirect('notes', folder_id=folder)
 
 
 def user_registration(request):
     # if this is a POST request we need to process the form data
     template = 'app/register.html'
-   
+
     if request.method == 'POST':
         # create a form instance and populate it with data from the request:
         form = RegisterForm(request.POST)
@@ -143,18 +151,24 @@ def user_registration(request):
                 user.last_name = form.cleaned_data['last_name']
                 user.phone_number = form.cleaned_data['phone_number']
                 user.save()
-               
+
+                #create an example note for the user to see
+                note = Note(title='Example Note', text='This is an example Note to help you get started!', owner=user, folder=0)
+                note.save()
+
+
                 # Login the user
                 login(request, user)
-               
+
                 # redirect to accounts page:
-                return redirect("notes", folder_id = 0)
+                return redirect("notes", folder_id=0)
 
    # No post data availabe, let's just show the page.
     else:
         form = RegisterForm()
 
     return render(request, template, {'form': form})
+
 
 def user_login(request):
     if request.method == 'POST':
@@ -167,7 +181,7 @@ def user_login(request):
             # Save session as cookie to login the user
             login(request, user)
             # Success, now let's login the user.
-            return redirect('notes', folder_id = 0)
+            return redirect('notes', folder_id=0)
         else:
             # Incorrect credentials, let's throw an error to the screen.
             return render(request, 'app/login.html', {'error_message': 'Incorrect username and / or password.'})
@@ -175,8 +189,10 @@ def user_login(request):
         # No post data availabe, let's just show the page to the user.
         return render(request, 'app/login.html')
 
+
 def account(request):
     return render(request, 'app/account.html')
+
 
 @login_required
 def update_account(request):
@@ -203,8 +219,3 @@ def update_account(request):
 
     # if the request method is not POST, render the account page template
     return render(request, 'account.html')
-
-
-
-
-

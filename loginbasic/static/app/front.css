@@ -45,8 +45,8 @@
 }
 
 #top2 {
-  background-image: url("Computer\ backgroud1.jpg");
-  height: 600px;
+  background-image: url("Computer\ backgroud.jpg");
+  height: 800px;
   scale: 100%;
   background-position: center;
   /* Center the image */
@@ -60,7 +60,7 @@
   /* The image used */
   background-color: #cccccc;
   /* Used if the image is unavailable */
-  height: 575px;
+  height: 700px;
   /* You must set a specified height */
   background-position: center;
   /* Center the image */
@@ -70,11 +70,6 @@
   /* Resize the background image to cover the entire container */
 }
 
-#bottom {
-  background-color: white;
-  color: black;
-  padding: 75px;
-}
 
 #middletext {
   border: 5px solid white;
@@ -129,4 +124,9 @@
   border: 1px solid lightgrey;
   border-radius: 25px;
   padding: 5px;
+}
+
+.infobox{
+  padding:200px 0px;
+  margin:0px;  
 }
