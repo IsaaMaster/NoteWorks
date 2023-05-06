@@ -13,3 +13,12 @@ def searchEngine(notes, text):
         if text in note["title"] or text in note["text"]:
             found.append(note)
     return found
+
+
+def searchFolder(folders, text):
+    found = []
+    for folder in folders:
+        if(text in folder["title"]):
+            found.append(folder)
+
+    return found

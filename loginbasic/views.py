@@ -100,12 +100,22 @@ def saveNote(request, note_id):
     return redirect('notes', folder_id=notes.values()[0]["folder"])
 
 
+"""
+searches the all notes for the search terms
+
+here we use 0 as the folder for the search results
+"""
 def search(request):
     print(request.method)
     if request.method == 'GET':
         search = request.GET["search"]
         notes = Note.objects.filter(owner=request.user).values()
-        return render(request, "app/notes.html", context={"notes": format3(searchEngine(notes, search))})
+        folders = Folder.objects.filter(owner=request.user).values()
+        notes = searchEngine(notes, search)
+        folders = searchFolder(folders, search)
+        folder_title = "Search Results for " + "\"" + search + "\""
+
+        return render(request, "app/notes.html", context={"folders": folders, "notes": notes,  "folder_id":0, "prevFolder": 0, "folder_title": folder_title})
     return redirect('home')
 
 
