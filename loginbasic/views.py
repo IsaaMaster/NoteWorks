@@ -163,7 +163,7 @@ def user_registration(request):
                 user.save()
 
                 #create an example note for the user to see
-                note = Note(title='Example Note', text='This is an example Note to help you get started!', owner=user, folder=0)
+                note = Note(title='Example NoteWork', text='This is an example NoteWork to help you get started!', owner=user, folder=0)
                 note.save()
 
 
