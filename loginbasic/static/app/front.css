@@ -45,8 +45,8 @@
 }
 
 #top2 {
-  background-image: url("Computer backgroud.jpg");
-  height: 800px;
+  background-image: url("Laptop.jpg");
+  height: 700px;
   scale: 100%;
   background-position: center;
   /* Center the image */
@@ -56,11 +56,11 @@
 }
 
 #middle {
-  background-image: url("background3.jpg");
+  background-image: url("ComputerRoom.jpg");
   /* The image used */
   background-color: #cccccc;
   /* Used if the image is unavailable */
-  height: 700px;
+  height: 1035px;
   /* You must set a specified height */
   background-position: center;
   /* Center the image */
@@ -77,7 +77,7 @@
   padding: 25px;
 }
 
-#homelink {
+.homelink {
   color: white;
   text-decoration: none;
 }
@@ -129,4 +129,12 @@
 .infobox{
   padding:200px 0px;
   margin:0px;  
+}
+
+.loginForm{
+  padding:30px; 
+  background-color: grey;
+  border-radius: 25px;
+  border: 1px solid grey;
+  margin-top:30px;
 }
