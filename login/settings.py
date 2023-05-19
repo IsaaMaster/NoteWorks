@@ -82,6 +82,19 @@ DATABASES = {
     'default': {
         #'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'songi',
+        'PASSWORD': 'Wailord1',
+        'HOST': 'noteworks5.postgres.database.azure.com',
+        'PORT': '5432',
+    }
+}
+
+"""
+DATABASES = {
+    'default': {
+        #'ENGINE': 'django.db.backends.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'railway',
         'USER': 'postgres',
         'PASSWORD': 'VNxUAmA2oIOcRWve7N0r',
@@ -89,6 +102,7 @@ DATABASES = {
         'PORT': '5722',
     }
 }
+"""
 
 
 # Password validation

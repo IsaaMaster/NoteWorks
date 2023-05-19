@@ -10,6 +10,7 @@ class Note(models.Model):
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     lastAccessed = models.DateTimeField(auto_now=True)
     folder = models.IntegerField(default=0)
+    sharedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='sharedUsers', blank=True)
     def __str__(self):
         return self.title
 

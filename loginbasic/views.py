@@ -20,6 +20,8 @@ def index(request):
 def notes(request, folder_id):
     if not request.user.is_authenticated:
         return redirect('home')
+
+    #make sure that user is the owner of the requestd folder
     userfolders = Folder.objects.filter(owner=request.user)
     folder = Folder.objects.filter(id=folder_id)
 
@@ -36,10 +38,35 @@ def notes(request, folder_id):
         owner=request.user, folder=folder_id).values().order_by('-lastAccessed')
     folders = Folder.objects.filter(
         owner=request.user, folder=folder_id).values()
+    notesSharedWithUser = Note.objects.filter(sharedUsers = request.user).values()
+
+
     context = {"notes": notes, "prevFolder": prevFolder,
-               "folder_title": title, "folder_id": folder_id, "folders": folders}
+               "folder_title": title, "folder_id": folder_id, "folders": folders, "sharedNotes": notesSharedWithUser}
 
     return render(request, "app/notes.html", context=context)
+
+def sharedNotes(request):
+    if not request.user.is_authenticated:
+        return redirect('home')
+    notesSharedWithUser = Note.objects.filter(sharedUsers = request.user).values()
+    #At least for now, there is no shared folders features, so we still show home folders in the shared notes page
+    folders = Folder.objects.filter(
+        owner=request.user, folder=0).values()
+    context=  {"folders": folders, "notes": notesSharedWithUser,  "folder_id":0, "prevFolder": 0, "folder_title": "Notes Shared With Me"}
+    
+    return render (request, "app/notes.html", context=context); 
+
+
+def share(request, note_id):
+    if not request.user.is_authenticated:
+        return redirect('home')
+    notes = Note.objects.filter(id=note_id)
+
+    #notes.sharedUsers.add()
+
+    return redirect('detail', note_id)
+
 
 
 def detail(request, note_id):
@@ -53,6 +80,7 @@ def detail(request, note_id):
     for note in notes:
         note.save()
     context = notes.values()[0]
+    print(context)
 
     return render(request, "app/detail.html", context)
 
@@ -106,7 +134,8 @@ searches the all notes for the search terms
 here we use 0 as the folder for the search results
 """
 def search(request):
-    print(request.method)
+    #we just redirect to the notes page with the search results. the folder is considerd home (0) with the previous folder being 0
+    #this means there won't be a back button to the home page
     if request.method == 'GET':
         search = request.GET["search"]
         notes = Note.objects.filter(owner=request.user).values()

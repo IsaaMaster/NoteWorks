@@ -14,5 +14,7 @@ urlpatterns = [
     path("search/", views.search, name="search"), 
     path("delete/<int:note_id>/", views.delete, name="delete"),
     path('account/', views.account, name='account'), 
-    path('update_account/', views.update_account, name='update_account')
+    path('update_account/', views.update_account, name='update_account'), 
+    path('sharednotes/', views.sharedNotes, name='sharedNotes'),
+    path('share/<int:note_id>/', views.share, name='share'),
 ]
