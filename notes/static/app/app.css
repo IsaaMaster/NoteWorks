@@ -114,6 +114,7 @@ img {
 .button1 {
     background-color: var(--primary-color);
     border-color: var(--primary-color);
+    color: white; 
 }
 
 .button1:hover {
@@ -124,6 +125,7 @@ img {
 .button2 {
     background-color: var(--secondary-color-2);
     border-color: var(--secondary-color-2);
+    color: black;
 }
 
 .button2:hover {

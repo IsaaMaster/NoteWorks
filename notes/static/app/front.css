@@ -99,22 +99,12 @@
 
 /* Secondary color 2 */
 
-.signUpButton {
-  background-color: var(--primary-color);
-  border-color: var(--primary-color);
-}
-
-.signUpButton:hover {
+.homeButton {
   background-color: gray;
   border-color: gray;
 }
 
-.loginButton {
-  background-color: grey;
-  border-color: grey;
-}
-
-.loginButton:hover {
+.homeButton:hover {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
@@ -144,4 +134,27 @@
   padding-top: 15px;
   color: var(--secondary-color-2);
   text-decoration: none;
+}
+
+
+
+.button1 {
+  background-color: var(--primary-color);
+  border-color: var(--primary-color);
+}
+
+.button1:hover {
+  background-color: gray;
+  border-color: gray;
+}
+
+.button2 {
+  background-color: var(--secondary-color-2);
+  border-color: var(--secondary-color-2);
+  color: black;
+}
+
+.button2:hover {
+  background-color: grey;
+  border-color: grey;
 }
