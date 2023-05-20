@@ -7,7 +7,7 @@ from .forms import RegisterForm
 import datetime
 from django.contrib.auth.decorators import login_required
 from django.contrib import messages
-
+from django.db.models.functions import Length
 from .helpers import *
 
 
@@ -17,7 +17,7 @@ def index(request):
     return render(request, "app/home.html")
 
 
-def notes(request, folder_id):
+def notes(request, folder_id, sort="date"):
     if not request.user.is_authenticated:
         return redirect('home')
 
@@ -34,8 +34,16 @@ def notes(request, folder_id):
         title = folder.values()[0]["title"]
         prevFolder = folder.values()[0]["folder"]
 
-    notes = Note.objects.filter(
+    if(sort == "title"):
+        notes = Note.objects.filter(owner = request.user, folder = folder_id).values().order_by('title')
+    elif(sort == "size"):
+        notes = Note.objects.filter(owner = request.user, folder = folder_id).values().order_by(-Length('text'))
+    elif(sort == "titlereverse"):
+        notes = Note.objects.filter(owner = request.user, folder = folder_id).values().order_by('-title')
+    else:
+        notes = Note.objects.filter(
         owner=request.user, folder=folder_id).values().order_by('-lastAccessed')
+
     folders = Folder.objects.filter(
         owner=request.user, folder=folder_id).values()
     notesSharedWithUser = Note.objects.filter(sharedUsers = request.user).values()
@@ -61,7 +69,18 @@ def sharedNotes(request):
 def share(request, note_id):
     if not request.user.is_authenticated:
         return redirect('home')
-    notes = Note.objects.filter(id=note_id)
+    if request.method == "POST":
+        username = request.POST['username']
+        print(username)
+        user = User.objects.filter(username=username)
+        if (len(user) == 0):
+            return redirect('detail', note_id)
+        notes = Note.objects.filter(id=note_id)
+        if (len(notes) == 0 or notes[0].owner != request.user or str(username) == str(request.user)):
+            return redirect('detail', note_id)
+        notes[0].sharedUsers.add(user[0])
+        notes[0].save()
+        return redirect('detail', note_id)
 
     #notes.sharedUsers.add()
 
