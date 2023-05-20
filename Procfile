@@ -1,1 +1,1 @@
-web: gunicorn login.wsgi --log-file -
+web: gunicorn noteworks.wsgi --log-file -

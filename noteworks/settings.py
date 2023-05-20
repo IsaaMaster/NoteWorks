@@ -34,7 +34,7 @@ ALLOWED_HOSTS = ['*',
 # Application definition
 
 INSTALLED_APPS = [
-    'loginbasic', 
+    'notes', 
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -54,7 +54,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'login.urls'
+ROOT_URLCONF = 'noteworks.urls'
 
 TEMPLATES = [
     {
@@ -72,7 +72,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'login.wsgi.application'
+WSGI_APPLICATION = 'noteworks.wsgi.application'
 
 
 # Database
