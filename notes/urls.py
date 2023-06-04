@@ -18,4 +18,5 @@ urlpatterns = [
     path('update_account/', views.update_account, name='update_account'), 
     path('sharednotes/', views.sharedNotes, name='sharedNotes'),
     path('share/<int:note_id>/', views.share, name='share'),
+    path('download/<int:note_id>/', views.downloadPDF, name='downloadPDF'),
 ]

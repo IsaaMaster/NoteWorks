@@ -9,6 +9,11 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from django.db.models.functions import Length
 from .helpers import *
+from django.http import FileResponse
+from reportlab.pdfgen import canvas
+from io import BytesIO
+
+
 
 
 def index(request):
@@ -92,14 +97,18 @@ def detail(request, note_id):
     if not request.user.is_authenticated:
         return redirect('home')
     userNotes = Note.objects.filter(owner=request.user)
+    sharedNotes = Note.objects.filter(sharedUsers=request.user)
     notes = Note.objects.filter(id=note_id)
-    if (len(notes) == 0 or notes[0] not in userNotes):
+    if (len(notes) == 0 or (notes[0] not in userNotes and notes[0] not in sharedNotes)):
         return redirect('home')
+
 
     for note in notes:
         note.save()
     context = notes.values()[0]
-    print(context)
+ 
+    context['sharedUsers'] = notes[0].sharedUsers.all()
+
 
     return render(request, "app/detail.html", context)
 
@@ -140,11 +149,10 @@ def saveNote(request, note_id):
     notes = Note.objects.filter(id=note_id)
     if request.method == 'POST':
         text = request.POST["text"]
-        print(request.POST)
         for note in notes:
             note.text = text
             note.save()
-    return redirect('notes', folder_id=notes.values()[0]["folder"])
+    return redirect('detail', note_id=note_id)
 
 
 """
@@ -188,11 +196,7 @@ def user_registration(request):
                     'form': form,
                     'error_message': 'Username already exists.'
                 })
-            elif User.objects.filter(email=form.cleaned_data['email']).exists():
-                return render(request, template, {
-                    'form': form,
-                    'error_message': 'Email already exists.'
-                })
+          
             elif form.cleaned_data['password'] != form.cleaned_data['password_repeat']:
                 return render(request, template, {
                     'form': form,
@@ -202,12 +206,13 @@ def user_registration(request):
                 # Create the user:
                 user = User.objects.create_user(
                     form.cleaned_data['username'],
-                    form.cleaned_data['email'],
+                    'example@gmail.com',
                     form.cleaned_data['password']
                 )
-                user.first_name = form.cleaned_data['first_name']
-                user.last_name = form.cleaned_data['last_name']
-                user.phone_number = form.cleaned_data['phone_number']
+            
+                #user.first_name = form.cleaned_data['first_name']
+                #user.last_name = form.cleaned_data['last_name']
+                #user.phone_number = form.cleaned_data['phone_number']
                 user.save()
 
                 #create an example note for the user to see
@@ -226,6 +231,15 @@ def user_registration(request):
         form = RegisterForm()
 
     return render(request, template, {'form': form})
+
+
+"""
+            elif User.objects.filter(email=form.cleaned_data['email']).exists():
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'Email already exists.'
+                })
+"""
 
 
 def user_login(request):
@@ -277,3 +291,67 @@ def update_account(request):
 
     # if the request method is not POST, render the account page template
     return render(request, 'account.html')
+
+
+
+
+def downloadPDF(request, note_id):
+    userNotes = Note.objects.filter(owner=request.user)
+    sharedNotes = Note.objects.filter(sharedUsers=request.user)
+    notes = Note.objects.filter(id=note_id)
+    if (len(notes) == 0 or (notes[0] not in userNotes and notes[0] not in sharedNotes)):
+        return redirect('home')
+
+    note = notes.values()[0]
+
+    buffer = BytesIO()
+ 
+
+    filename = note['title'] + ".pdf"
+
+    # Create a new PDF object
+    pdf = canvas.Canvas(buffer)
+
+    text = note['text'].split("\r\n")
+
+    #Generate the tile of the PDF
+    pdf.setFont("Helvetica", 24)
+    pdf.drawString(40, 775, note['title'])
+    
+    # Generate the content of the PDF
+    pdf.setFont("Times-Roman", 12)
+    location = 750
+    for line in text:
+        length = len(line)
+        while (length >= 0):
+            if(length > 93):
+                pdf.drawString(40, location, line[:93])
+                line = line[93:]
+                length-=93
+                location-=15
+            else:
+                pdf.drawString(40, location, line)
+                length-=93
+                location-=15
+            if(location < 50):
+                pdf.showPage()
+                location = 750
+
+
+    
+
+    # Save and close the PDF
+    pdf.save()
+
+    # Open the PDF file in binary mode for reading
+
+    buffer.seek(0)
+
+    # Create a FileResponse object with the PDF file
+    response = FileResponse(buffer, content_type="application/pdf")
+    response["Content-Disposition"] = 'attachment; filename="' + filename + '"'
+    
+    return response
+
+
+
