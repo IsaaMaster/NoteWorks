@@ -11,6 +11,9 @@ class Note(models.Model):
     lastAccessed = models.DateTimeField(auto_now=True)
     folder = models.IntegerField(default=0)
     sharedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='sharedUsers')
+    font = models.CharField(max_length=50, default='Helvetica')
+    fontSize = models.IntegerField(default=16)
+
     def __str__(self):
         return self.title
 

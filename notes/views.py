@@ -148,8 +148,13 @@ def createNewFolder(request, folder_id):
 def saveNote(request, note_id):
     notes = Note.objects.filter(id=note_id)
     if request.method == 'POST':
+        print(request.POST)
         text = request.POST["text"]
+        font = request.POST["font"]
+        fontSize = request.POST["fontSize"]
         for note in notes:
+            note.font = font
+            note.fontSize = fontSize
             note.text = text
             note.save()
     return redirect('detail', note_id=note_id)
@@ -216,7 +221,14 @@ def user_registration(request):
                 user.save()
 
                 #create an example note for the user to see
-                note = Note(title='Example NoteWork', text='This is an example NoteWork to help you get started!', owner=user, folder=0)
+                newNoteText = """NoteWorks is a simple note-taking app that brings functional elegance to the next level. Use it to jot down your thoughts, make a to-do list, or take notes for a class all without the distractions of unnecessary features. \r\n\r\n\r\n
+This is an example note to get you started! Here are several things to try:\r\n
+    - Create a new note or a new folder using the new note and new folder buttons on the home page.\r\n
+    - Share a note with a friend using the share button on the right.\r\n
+    - Download a PDF of your note to save for later. \r\n
+    - Customize your note using the options on the right.\r\n"""
+
+                note = Note(title='Welcome to NoteWorks!', text=newNoteText, owner=user, folder=0)
                 note.save()
 
 
