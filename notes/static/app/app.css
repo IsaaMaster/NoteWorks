@@ -162,7 +162,7 @@ textarea::-webkit-scrollbar {
 
 .card {
     border-radius: 20px;
-    border-width: 2px;
+    border:white 2px solid; 
     padding:10px; 
 }
 .webSection {
@@ -172,3 +172,9 @@ textarea::-webkit-scrollbar {
     padding: 25px 10px;
     margin-bottom: 20px;
 }
+
+.noteMini{
+    display: hide;
+}
+
+
