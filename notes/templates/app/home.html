@@ -1,12 +1,12 @@
 {% extends "app/base.html" %}
 {% block content %}
 <div class = "container-fluid text-center frontpage">
-  <div class = "row" id="top" style = "height:1000px">
+  <div class = "row" id="top">
     <div class = "col">
-      <h1 style="font-size:65px; margin-top:80px">NoteWorks 5. Notes <span class = "color-0" id="reimagined" style ="color:black">Reimagined.</span></h1>
-      <h1 style="font-size:55px">Simple and elegant.</h1>
-      <h1 class = "font-size-lg"><span>Experience </span><span>the </span><span>magic </span><span>now.</span></h1>
-      <p style="margin-top:30px"><a class= "fbutton" href= "{% url 'register' %}"><button type="button" class="btn btn-lg btn-primary button1">Sign Up</button></a></p>
+      <h1 style="font-size:65px; margin-top:80px">NoteWorks 5. <span id="reimagined"> Notes Reimagined.</span></h1>
+      <h1 style="font-size:55px" id = "simpleandelegant">Simply Elegant.</h1>
+      <h1  id = "magic" class = "font-size-lg">Experience the magic today.</h1>
+      <p style="margin-top:30px"><a class= "fbutton" href= "{% url 'register' %}"><button type="button"  id = "signupbutton" class="btn btn-lg btn-primary button1">Sign Up</button></a></p>
     </div>
   </div>
   <div class="row" id="top2">
@@ -18,7 +18,7 @@
     <div class ="col text-center" id="middletext">
       <h1>Can't find a note? No problem.</h1>
       <h1>Find any notes anytime, anywhere with <i class = "color-2">NW5</i> deep search.</h1>
-      <a href = "{% url 'userlogin' %}" class="homelink"><h3>Try now &gt;</h3></a>
+      <a href = "{% url 'userlogin' %}" class="homelink"><h3 id="trynow">Try now &gt;</h3></a>
     </div>
   </div>
   <div class="row text-center align-items-center justify-content-center" id="bottom">

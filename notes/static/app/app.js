@@ -1,14 +1,34 @@
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 $(document).ready( function() {
 
-    
+  
     console.log('app.js loaded!');
 
     $('.noteMini').fadeIn(1500);
-    $('#reimagined').animate({color: '#2962ff'}, 2500);
+    
+    var reveal =  $('#simpleandelegant').animate({opacity: '1'}, 2000);
 
     //var div = $('#top');
     //var autoHeight = div.css('height', 'auto').height();
-    $('#top').animate({height: '375'}, 2500);
+
+
 
     
 
