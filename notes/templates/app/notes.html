@@ -11,7 +11,7 @@
 
 <div class = "container-fluid">
   <div class = "row">
-    <div class = "col-4 text-start">
+    <div class = "col-2 text-start">
       <div class="ubutton">
         {% if not folder_id == 0%}
           <a href = "{% url 'notes' prevFolder%}" class = "btn btn-primary button1">
@@ -23,7 +23,7 @@
         {% endif %}  
       </div>
     </div>
-    <div class = "col-4 text-center">
+    <div class = "col-8 text-center">
 
 
       <button type="button" class="shadow btn btn-lg btn-secondary button2" data-bs-toggle="modal" data-bs-target="#newFolderModal">
@@ -102,12 +102,69 @@
         </div>
       </div> 
 
+
+      <button type= "button" class = "btn btn-lg btn-primary button3 shadow" data-bs-toggle="modal" data-bs-target="#backgroundModal">
+        Customize
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
+          <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
+          <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
+        </svg>
+
+      </button>
+
+      <div class="modal fade" id="backgroundModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title" id="exampleModalLabel">Customize Background</h5>
+              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+              <div class = "row align-items-center justify-content-center">
+                <div class = "col-6">
+                  <a href = {%url 'backgroundChange' folder_id 'wavy'%}>
+                    <div class = "d-flex align-items-center justify-content-center" id = "wavy">
+                      <h5>Wavy</h5>
+                    </div>
+                  </a>
+                </div>
+                <div class = "col-6">
+                  <a href = {%url 'backgroundChange' folder_id 'hex'%}>
+                    <div class = "d-flex align-items-center justify-content-center" id = "hex">
+                      <h5>Hex</h5>
+                    </div>
+                  </a>
+                </div>
+                <div class = "col-6">
+                  <a href = {% url 'backgroundChange' folder_id 'polyGrid' %}>
+                    <div class = "d-flex align-items-center justify-content-center" id = "polyGrid">
+                      <h5>Poly Grid</h5>
+                    </div>
+                  </a>
+                </div>
+                <div class = "col-6">
+                  <a href = {% url 'backgroundChange' folder_id 'circles'%}>
+                    <div class = "d-flex align-items-center justify-content-center" id = "circles">
+                      <h5>Circles</h5>
+                    </div>
+                  </a>
+                </div>
+
+              </div>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary button1" data-bs-dismiss="modal">Save and Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       
 
     </div>
 
 
-    <div class = "col-4 text-end">
+    <div class = "col-2 text-end">
       <div class="btn-group">
         <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
@@ -167,7 +224,7 @@
 
 <div class = "container-fluid grid">
   <div class="row">
-    <div class="col-lg-3" >
+    <div class="col-md-3" >
       <div class="card shadow">
         <div class="card-header">
           <h3 class="card-title">
@@ -190,12 +247,12 @@
         </div>
       </div>
     </div>
-    <div class="col-lg-9">
+    <div class="col-md-9">
       <div class="row">
         {% for note in notes %}
           <div class="col-lg-4 mb-4">
             <a href="{% url 'detail' note.id %}" class="notebox">
-            <div class="card shadow noteMini" style ="display:none">
+            <div class="card shadow noteMini">
               <div class="card-body">
                 <h5 class="card-title">
                   <div class="d-flex justify-content-between">
@@ -223,4 +280,6 @@
   </div>
 </div>
 {% endblock %}
+
+
 

@@ -21,9 +21,6 @@ $(document).ready( function() {
   
     console.log('app.js loaded!');
 
-    $('.noteMini').fadeIn(1500);
-    
-    var reveal =  $('#simpleandelegant').animate({opacity: '1'}, 2000);
 
     //var div = $('#top');
     //var autoHeight = div.css('height', 'auto').height();
@@ -59,7 +56,22 @@ $(document).ready( function() {
     $('.webSection').on('mouseleave', function() {
         $(this).removeClass('shadow-lg');
     }); 
-      
+
+    $('#wavy').on('click', function() {
+        $('body').css('background-image', 'url("' + wavy +'")');
+    }); 
+
+    $('#hex').on('click', function() {
+        $('body').css('background-image', 'url("' + hex +'")');
+    });
+    
+    $('#polyGrid').on('click', function() {
+        $('body').css('background-image', 'url("' + polyGrid +'")');
+    }); 
+    $('#circles').on('click', function() {
+        $('body').css('background-image', 'url("' + circles +'")');
+    }); 
+    
 
 
 });

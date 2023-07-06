@@ -1,7 +1,8 @@
 :root {
     --primary-color: #2962ff;
-    --secondary-color-1: #6b8e23;
+    --secondary-color-1: #ff857e;
     --secondary-color-2: #ffcc80;
+    --defaultbackground: url('backgrounds/wavy.svg');
 }
 
 
@@ -120,10 +121,6 @@ img {
     color: white; 
 }
 
-.button1:hover {
-    background-color: gray;
-    border-color: gray;
-}
 
 .button2 {
     background-color: var(--secondary-color-2);
@@ -131,7 +128,14 @@ img {
     color: black;
 }
 
-.button2:hover {
+
+.button3 {
+    background-color: var(--secondary-color-1);
+    border-color: var(--secondary-color-1);
+    color: black;
+}
+
+.button1:hover, .button2:hover, .button3:hover {
     background-color: grey;
     border-color: grey;
 }
@@ -147,6 +151,12 @@ img {
 
 body {
     background-color: #f5f5f5;
+    background-image: url('backgrounds/wavy.svg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center;
+
 }
 
 textarea {
@@ -173,8 +183,38 @@ textarea::-webkit-scrollbar {
     margin-bottom: 20px;
 }
 
-.noteMini{
-    display: hide;
+
+
+#wavy, #hex, #polyGrid, #circles {
+    height: 120px; 
+    border: solid 1px white;
+    padding: 10px; 
+    margin: 15px; 
+    border-radius: 20px;
+    cursor: pointer;
+    background-size: cover;
+    color:black;
 }
 
+#wavy{
+    background-image: url('backgrounds/wavy.svg');
+}
+
+
+#hex{
+    background-image: url('backgrounds/hex.svg');
+}
+
+#polyGrid{
+    background-image: url('backgrounds/polyGrid.svg');
+    
+}
+
+#circles{
+    background-image: url('backgrounds/circles.svg');
+}
+
+a{
+    text-decoration: none;
+}
 

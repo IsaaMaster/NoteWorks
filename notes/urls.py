@@ -19,4 +19,5 @@ urlpatterns = [
     path('sharednotes/', views.sharedNotes, name='sharedNotes'),
     path('share/<int:note_id>/', views.share, name='share'),
     path('download/<int:note_id>/', views.downloadPDF, name='downloadPDF'),
+    path("background/<int:folder_id>/<str:background>/", views.changeBackground, name="backgroundChange"),
 ]

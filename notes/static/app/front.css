@@ -1,7 +1,8 @@
 :root {
   --primary-color: #2962ff;
-  --secondary-color-1: #ffcc80;
+  --secondary-color-1: #ff857e;
   --secondary-color-2: #ffcc80;
+  --secondary-color-3:#e950b7;
 }
 
 
@@ -46,8 +47,8 @@
 }
 
 #top2 {
-  background-image: url("Laptop.jpg");
-  height: 600px;
+  background-image: url("laptop.jpg");
+  height: 900px;
   scale: 100%;
   background-position: center;
   /* Center the image */
@@ -58,11 +59,9 @@
 }
 
 #middle {
-  background-image: url("ComputerRoom.jpg");
-  /* The image used */
-  background-color: #cccccc;
+  background-color: #000000;
   /* Used if the image is unavailable */
-  height: 1035px;
+  height: 500px;
   /* You must set a specified height */
   background-position: center;
   /* Center the image */
@@ -103,12 +102,6 @@
   color: var(--secondary-color-2)
 }
 
-/* Secondary color 2 */
-
-.homeButton {
-  background-color: gray;
-  border-color: gray;
-}
 
 .homeButton:hover {
   background-color: var(--primary-color);
@@ -144,12 +137,9 @@
 .button1 {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
+  color: white; 
 }
 
-.button1:hover {
-  background-color: gray;
-  border-color: gray;
-}
 
 .button2 {
   background-color: var(--secondary-color-2);
@@ -157,7 +147,16 @@
   color: black;
 }
 
-.button2:hover {
+
+.button3 {
+  background-color: var(--secondary-color-1);
+  border-color: var(--secondary-color-1);
+  color: black;
+}
+
+
+
+.button1:hover, .button2:hover, .button3:hover {
   background-color: grey;
   border-color: grey;
 }
@@ -185,12 +184,12 @@ span.reimagined{
 }
 
 span.reimagined.fadeIn{
-  color:#2962ff; 
+  color:var(--primary-color); 
   transition: all 1.5s ease;
 }
 
 span.reimagined.fadeOut{
-  color:white; 
+  color: var(--secondary-color-2); 
   transition: all 1.5s ease;
 }
 

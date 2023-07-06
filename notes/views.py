@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Note, Folder
+from .models import Note, Folder, Preferances
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .forms import RegisterForm
@@ -26,6 +26,8 @@ def notes(request, folder_id, sort="date"):
     if not request.user.is_authenticated:
         return redirect('home')
 
+   
+
     #make sure that user is the owner of the requestd folder
     userfolders = Folder.objects.filter(owner=request.user)
     folder = Folder.objects.filter(id=folder_id)
@@ -38,6 +40,7 @@ def notes(request, folder_id, sort="date"):
     else:
         title = folder.values()[0]["title"]
         prevFolder = folder.values()[0]["folder"]
+        
 
     if(sort == "title"):
         notes = Note.objects.filter(owner = request.user, folder = folder_id).values().order_by('title')
@@ -55,7 +58,8 @@ def notes(request, folder_id, sort="date"):
 
 
     context = {"notes": notes, "prevFolder": prevFolder,
-               "folder_title": title, "folder_id": folder_id, "folders": folders, "sharedNotes": notesSharedWithUser}
+               "folder_title": title, "folder_id": folder_id, "folders": folders, "sharedNotes": notesSharedWithUser,
+               "background" : request.user.preferances.backgroundImage}
 
     return render(request, "app/notes.html", context=context)
 
@@ -106,8 +110,10 @@ def detail(request, note_id):
     for note in notes:
         note.save()
     context = notes.values()[0]
+
  
     context['sharedUsers'] = notes[0].sharedUsers.all()
+    context['background'] = request.user.preferances.backgroundImage
 
 
     return render(request, "app/detail.html", context)
@@ -159,6 +165,13 @@ def saveNote(request, note_id):
             note.save()
     return redirect('detail', note_id=note_id)
 
+def changeBackground(request, folder_id, background):
+    preferances = request.user.preferances
+    preferances.backgroundImage = background
+    preferances.save()
+    return redirect('notes', folder_id=folder_id)
+
+
 
 """
 searches the all notes for the search terms
@@ -175,8 +188,10 @@ def search(request):
         notes = searchEngine(notes, search)
         folders = searchFolder(folders, search)
         folder_title = "Search Results for " + "\"" + search + "\""
+        background = request.user.preferances.backgroundImage
 
-        return render(request, "app/notes.html", context={"folders": folders, "notes": notes,  "folder_id":0, "prevFolder": 0, "folder_title": folder_title})
+        return render(request, "app/notes.html", context={"folders": folders, "notes": notes,  "folder_id":0, "prevFolder": 0, 
+                                                          "background": background, "folder_title": folder_title})
     return redirect('home')
 
 
@@ -220,13 +235,17 @@ def user_registration(request):
                 #user.phone_number = form.cleaned_data['phone_number']
                 user.save()
 
+                preferances = Preferances(user=user)
+                preferances.save()
+
                 #create an example note for the user to see
                 newNoteText = """NoteWorks is a simple note-taking app that brings functional elegance to the next level. Use it to jot down your thoughts, make a to-do list, or take notes for a class all without the distractions of unnecessary features. \r\n\r\n\r\n
 This is an example note to get you started! Here are several things to try:\r\n
-    - Create a new note or a new folder using the new note and new folder buttons on the home page.\r\n
+    - Create a new note or a new folder using the buttons on the home page. If you create a new note and edit it, make sure to save it!\r\n
     - Share a note with a friend using the share button on the right.\r\n
     - Download a PDF of your note to save for later. \r\n
-    - Customize your note using the options on the right.\r\n"""
+    - Customize your note using the options on the right.\r\n
+    - Change the background theme using the customize button on the home page.\r\n"""
 
                 note = Note(title='Welcome to NoteWorks!', text=newNoteText, owner=user, folder=0)
                 note.save()
@@ -275,7 +294,8 @@ def user_login(request):
 
 
 def account(request):
-    return render(request, 'app/account.html')
+    context = {'background': request.user.preferances.backgroundImage}
+    return render(request, 'app/account.html', context=context)
 
 
 @login_required
@@ -302,6 +322,7 @@ def update_account(request):
         return redirect('home')
 
     # if the request method is not POST, render the account page template
+    
     return render(request, 'account.html')
 
 

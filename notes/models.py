@@ -25,6 +25,13 @@ class Folder(models.Model):
         return self.title
 
 
+class Preferances(models.Model):
+    user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    backgroundImage = models.CharField(max_length=100, default='wavy')
+    def __str__(self):
+        return self.user.username
+
+
 
 
 

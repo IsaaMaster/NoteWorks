@@ -57,7 +57,7 @@ $(document).ready( function() {
 
 
     //Simply Elegant text fadeIn animation
-    var reveal =  $('#simpleandelegant').animate({opacity: '1'}, 2000);
+    var reveal =  $('#simpleandelegant').animate({opacity: '1'}, 3000);
 
 
 

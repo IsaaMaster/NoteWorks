@@ -14,7 +14,8 @@
     {%load static %}
     <link rel="stylesheet" href = "{%static 'app/app.css' %}">
 </head>
-<body>
+{% load static %}
+<body style="background-image: url('{% static 'app/backgrounds/' %}{{ background }}.svg')">
     <nav class="navbar navbar-expand-sm navbar-light sticky-top"  style="background-color: white">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}">
@@ -78,6 +79,12 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha384-Ft/vb48LwsAEtgltj7o+6vtS2esTU9PCpDqcXs4OCVQFZu5BqprHtUCZ4kjK+bpE" crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha384-4D3G3GikQs6hLlLZGdz5wLFzuqE9v4yVGAcOH86y23JqBDPzj9viv0EqyfIa6YUL" crossorigin="anonymous"></script>
     {% load static %}
+    <script>
+        const hex = "{% static 'app/backgrounds/hex.svg' %}";
+        const wavy = "{% static 'app/backgrounds/wavy.svg' %}"; 
+        const polyGrid = "{% static 'app/backgrounds/polyGrid.svg' %}";
+        const circles = "{% static 'app/backgrounds/circles.svg' %}";
+    </script>
     <script src="{% static 'app/app.js' %}"></script>
 </body>
 
