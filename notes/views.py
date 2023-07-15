@@ -11,6 +11,8 @@ from django.db.models.functions import Length
 from .helpers import *
 from django.http import FileResponse
 from reportlab.pdfgen import canvas
+from reportlab.lib.utils import ImageReader
+from reportlab.platypus import Image
 from io import BytesIO
 
 
@@ -195,11 +197,12 @@ def search(request):
     return redirect('home')
 
 
-def delete(request, note_id):
+def deleteNote(request, note_id):
     notes = Note.objects.filter(id=note_id)
     folder = notes.values()[0]["folder"]
     notes.delete()
     return redirect('notes', folder_id=folder)
+
 
 
 def user_registration(request):
@@ -350,7 +353,14 @@ def downloadPDF(request, note_id):
     #Generate the tile of the PDF
     pdf.setFont("Helvetica", 24)
     pdf.drawString(40, 775, note['title'])
-    
+    """
+    pdf.setFont("Helvetica", 14)
+    pdf.drawString(475, 800, "NoteWorks5")
+   
+    image = ImageReader("./static/app/noteIcon.png")
+    img = Image(image, 50, 50)
+    img.drawOn(pdf, 420, 800)
+    """
     # Generate the content of the PDF
     pdf.setFont("Times-Roman", 12)
     location = 750

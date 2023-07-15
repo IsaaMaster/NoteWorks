@@ -185,7 +185,7 @@ textarea::-webkit-scrollbar {
 
 
 
-#wavy, #hex, #polyGrid, #circles {
+#wavy, #hex, #polyGrid, #circles, #blob, #wavy-pink, #retro, #wavy-orange {
     height: 120px; 
     border: solid 1px white;
     padding: 10px; 
@@ -213,6 +213,27 @@ textarea::-webkit-scrollbar {
 #circles{
     background-image: url('backgrounds/circles.svg');
 }
+
+#blob{
+    background-image: url('backgrounds/blob.svg');
+}
+
+
+#wavy-pink{
+    background-image: url('backgrounds/wavy-pink.svg');
+}
+
+#retro{
+    background-image: url('backgrounds/retro.svg');
+    
+}
+
+#wavy-orange{
+    background-image: url('backgrounds/wavy-orange.svg');
+}
+
+
+
 
 a{
     text-decoration: none;

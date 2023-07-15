@@ -113,7 +113,7 @@
       </button>
 
       <div class="modal fade" id="backgroundModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
           <div class="modal-content">
             <div class="modal-header">
               <h5 class="modal-title" id="exampleModalLabel">Customize Background</h5>
@@ -135,13 +135,41 @@
                     </div>
                   </a>
                 </div>
+                
+                
+
                 <div class = "col-6">
-                  <a href = {% url 'backgroundChange' folder_id 'polyGrid' %}>
-                    <div class = "d-flex align-items-center justify-content-center" id = "polyGrid">
-                      <h5>Poly Grid</h5>
+                  <a href = {% url 'backgroundChange' folder_id 'blob'%}>
+                    <div class = "d-flex align-items-center justify-content-center" id = "blob">
+                      <h5>Blob</h5>
                     </div>
                   </a>
                 </div>
+
+                <div class = "col-6">
+                  <a href = {% url 'backgroundChange' folder_id 'wavy-pink'%}>
+                    <div class = "d-flex align-items-center justify-content-center" id = "wavy-pink">
+                      <h5>Wavy Pink</h5>
+                    </div>
+                  </a>
+                </div>
+
+                <div class = "col-6">
+                  <a href = {% url 'backgroundChange' folder_id 'retro'%}>
+                    <div class = "d-flex align-items-center justify-content-center" id = "retro">
+                      <h5>Retro</h5>
+                    </div>
+                  </a>
+                </div>
+
+                <div class = "col-6">
+                  <a href = {% url 'backgroundChange' folder_id 'wavy-orange'%}>
+                    <div class = "d-flex align-items-center justify-content-center" id = "wavy-orange">
+                      <h5>Wavy Orange</h5>
+                    </div>
+                  </a>
+                </div>
+
                 <div class = "col-6">
                   <a href = {% url 'backgroundChange' folder_id 'circles'%}>
                     <div class = "d-flex align-items-center justify-content-center" id = "circles">
@@ -149,6 +177,16 @@
                     </div>
                   </a>
                 </div>
+
+                <div class = "col-6">
+                  <a href = {% url 'backgroundChange' folder_id 'polyGrid' %}>
+                    <div class = "d-flex align-items-center justify-content-center" id = "polyGrid">
+                      <h5>Poly Grid</h5>
+                    </div>
+                  </a>
+                </div>
+
+
 
               </div>
             </div>

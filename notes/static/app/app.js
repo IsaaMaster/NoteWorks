@@ -68,9 +68,27 @@ $(document).ready( function() {
     $('#polyGrid').on('click', function() {
         $('body').css('background-image', 'url("' + polyGrid +'")');
     }); 
+    
     $('#circles').on('click', function() {
         $('body').css('background-image', 'url("' + circles +'")');
     }); 
+
+    $('#blob').on('click', function() {
+        $('body').css('background-image', 'url("' + blob +'")');
+    }); 
+
+    $('#wavy-pink').on('click', function() {
+        $('body').css('background-image', 'url("' + wavypink +'")');
+    }); 
+
+    $('#retro').on('click', function() {
+        $('body').css('background-image', 'url("' + retro +'")');
+    });
+    
+    $('#wavy-orange').on('click', function() {
+        $('body').css('background-image', 'url("' + wavyorange +'")');
+    }); 
+   
     
 
 
