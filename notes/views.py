@@ -78,7 +78,8 @@ def sharedNotes(request):
     #At least for now, there is no shared folders features, so we still show home folders in the shared notes page
     folders = Folder.objects.filter(owner=request.user, parent = homeFolder[0].id).values()
     
-    context=  {"folders": folders, "notes": notesSharedWithUser, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, "folder_title": "Notes Shared With Me"}
+    context=  {"folders": folders, "notes": notesSharedWithUser, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, "folder_title": "Notes Shared With Me",
+               "background" : request.user.preferances.backgroundImage}
     
     return render (request, "app/notes.html", context=context); 
 
@@ -217,7 +218,7 @@ def deleteNote(request, note_id):
     if (len(notes) == 0 or notes[0].owner != request.user):
         return redirect('home')
     #if the user is the owner of the note, then we can safely delete
-    parent = notes.values()[0]["folder"].id
+    parent = notes.values()[0]["folder_id"]
     notes.delete()
     return redirect('notes', folder_id=parent)
 
