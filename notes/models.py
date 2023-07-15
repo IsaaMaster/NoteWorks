@@ -9,7 +9,7 @@ class Note(models.Model):
     text = models.TextField(max_length=5000)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     lastAccessed = models.DateTimeField(auto_now=True)
-    folder = models.IntegerField(default=0)
+    folder = models.ForeignKey('Folder', on_delete=models.CASCADE, default=0)
     sharedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='sharedUsers')
     font = models.CharField(max_length=50, default='Helvetica')
     fontSize = models.IntegerField(default=16)
@@ -19,8 +19,9 @@ class Note(models.Model):
 
 class Folder(models.Model):
     title = models.CharField(max_length=50)
-    folder = models.IntegerField(default=0)
+    parent = models.ForeignKey('Folder', on_delete=models.CASCADE, blank=True, null=True)
     owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    home = models.BooleanField(default=False)
     def __str__(self):
         return self.title
 

@@ -20,4 +20,5 @@ urlpatterns = [
     path('share/<int:note_id>/', views.share, name='share'),
     path('download/<int:note_id>/', views.downloadPDF, name='downloadPDF'),
     path("background/<int:folder_id>/<str:background>/", views.changeBackground, name="backgroundChange"),
+    path("deleteFolder/<int:folder_id>/", views.deleteFolder, name="deleteFolder"),
 ]

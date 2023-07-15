@@ -20,7 +20,8 @@ from io import BytesIO
 
 def index(request):
     if (request.user.is_authenticated):
-        return redirect('notes', folder_id=0)
+        homeFolder = Folder.objects.filter(owner=request.user, home=True)
+        return redirect('notes', folder_id=homeFolder[0].id)
     return render(request, "app/home.html")
 
 
@@ -32,16 +33,17 @@ def notes(request, folder_id, sort="date"):
 
     #make sure that user is the owner of the requestd folder
     userfolders = Folder.objects.filter(owner=request.user)
-    folder = Folder.objects.filter(id=folder_id)
+    folder = Folder.objects.get(id=folder_id)
 
-    if (folder_id != 0 and (len(folder) == 0 or folder[0] not in userfolders)):
+
+    if (not folder or not folder in userfolders):
         return redirect('home')
-    prevFolder = 0
-    if (folder_id == 0):
-        title = "My Stuff"
     else:
-        title = folder.values()[0]["title"]
-        prevFolder = folder.values()[0]["folder"]
+        title = folder.title
+        if(not folder.home):
+            prevFolder = folder.parent.id
+        else:
+            prevFolder = -1
         
 
     if(sort == "title"):
@@ -51,28 +53,32 @@ def notes(request, folder_id, sort="date"):
     elif(sort == "titlereverse"):
         notes = Note.objects.filter(owner = request.user, folder = folder_id).values().order_by('-title')
     else:
-        notes = Note.objects.filter(
-        owner=request.user, folder=folder_id).values().order_by('-lastAccessed')
+        notes = Note.objects.filter(owner=request.user, folder=folder_id).values().order_by('-lastAccessed')
 
-    folders = Folder.objects.filter(
-        owner=request.user, folder=folder_id).values()
+    folders = Folder.objects.filter(owner=request.user, parent=folder_id).values()
+
     notesSharedWithUser = Note.objects.filter(sharedUsers = request.user).values()
 
 
-    context = {"notes": notes, "prevFolder": prevFolder,
+
+
+    context = {"notes": notes, "prevFolder": prevFolder, "isHome": folder.home,
                "folder_title": title, "folder_id": folder_id, "folders": folders, "sharedNotes": notesSharedWithUser,
                "background" : request.user.preferances.backgroundImage}
 
     return render(request, "app/notes.html", context=context)
 
 def sharedNotes(request):
+
     if not request.user.is_authenticated:
         return redirect('home')
     notesSharedWithUser = Note.objects.filter(sharedUsers = request.user).values()
+
+    homeFolder = Folder.objects.filter(owner=request.user, home=True)
     #At least for now, there is no shared folders features, so we still show home folders in the shared notes page
-    folders = Folder.objects.filter(
-        owner=request.user, folder=0).values()
-    context=  {"folders": folders, "notes": notesSharedWithUser,  "folder_id":0, "prevFolder": 0, "folder_title": "Notes Shared With Me"}
+    folders = Folder.objects.filter(owner=request.user, parent = homeFolder[0].id).values()
+    
+    context=  {"folders": folders, "notes": notesSharedWithUser, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, "folder_title": "Notes Shared With Me"}
     
     return render (request, "app/notes.html", context=context); 
 
@@ -134,7 +140,9 @@ def createNewNote(request, folder_id):
         title = request.POST['title']
         if len(title) == 0:
             title = "Unnamed Note"
-        note = Note(title=title, text='', owner=request.user, folder=folder_id)
+
+        parent = Folder.objects.get(id=folder_id)
+        note = Note(title=title, text='', owner=request.user, folder=parent)
         note.save()
         return redirect('detail', note_id=note.id)
     else:
@@ -146,7 +154,8 @@ def createNewFolder(request, folder_id):
         title = request.POST['title']
         if (len(title) == 0):
             title = "Unnamed Folder"
-        folder = Folder(title=title, folder=folder_id, owner=request.user)
+        parent = Folder.objects.get(id=folder_id)
+        folder = Folder(title=title, parent=parent, owner=request.user)
         folder.save()
         return redirect('notes', folder_id=folder.id)
     else:
@@ -192,18 +201,33 @@ def search(request):
         folder_title = "Search Results for " + "\"" + search + "\""
         background = request.user.preferances.backgroundImage
 
-        return render(request, "app/notes.html", context={"folders": folders, "notes": notes,  "folder_id":0, "prevFolder": 0, 
+        homeFolder = Folder.objects.filter(owner=request.user, home=True)
+
+        return render(request, "app/notes.html", context={"folders": folders, "notes": notes, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, 
                                                           "background": background, "folder_title": folder_title})
     return redirect('home')
 
 
 def deleteNote(request, note_id):
+    if not request.user.is_authenticated:
+        return redirect('home')
+    
     notes = Note.objects.filter(id=note_id)
-    folder = notes.values()[0]["folder"]
+    #make sure that the user is the owner of the note
+    if (len(notes) == 0 or notes[0].owner != request.user):
+        return redirect('home')
+    #if the user is the owner of the note, then we can safely delete
+    parent = notes.values()[0]["folder"].id
     notes.delete()
-    return redirect('notes', folder_id=folder)
+    return redirect('notes', folder_id=parent)
 
 
+def deleteFolder(request, folder_id):
+    if not request.user.is_authenticated:
+        return redirect('home')
+
+
+    return redirect('notes', folder_id=0)
 
 def user_registration(request):
     # if this is a POST request we need to process the form data
@@ -241,6 +265,10 @@ def user_registration(request):
                 preferances = Preferances(user=user)
                 preferances.save()
 
+                #create a home folder for the user
+                homeFolder = Folder(title="My Stuff", parent=None, owner=user, home=True)
+                homeFolder.save()
+
                 #create an example note for the user to see
                 newNoteText = """NoteWorks is a simple note-taking app that brings functional elegance to the next level. Use it to jot down your thoughts, make a to-do list, or take notes for a class all without the distractions of unnecessary features. \r\n\r\n\r\n
 This is an example note to get you started! Here are several things to try:\r\n
@@ -250,15 +278,16 @@ This is an example note to get you started! Here are several things to try:\r\n
     - Customize your note using the options on the right.\r\n
     - Change the background theme using the customize button on the home page.\r\n"""
 
-                note = Note(title='Welcome to NoteWorks!', text=newNoteText, owner=user, folder=0)
+                note = Note(title='Welcome to NoteWorks!', text=newNoteText, owner=user, folder=homeFolder)
                 note.save()
 
+        
 
                 # Login the user
                 login(request, user)
 
                 # redirect to accounts page:
-                return redirect("notes", folder_id=0)
+                return redirect("notes", folder_id=homeFolder.id)
 
    # No post data availabe, let's just show the page.
     else:
@@ -287,7 +316,7 @@ def user_login(request):
             # Save session as cookie to login the user
             login(request, user)
             # Success, now let's login the user.
-            return redirect('notes', folder_id=0)
+            return redirect('home')
         else:
             # Incorrect credentials, let's throw an error to the screen.
             return render(request, 'app/login.html', {'error_message': 'Incorrect username and / or password.'})
