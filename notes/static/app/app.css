@@ -2,6 +2,7 @@
     --primary-color: #2962ff;
     --secondary-color-1: #ff857e;
     --secondary-color-2: #ffcc80;
+    --secondary-color-3: #e950b7; 
     --defaultbackground: url('backgrounds/wavy.svg');
 }
 
@@ -132,10 +133,16 @@ img {
 .button3 {
     background-color: var(--secondary-color-1);
     border-color: var(--secondary-color-1);
+    color: white;
+}
+
+.button4 {
+    background-color: var(--secondary-color-3);
+    border-color: var(--secondary-color-3);
     color: black;
 }
 
-.button1:hover, .button2:hover, .button3:hover {
+.button1:hover, .button2:hover, .button3:hover, .button4:hover {
     background-color: grey;
     border-color: grey;
 }
@@ -237,5 +244,10 @@ textarea::-webkit-scrollbar {
 
 a{
     text-decoration: none;
+}
+
+#folderPath{
+    margin-top: 10px;
+    font-size: 130%;
 }
 

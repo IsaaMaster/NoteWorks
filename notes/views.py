@@ -17,7 +17,10 @@ from io import BytesIO
 
 
 
-
+"""
+This functions manages the home pages for our app, first checking if the user is logged in and 
+sending them their home page, else, sending them to their home page
+"""
 def index(request):
     if (request.user.is_authenticated):
         homeFolder = Folder.objects.filter(owner=request.user, home=True)
@@ -25,18 +28,25 @@ def index(request):
     return render(request, "app/home.html")
 
 
+
+"""
+Handles all requests that are related to displaying all notes and folders located within a given folder, including
+the home folder. Has the options for how the content should be sorted upon delivery. 
+"""
 def notes(request, folder_id, sort="date"):
     if not request.user.is_authenticated:
         return redirect('home')
 
-   
-
-    #make sure that user is the owner of the requestd folder
-    userfolders = Folder.objects.filter(owner=request.user)
-    folder = Folder.objects.get(id=folder_id)
 
 
-    if (not folder or not folder in userfolders):
+
+    try:
+        folder = Folder.objects.get(id=folder_id)
+    except:
+        return redirect('home')
+
+    #makes sure that user is the owner of the requestd folder
+    if (not folder or not folder.owner == request.user):
         return redirect('home')
     else:
         title = folder.title
@@ -44,8 +54,15 @@ def notes(request, folder_id, sort="date"):
             prevFolder = folder.parent.id
         else:
             prevFolder = -1
+    
+    #finds the path of the requested folder for the breadcrumbs on the page
+    path = [folder]
+    currentFolder = folder
+    while (currentFolder.parent != None):
+        path.insert(0, currentFolder.parent)
+        currentFolder = currentFolder.parent
         
-
+    #sorts the notes based on the requested sort methods
     if(sort == "title"):
         notes = Note.objects.filter(owner = request.user, folder = folder_id).values().order_by('title')
     elif(sort == "size"):
@@ -62,12 +79,41 @@ def notes(request, folder_id, sort="date"):
 
 
 
+
+    #context to be passed into the django template
     context = {"notes": notes, "prevFolder": prevFolder, "isHome": folder.home,
-               "folder_title": title, "folder_id": folder_id, "folders": folders, "sharedNotes": notesSharedWithUser,
-               "background" : request.user.preferances.backgroundImage}
+               "folder_title": title,    "folder_id": folder_id, "folders": folders, "sharedNotes": notesSharedWithUser,
+               "background" : request.user.preferances.backgroundImage, "path": path}
 
     return render(request, "app/notes.html", context=context)
 
+
+#detail view for a specific note. Takes an id for the note and returns the note if the user is the owner of the note. 
+def detail(request, note_id):
+    if not request.user.is_authenticated:
+        return redirect('home')
+    sharedNotes = Note.objects.filter(sharedUsers=request.user)
+    try:
+        note = Note.objects.get(id=note_id)
+    except:
+        return redirect('home')
+    
+    #make sure that the user is the owner of the note or the note has been shared with the user
+    if (not note.owner == request.user and note not in sharedNotes):
+        return redirect('home')
+
+
+    #use orginal context
+    context = note.__dict__
+    context['sharedUsers'] = note.sharedUsers.all()
+    context['background'] = request.user.preferances.backgroundImage
+
+
+    return render(request, "app/detail.html", context)
+
+
+
+#similar to the "notes" function, this function returns all notes that have been shared with the user using same template. 
 def sharedNotes(request):
 
     if not request.user.is_authenticated:
@@ -75,6 +121,7 @@ def sharedNotes(request):
     notesSharedWithUser = Note.objects.filter(sharedUsers = request.user).values()
 
     homeFolder = Folder.objects.filter(owner=request.user, home=True)
+
     #At least for now, there is no shared folders features, so we still show home folders in the shared notes page
     folders = Folder.objects.filter(owner=request.user, parent = homeFolder[0].id).values()
     
@@ -84,58 +131,68 @@ def sharedNotes(request):
     return render (request, "app/notes.html", context=context); 
 
 
+#Handles a note sharing request, given a note_id and a username, which is retrived from the post data.
+#This is done by adding the Username to the list of sharedUsers for the note.  
 def share(request, note_id):
     if not request.user.is_authenticated:
         return redirect('home')
+    
     if request.method == "POST":
         username = request.POST['username']
-        print(username)
         user = User.objects.filter(username=username)
+
+        #no user with that username found
         if (len(user) == 0):
             return redirect('detail', note_id)
-        notes = Note.objects.filter(id=note_id)
-        if (len(notes) == 0 or notes[0].owner != request.user or str(username) == str(request.user)):
+        #tries the retrive the note
+        try:
+            note = Note.objects.get(id=note_id)
+        except:
             return redirect('detail', note_id)
-        notes[0].sharedUsers.add(user[0])
-        notes[0].save()
-        return redirect('detail', note_id)
 
-    #notes.sharedUsers.add()
+        #makes sure the owner of the note is the user making the request and makes sure the owner does note share with themselves
+        if ( note.owner != request.user or str(username) == str(request.user)):
+            return redirect('detail', note_id)
+        
+        #updates shareUsers and saves changes
+        note.sharedUsers.add(user[0])
+        note.save()
 
     return redirect('detail', note_id)
 
 
 
-def detail(request, note_id):
+def unshare(request, note_id, username):
     if not request.user.is_authenticated:
         return redirect('home')
-    userNotes = Note.objects.filter(owner=request.user)
-    sharedNotes = Note.objects.filter(sharedUsers=request.user)
-    notes = Note.objects.filter(id=note_id)
-    if (len(notes) == 0 or (notes[0] not in userNotes and notes[0] not in sharedNotes)):
-        return redirect('home')
+    
+    try:
+        note = Note.objects.get(id=note_id)
+        user = User.objects.get(username=username)
+    except:
+        return redirect('detail', note_id)
+
+    #makes sure the owner of the note is the user making the request
+    if ( note.owner != request.user):
+        return redirect('detail', note_id)
+    
+    #updates shareUsers and saves changes
+    note.sharedUsers.remove(user)
+    note.save()
 
 
-    for note in notes:
-        note.save()
-    context = notes.values()[0]
-
- 
-    context['sharedUsers'] = notes[0].sharedUsers.all()
-    context['background'] = request.user.preferances.backgroundImage
+    return redirect('detail', note_id)
 
 
-    return render(request, "app/detail.html", context)
-
-
+#Renders the login page
 def loginpage(request):
     return render(request, 'app/login.html')
 
-
+#Renders the registration page
 def registerpage(request):
     return render(request, 'app/register.html')
 
-
+#Handles request to create a new note, given a folder id in which the note will be stored. 
 def createNewNote(request, folder_id):
     if request.method == 'POST':
         title = request.POST['title']
@@ -149,7 +206,7 @@ def createNewNote(request, folder_id):
     else:
         return render(request, 'app/newNote.html', context={"folder": folder_id})
 
-
+#Handles request to create new folder, given a folder id in which the new folder will be stored.
 def createNewFolder(request, folder_id):
     if request.method == 'POST':
         title = request.POST['title']
@@ -162,7 +219,7 @@ def createNewFolder(request, folder_id):
     else:
         return render(request, 'app/newFolder.html', context={"folder": folder_id})
 
-
+#Saves the note given the changes that the user have made to the text, font style, font size, etc.
 def saveNote(request, note_id):
     notes = Note.objects.filter(id=note_id)
     if request.method == 'POST':
@@ -177,10 +234,20 @@ def saveNote(request, note_id):
             note.save()
     return redirect('detail', note_id=note_id)
 
+#Handles the request for changing the background image for the user. And redirects to where the user was with the new background image
 def changeBackground(request, folder_id, background):
     preferances = request.user.preferances
     preferances.backgroundImage = background
     preferances.save()
+    return redirect('notes', folder_id=folder_id)
+
+#Handles the request for renaming a folder and updating the name. 
+def renameFolder(request, folder_id):
+    if request.method == 'POST':
+        folder = Folder.objects.get(id = folder_id)
+        folder.title = request.POST['title']
+        folder.save()
+
     return redirect('notes', folder_id=folder_id)
 
 
@@ -191,8 +258,6 @@ searches the all notes for the search terms
 here we use 0 as the folder for the search results
 """
 def search(request):
-    #we just redirect to the notes page with the search results. the folder is considerd home (0) with the previous folder being 0
-    #this means there won't be a back button to the home page
     if request.method == 'GET':
         search = request.GET["search"]
         notes = Note.objects.filter(owner=request.user).values()
@@ -208,7 +273,7 @@ def search(request):
                                                           "background": background, "folder_title": folder_title})
     return redirect('home')
 
-
+#Handles the request for deleting a note, given a note id.
 def deleteNote(request, note_id):
     if not request.user.is_authenticated:
         return redirect('home')
@@ -223,12 +288,23 @@ def deleteNote(request, note_id):
     return redirect('notes', folder_id=parent)
 
 
+
+#Handles the request for deleting a folder, given a folder id. Since in the models we have defined on_delete=models.CASCADE for parent relationships, 
+# all child notes and folders will be automaticlly deleted. 
 def deleteFolder(request, folder_id):
     if not request.user.is_authenticated:
         return redirect('home')
+    folder = Folder.objects.get(id=folder_id)
+    if (folder.owner != request.user):
+        return redirect('home')
+    
+    parent = folder.parent.id
+    folder.delete()
+
+    return redirect('notes', folder_id=parent)
 
 
-    return redirect('notes', folder_id=0)
+#Handles the request for a new account, given the post data which contains new user regristration data. 
 
 def user_registration(request):
     # if this is a POST request we need to process the form data
@@ -297,15 +373,8 @@ This is an example note to get you started! Here are several things to try:\r\n
     return render(request, template, {'form': form})
 
 
-"""
-            elif User.objects.filter(email=form.cleaned_data['email']).exists():
-                return render(request, template, {
-                    'form': form,
-                    'error_message': 'Email already exists.'
-                })
-"""
 
-
+#Handles request for existing user login, given the credientials in the post data.
 def user_login(request):
     if request.method == 'POST':
         # Process the request if posted data are available
@@ -326,11 +395,14 @@ def user_login(request):
         return render(request, 'app/login.html')
 
 
+
+#Handles request for the account page, which displays the user's information and allows them to update it.
+@login_required
 def account(request):
     context = {'background': request.user.preferances.backgroundImage}
     return render(request, 'app/account.html', context=context)
 
-
+#Handles request for updating the user's account information, given the post data containing the new information.
 @login_required
 def update_account(request):
     if request.method == 'POST':
@@ -361,6 +433,10 @@ def update_account(request):
 
 
 
+
+#Handles the request for downloading a note as a PDF, given a note id. Creates a new PDF and draws the specific notes information on it,
+#then allows the PDF to be downlaoded by the user. 
+@login_required
 def downloadPDF(request, note_id):
     userNotes = Note.objects.filter(owner=request.user)
     sharedNotes = Note.objects.filter(sharedUsers=request.user)

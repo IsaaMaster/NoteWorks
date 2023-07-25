@@ -18,7 +18,9 @@ urlpatterns = [
     path('update_account/', views.update_account, name='update_account'), 
     path('sharednotes/', views.sharedNotes, name='sharedNotes'),
     path('share/<int:note_id>/', views.share, name='share'),
+    path('unshare<int:note_id>/<str:username>', views.unshare, name='unshare'),
     path('download/<int:note_id>/', views.downloadPDF, name='downloadPDF'),
     path("background/<int:folder_id>/<str:background>/", views.changeBackground, name="backgroundChange"),
     path("deleteFolder/<int:folder_id>/", views.deleteFolder, name="deleteFolder"),
+    path("renameFolder/<int:folder_id>/", views.renameFolder, name="renameFolder"),
 ]

@@ -95,7 +95,8 @@
                                     {% for sharedUser in sharedUsers %}
                                         <div class ="row align-items-center justify-content-center" style = "font-size: 150%">
                                             <div class = "col-8 text-start">{{sharedUser}}</div>
-                                            <div class = "col-2 text-end"><a class = "btn btn-primary button1">
+                                            <div class = "col-2 text-end">
+                                            <a class = "btn btn-primary button1" href = "{% url 'unshare' id sharedUser%}">
                                                 Unshare
                                             </a></div>
                                         </div>
