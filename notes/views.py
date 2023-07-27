@@ -14,6 +14,8 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
 from reportlab.platypus import Image
 from io import BytesIO
+from django.http import JsonResponse
+from django.contrib.humanize.templatetags.humanize import naturaltime
 
 
 
@@ -105,6 +107,7 @@ def detail(request, note_id):
 
     #use orginal context
     context = note.__dict__
+    context['lastAccessed'] = naturaltime(context['lastAccessed'])
     context['sharedUsers'] = note.sharedUsers.all()
     context['background'] = request.user.preferances.backgroundImage
 
@@ -133,13 +136,15 @@ def sharedNotes(request):
 
 #Handles a note sharing request, given a note_id and a username, which is retrived from the post data.
 #This is done by adding the Username to the list of sharedUsers for the note.  
-def share(request, note_id):
+def shareNote(request, note_id):
     if not request.user.is_authenticated:
         return redirect('home')
     
     if request.method == "POST":
         username = request.POST['username']
         user = User.objects.filter(username=username)
+
+        print(username)
 
         #no user with that username found
         if (len(user) == 0):
@@ -157,6 +162,8 @@ def share(request, note_id):
         #updates shareUsers and saves changes
         note.sharedUsers.add(user[0])
         note.save()
+
+        return JsonResponse({"success": True})
 
     return redirect('detail', note_id)
 
@@ -219,27 +226,41 @@ def createNewFolder(request, folder_id):
     else:
         return render(request, 'app/newFolder.html', context={"folder": folder_id})
 
+
+
 #Saves the note given the changes that the user have made to the text, font style, font size, etc.
 def saveNote(request, note_id):
-    notes = Note.objects.filter(id=note_id)
+    try:
+        note = Note.objects.get(id=note_id)
+    except:
+        return redirect('detail', note_id=note_id)
+    
     if request.method == 'POST':
-        print(request.POST)
+        print("Data call used")
         text = request.POST["text"]
         font = request.POST["font"]
         fontSize = request.POST["fontSize"]
-        for note in notes:
-            note.font = font
-            note.fontSize = fontSize
-            note.text = text
-            note.save()
+        note.font = font
+        note.fontSize = fontSize
+        note.text = text
+        note.save()
+        return JsonResponse({"success": True})
+        
     return redirect('detail', note_id=note_id)
 
 #Handles the request for changing the background image for the user. And redirects to where the user was with the new background image
-def changeBackground(request, folder_id, background):
-    preferances = request.user.preferances
-    preferances.backgroundImage = background
-    preferances.save()
-    return redirect('notes', folder_id=folder_id)
+def changeBackground(request, background):
+    if not request.user.is_authenticated:    
+        return redirect('home')
+    if request.method == 'POST':
+        background  = request.POST['background']
+        preferances = request.user.preferances
+        preferances.backgroundImage = background
+        preferances.save()
+        return JsonResponse({"success": True})
+
+
+    return redirect('home')
 
 #Handles the request for renaming a folder and updating the name. 
 def renameFolder(request, folder_id):
@@ -454,7 +475,10 @@ def downloadPDF(request, note_id):
     # Create a new PDF object
     pdf = canvas.Canvas(buffer)
 
-    text = note['text'].split("\r\n")
+
+    text = note['text'].split("\n")
+
+
 
     #Generate the tile of the PDF
     pdf.setFont("Helvetica", 24)

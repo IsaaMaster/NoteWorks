@@ -1,7 +1,6 @@
 {% extends 'app/userBase.html' %}
 {% block content %}
-<nav class="navbar">
-</nav>
+
 <div class="container-fluid text-center" style="margin:0px 0px 30px 0px">
     <div class="row align-items-center justify-content-center">
        
@@ -13,8 +12,11 @@
                 <p>
                     Last Accessed: {{lastAccessed}}
                 </p>
+                <p id = "saveMessage">
+                    Note Saved to the Cloud!
+                </p>
 
-                <form action="{% url "save" id%}" method="post" id="notes">
+                <form action="#" method="post" id="notes">
                     {% csrf_token %}
                 </form>
 
@@ -22,13 +24,6 @@
                     Buttons grid for saving, deleting, and sharing notes
                 -->
                 <div style = "margin-top: 5px;">
-                    <button type="submit" form = "notes" class="btn btn-success">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-cloud-upload" viewBox="0 0 16 16">
-                            <path fill-rule="evenodd" d="M4.406 1.342A5.53 5.53 0 0 1 8 0c2.69 0 4.923 2 5.166 4.579C14.758 4.804 16 6.137 16 7.773 16 9.569 14.502 11 12.687 11H10a.5.5 0 0 1 0-1h2.688C13.979 10 15 8.988 15 7.773c0-1.216-1.02-2.228-2.313-2.228h-.5v-.5C12.188 2.825 10.328 1 8 1a4.53 4.53 0 0 0-2.941 1.1c-.757.652-1.153 1.438-1.153 2.055v.448l-.445.049C2.064 4.805 1 5.952 1 7.318 1 8.785 2.23 10 3.781 10H6a.5.5 0 0 1 0 1H3.781C1.708 11 0 9.366 0 7.318c0-1.763 1.266-3.223 2.942-3.593.143-.863.698-1.723 1.464-2.383z"/>
-                            <path fill-rule="evenodd" d="M7.646 4.146a.5.5 0 0 1 .708 0l3 3a.5.5 0 0 1-.708.708L8.5 5.707V14.5a.5.5 0 0 1-1 0V5.707L5.354 7.854a.5.5 0 1 1-.708-.708l3-3z"/>
-                        </svg>
-                        Save Note
-                    </button>
                     
                     <button class="btn btn-danger button3" data-bs-toggle="modal" data-bs-target="#confirmDeleteModal">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
@@ -66,9 +61,9 @@
                                 </div>  
                             </div>
                         </div>
-                    </div>         
-                </div>
-                <div style = "margin-top:5px;">
+                    </div>    
+                    
+                    
 
                     <button type="button" class="btn btn-primary button1" data-bs-toggle="modal" data-bs-target="#exampleModal" data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Make sure to save your note first!">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-plus-fill" viewBox="0 0 16 16">
@@ -105,7 +100,7 @@
                                     {% endfor %}
                                 </div>
                                 <div class="modal-body">
-                                    <form id="shareNoteForm" action={%url 'share' id%} method="POST">
+                                    <form id="shareNoteForm" method="POST">
                                         {% csrf_token %}
                                         <div class="mb-3">
                                             <label for="recipient-name" class="col-form-label"><h4>Recipient:</h4></label>
@@ -115,10 +110,9 @@
                                 </div>
                                 <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button type="submit" class="btn button1 btn-primary" form="shareNoteForm">
-                                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-send-check" viewBox="0 0 16 16">
-                                            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855a.75.75 0 0 0-.124 1.329l4.995 3.178 1.531 2.406a.5.5 0 0 0 .844-.536L6.637 10.07l7.494-7.494-1.895 4.738a.5.5 0 1 0 .928.372l2.8-7Zm-2.54 1.183L5.93 9.363 1.591 6.602l11.833-4.733Z"/>
-                                            <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z"/>
+                                    <button id = "shareNote"  class="btn button1 btn-primary" >
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-send-fill" viewBox="0 0 16 16">
+                                            <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 3.178 4.995.002.002.26.41a.5.5 0 0 0 .886-.083l6-15Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z"/>
                                         </svg>
                                         Share Note!
                                     </button>
@@ -127,21 +121,19 @@
                         </div>
                     </div>
 
-                    <a class = "btn btn-secondary button2 " href = "{%url "downloadPDF" id%}"  data-bs-toggle="tooltip" data-bs-placement="bottom" data-bs-original-title="Make sure to save your note first!">
+                </div>
+
+
+                <div style = "margin-top:5px;">
+
+                    
+                    <a class = "btn btn-secondary button2 " href = "{%url "downloadPDF" id%}">
                         <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-file-earmark-pdf" viewBox="0 0 16 16">
                             <path d="M14 14V4.5L9.5 0H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2zM9.5 3A1.5 1.5 0 0 0 11 4.5h2V14a1 1 0 0 1-1 1H4a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1h5.5v2z"/>
                             <path d="M4.603 14.087a.81.81 0 0 1-.438-.42c-.195-.388-.13-.776.08-1.102.198-.307.526-.568.897-.787a7.68 7.68 0 0 1 1.482-.645 19.697 19.697 0 0 0 1.062-2.227 7.269 7.269 0 0 1-.43-1.295c-.086-.4-.119-.796-.046-1.136.075-.354.274-.672.65-.823.192-.077.4-.12.602-.077a.7.7 0 0 1 .477.365c.088.164.12.356.127.538.007.188-.012.396-.047.614-.084.51-.27 1.134-.52 1.794a10.954 10.954 0 0 0 .98 1.686 5.753 5.753 0 0 1 1.334.05c.364.066.734.195.96.465.12.144.193.32.2.518.007.192-.047.382-.138.563a1.04 1.04 0 0 1-.354.416.856.856 0 0 1-.51.138c-.331-.014-.654-.196-.933-.417a5.712 5.712 0 0 1-.911-.95 11.651 11.651 0 0 0-1.997.406 11.307 11.307 0 0 1-1.02 1.51c-.292.35-.609.656-.927.787a.793.793 0 0 1-.58.029zm1.379-1.901c-.166.076-.32.156-.459.238-.328.194-.541.383-.647.547-.094.145-.096.25-.04.361.01.022.02.036.026.044a.266.266 0 0 0 .035-.012c.137-.056.355-.235.635-.572a8.18 8.18 0 0 0 .45-.606zm1.64-1.33a12.71 12.71 0 0 1 1.01-.193 11.744 11.744 0 0 1-.51-.858 20.801 20.801 0 0 1-.5 1.05zm2.446.45c.15.163.296.3.435.41.24.19.407.253.498.256a.107.107 0 0 0 .07-.015.307.307 0 0 0 .094-.125.436.436 0 0 0 .059-.2.095.095 0 0 0-.026-.063c-.052-.062-.2-.152-.518-.209a3.876 3.876 0 0 0-.612-.053zM8.078 7.8a6.7 6.7 0 0 0 .2-.828c.031-.188.043-.343.038-.465a.613.613 0 0 0-.032-.198.517.517 0 0 0-.145.04c-.087.035-.158.106-.196.283-.04.192-.03.469.046.822.024.111.054.227.09.346z"/>
                         </svg>
                         Download PDF
                     </a>
-                    <script>
-                        // Initialize the tooltips
-                        var tooltips = document.querySelectorAll('[data-bs-toggle="tooltip"]');
-                        var tooltipInstances = Array.prototype.map.call(tooltips, function (tooltip) {
-                            return new bootstrap.Tooltip(tooltip);
-                        });
-                    </script>
-                    
                 
                 </div>
             </div>
@@ -223,4 +215,10 @@
         </div>
     </div>
 </div>
+
+{% load static %}
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha384-Ft/vb48LwsAEtgltj7o+6vtS2esTU9PCpDqcXs4OCVQFZu5BqprHtUCZ4kjK+bpE" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha384-4D3G3GikQs6hLlLZGdz5wLFzuqE9v4yVGAcOH86y23JqBDPzj9viv0EqyfIa6YUL" crossorigin="anonymous"></script>
+<script src = "{% static 'app/note.js' %}"></script>
+
 {% endblock%}

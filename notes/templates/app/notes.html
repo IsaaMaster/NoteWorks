@@ -123,66 +123,52 @@
             <div class="modal-body">
               <div class = "row align-items-center justify-content-center">
                 <div class = "col-6">
-                  <a href = {%url 'backgroundChange' folder_id 'wavy'%}>
-                    <div class = "d-flex align-items-center justify-content-center" id = "wavy">
-                      <h5>Wavy</h5>
-                    </div>
-                  </a>
+                  <div class = "d-flex align-items-center justify-content-center" id = "wavy">
+                    <h5>Wavy</h5>
+                  </div>
                 </div>
                 <div class = "col-6">
-                  <a href = {%url 'backgroundChange' folder_id 'hex'%}>
-                    <div class = "d-flex align-items-center justify-content-center" id = "hex">
-                      <h5>Hex</h5>
-                    </div>
-                  </a>
+                  <div class = "d-flex align-items-center justify-content-center" id = "hex">
+                    <h5>Hex</h5>
+                  </div>
                 </div>           
 
                 <div class = "col-6">
-                  <a href = {% url 'backgroundChange' folder_id 'blob'%}>
-                    <div class = "d-flex align-items-center justify-content-center" id = "blob">
-                      <h5>Blob</h5>
-                    </div>
-                  </a>
+                  <div class = "d-flex align-items-center justify-content-center" id = "blob">
+                    <h5>Blob</h5>
+                  </div>
                 </div>
 
                 <div class = "col-6">
-                  <a href = {% url 'backgroundChange' folder_id 'wavy-pink'%}>
-                    <div class = "d-flex align-items-center justify-content-center" id = "wavy-pink">
-                      <h5>Wavy Pink</h5>
-                    </div>
-                  </a>
+                  <div class = "d-flex align-items-center justify-content-center" id = "wavy-pink">
+                    <h5>Wavy Pink</h5>
+                  </div>
                 </div>
 
                 <div class = "col-6">
-                  <a href = {% url 'backgroundChange' folder_id 'retro'%}>
+
                     <div class = "d-flex align-items-center justify-content-center" id = "retro">
                       <h5>Retro</h5>
                     </div>
-                  </a>
+
                 </div>
 
                 <div class = "col-6">
-                  <a href = {% url 'backgroundChange' folder_id 'wavy-orange'%}>
-                    <div class = "d-flex align-items-center justify-content-center" id = "wavy-orange">
-                      <h5>Wavy Orange</h5>
-                    </div>
-                  </a>
+                  <div class = "d-flex align-items-center justify-content-center" id = "wavy-orange">
+                    <h5>Wavy Orange</h5>
+                  </div>
                 </div>
 
                 <div class = "col-6">
-                  <a href = {% url 'backgroundChange' folder_id 'circles'%}>
-                    <div class = "d-flex align-items-center justify-content-center" id = "circles">
-                      <h5>Circles</h5>
-                    </div>
-                  </a>
-                </div>
+                  <div class = "d-flex align-items-center justify-content-center" id = "circles">
+                    <h5>Circles</h5>
+                  </div>
+              </div>
 
                 <div class = "col-6">
-                  <a href = {% url 'backgroundChange' folder_id 'polyGrid' %}>
-                    <div class = "d-flex align-items-center justify-content-center" id = "polyGrid">
-                      <h5>Poly Grid</h5>
-                    </div>
-                  </a>
+                  <div class = "d-flex align-items-center justify-content-center" id = "polyGrid">
+                    <h5>Poly Grid</h5>
+                  </div>
                 </div>
 
               </div>
@@ -354,7 +340,8 @@
                 </h5>
                 <p class = "card-text" style="color:grey"></p>
                 <p class="card-text" style = "font-family: {{note.font|safe}}">{{ note.text|truncatechars:150}}</p>
-                <p class = "card-text" style="color:grey">Last Accessed: {{note.lastAccessed}} </p>
+                {% load humanize %}
+                <p class = "card-text" style="color:grey">Last Accessed: {{note.lastAccessed|naturaltime}} </p>
             
               </div>
             </div>
@@ -367,6 +354,11 @@
     </div>
   </div>
 </div>
+{% load static %}
+
+
+
+
 {% endblock %}
 
 

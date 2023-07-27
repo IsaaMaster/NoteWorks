@@ -213,7 +213,7 @@ textarea::-webkit-scrollbar {
 }
 
 #polyGrid{
-    background-image: url('backgrounds/polyGrid.svg');
+    background-image: url('backgrounds/polygrid.svg');
     
 }
 
@@ -227,7 +227,7 @@ textarea::-webkit-scrollbar {
 
 
 #wavy-pink{
-    background-image: url('backgrounds/wavy-pink.svg');
+    background-image: url('backgrounds/wavypink.svg');
 }
 
 #retro{
@@ -236,7 +236,7 @@ textarea::-webkit-scrollbar {
 }
 
 #wavy-orange{
-    background-image: url('backgrounds/wavy-orange.svg');
+    background-image: url('backgrounds/wavyorange.svg');
 }
 
 
@@ -249,5 +249,9 @@ a{
 #folderPath{
     margin-top: 10px;
     font-size: 130%;
+}
+
+p{
+    margin:5px; 
 }
 

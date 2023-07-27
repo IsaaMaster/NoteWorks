@@ -1,10 +1,9 @@
-
-
-
-
-
-
-
+function getCookie(name) {
+    var value = "; " + document.cookie;
+    var parts = value.split("; " + name + "=");
+    if (parts.length === 2) return parts.pop().split(";").shift();
+  }
+  
 
 
 
@@ -24,6 +23,27 @@ $(document).ready( function() {
 
     //var div = $('#top');
     //var autoHeight = div.css('height', 'auto').height();
+
+    function updateBackground(background) {
+
+        var csrfToken = getCookie('csrftoken'); // Using jQuery
+
+        $.ajax({
+            type: 'POST',
+            url: '/background/' + background + '/',
+            data: { 'background': background},
+            headers: { "X-CSRFToken": csrfToken },
+            success: function(response) {
+                console.log('Background saved successfully.');
+            }, 
+            error: function(error) {
+                console.error('An error occurred while saving the background.')
+            }, 
+        }); 
+
+
+
+    }
 
 
 
@@ -59,34 +79,43 @@ $(document).ready( function() {
 
     $('#wavy').on('click', function() {
         $('body').css('background-image', 'url("' + wavy +'")');
+        updateBackground('wavy');
+        console.log("done")
     }); 
 
     $('#hex').on('click', function() {
         $('body').css('background-image', 'url("' + hex +'")');
+        updateBackground('hex');
     });
     
     $('#polyGrid').on('click', function() {
         $('body').css('background-image', 'url("' + polyGrid +'")');
+        updateBackground('polygrid');
     }); 
     
     $('#circles').on('click', function() {
         $('body').css('background-image', 'url("' + circles +'")');
+        updateBackground('cicles');
     }); 
 
     $('#blob').on('click', function() {
         $('body').css('background-image', 'url("' + blob +'")');
+        updateBackground('blob');
     }); 
 
     $('#wavy-pink').on('click', function() {
         $('body').css('background-image', 'url("' + wavypink +'")');
+        updateBackground('wavypink');
     }); 
 
     $('#retro').on('click', function() {
         $('body').css('background-image', 'url("' + retro +'")');
+        updateBackground('retro');
     });
     
     $('#wavy-orange').on('click', function() {
         $('body').css('background-image', 'url("' + wavyorange +'")');
+        updateBackground('wavyorange');
     }); 
    
     
