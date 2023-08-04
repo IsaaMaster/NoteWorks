@@ -5,6 +5,7 @@ $(document).ready( function() {
     
     console.log('app.js loaded!');
 
+
     //Preparing the 'Experience the magic today' text animation
     let magic = document.querySelector('#magic');
     let strmagic = magic.textContent;
@@ -87,6 +88,8 @@ $(document).ready( function() {
     
 
     }); 
+
+   
 
 
 });

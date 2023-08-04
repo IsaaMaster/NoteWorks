@@ -263,11 +263,14 @@ def changeBackground(request, background):
     return redirect('home')
 
 #Handles the request for renaming a folder and updating the name. 
-def renameFolder(request, folder_id):
+def renameFolderTitle(request, folder_id):
     if request.method == 'POST':
         folder = Folder.objects.get(id = folder_id)
-        folder.title = request.POST['title']
+        new_title = request.POST['title']
+        folder.title = new_title
         folder.save()
+
+        return JsonResponse({"success": True, "new_title": new_title})
 
     return redirect('notes', folder_id=folder_id)
 

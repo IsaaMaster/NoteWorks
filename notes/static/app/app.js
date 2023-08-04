@@ -16,6 +16,7 @@ function getCookie(name) {
 
 
 $(document).ready( function() {
+    $.ajaxSetup({cache: false});
 
   
     console.log('app.js loaded!');
@@ -47,7 +48,40 @@ $(document).ready( function() {
 
 
 
+    function updateFolder(){
+        var newtitle  = $('#newtitle').val();
+        console.log(newtitle);
+ 
+        var csrfToken = getCookie('csrftoken'); 
+
+        $.ajax({
+            type: 'POST',
+            url: './rename_folder/', 
+            data: { 'title': newtitle},
+            headers: { "X-CSRFToken": csrfToken },
+            success: function(response) {
+                console.log('Folder renamed successfully.');
+                $('#folderTitle').text(newtitle);
+                $('#newtitle').val('');
+            }, 
+            error: function(error) {
+                console.error('An error occurred while renaming the folder.')
+            }
+            
+
+
+        }); 
+
+
+    }
+
     
+
+
+    $('#renameFolderButton').on('click', function(event) {
+        updateFolder(); 
+       
+    }); 
 
     // Font change event handler
     $('#font-select').change(function() {

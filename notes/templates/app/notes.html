@@ -81,7 +81,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form id="newNoteForm" action="{% url 'newNote' folder_id %}" method="POST">
+                <form  id="newNoteForm" action="{% url 'newNote' folder_id %}" method="POST">
                     {% csrf_token %}
                     <div class="mb-3">
                         <label for="recipient-name" class="col-form-label"><h4>NoteWork Name:</h4></label>
@@ -184,8 +184,8 @@
 
       <button type= "button" class = "btn btn-lg btn-primary button4 shadow" data-bs-toggle="modal" data-bs-target="#settingsModal">
         Settings
-        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28 " fill="currentColor" class="bi bi-sliders" viewBox="0 0 16 16">
-          <path fill-rule="evenodd" d="M11.5 2a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM9.05 3a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0V3h9.05zM4.5 7a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM2.05 8a2.5 2.5 0 0 1 4.9 0H16v1H6.95a2.5 2.5 0 0 1-4.9 0H0V8h2.05zm9.45 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm-2.45 1a2.5 2.5 0 0 1 4.9 0H16v1h-2.05a2.5 2.5 0 0 1-4.9 0H0v-1h9.05z"/>
+        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" fill="currentColor" class="bi bi-toggles" viewBox="0 0 16 16">
+          <path d="M4.5 9a3.5 3.5 0 1 0 0 7h7a3.5 3.5 0 1 0 0-7h-7zm7 6a2.5 2.5 0 1 1 0-5 2.5 2.5 0 0 1 0 5zm-7-14a2.5 2.5 0 1 0 0 5 2.5 2.5 0 0 0 0-5zm2.45 0A3.49 3.49 0 0 1 8 3.5 3.49 3.49 0 0 1 6.95 6h4.55a2.5 2.5 0 0 0 0-5H6.95zM4.5 0h7a3.5 3.5 0 1 1 0 7h-7a3.5 3.5 0 1 1 0-7z"/>
         </svg>
       </button>
 
@@ -197,16 +197,10 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-              <form id="renameFolderForm" action="{% url 'renameFolder' folder_id %}" method="POST">
-                {% csrf_token %}
-                <div class="mb-3">
-                    <label for="recipient-name" class="col-form-label"><h4>Rename Folder</h4></label>
-                    <input type="text" class="form-control" id="title" placeholder="{{folder_title}}" name = "title">
-                </div>
-              </form>
 
+              
               {% if not isHome %}
-                <hr style="padding:10px">
+                
 
                 <h4>Delete Folder</h4>
                 <p>Warming! This will action is irrevsible and will delete all the folder's contents permanently.</p>
@@ -217,15 +211,48 @@
                   </svg>
                   Delete Folder. 
                 </a>
+                <hr style="padding:10px">
               {% endif %}
+
+              <div class="mb-3">
+                <label for="recipient-name" class="col-form-label"><h4>Rename Folder</h4></label>
+                <input type="text" class="form-control" id="newtitle" placeholder="Enter a new name" name = "title" >
+              </div>
 
             </div>
             <div class="modal-footer">
-              <button type="submit" class="btn btn-primary button4" data-bs-dismiss="modal" form = "recipient-name">Save and Close</button>
+              <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+              <button id="renameFolderButton" class="btn btn-primary button4" data-bs-toggle="modal" data-bs-target="#folderRenameSuccess">Save and Close</button>
             </div>
           </div>
         </div>
       </div>
+
+
+      <div class = "modal fade" id = "folderRenameSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content">
+                <div class = "modal-body">
+                    <div class = "row justify-content-center">
+                        <div class = "col text-center">
+                          <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="bi bi-folder-check" viewBox="0 0 16 16">
+                            <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/>
+                            <path d="M15.854 10.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.707 0l-1.5-1.5a.5.5 0 0 1 .707-.708l1.146 1.147 2.646-2.647a.5.5 0 0 1 .708 0z"/>
+                          </svg>
+                            
+                          <p style = "font-size:125%">Folder Name Successfully Changed!</p>
+                        </div>
+                    </div>
+
+                </div>
+                <div class = "modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                </div>
+            </div>
+        </div>
+      </div>
+
+      
 
 
  
