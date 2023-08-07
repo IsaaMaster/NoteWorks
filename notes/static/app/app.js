@@ -75,7 +75,36 @@ $(document).ready( function() {
 
     }
 
+
+    function updateAccount() {
+        var username = $('#username').val();
+        var email = $('#email').val();
+        var firstName = $('#first_name').val();
+        var lastName = $('#last_name').val();
+        var csrfToken = getCookie('csrftoken');
+
+        $.ajax({
+            type: 'POST', 
+            url: '/update_account/',
+            data: { 'username': username, 'email': email, 'first_name': firstName, 'last_name': lastName },
+            headers: { "X-CSRFToken": csrfToken },
+            success: function(response) {
+                console.log('Account updated successfully.');
+                var modal = $('#accountUpdateSuccess'); 
+                modal.modal('show');
+
+            }, 
+            error: function(error) {
+                console.error('An error occurred while updating the account.')
+            },
+        });
+    }
+
     
+
+    $('#updateAccountButton').on('click', function(event) {
+        updateAccount();
+    }); 
 
 
     $('#renameFolderButton').on('click', function(event) {

@@ -448,7 +448,7 @@ def update_account(request):
         messages.success(request, 'Your account information has been updated.')
 
         # redirect the user to the home page
-        return redirect('home')
+        return JsonResponse({"success": True})
 
     # if the request method is not POST, render the account page template
     
