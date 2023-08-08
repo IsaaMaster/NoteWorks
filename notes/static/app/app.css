@@ -145,6 +145,16 @@ img {
 .button1:hover, .button2:hover, .button3:hover, .button4:hover {
     background-color: grey;
     border-color: grey;
+
+}
+
+.bumpUp{
+    transition: transform 0.3s ease;
+}
+
+.bumpUp:hover{
+    transform: scale(1.3);
+    transform: translateY(-10px);
 }
 
 
@@ -255,3 +265,17 @@ p{
     margin:5px; 
 }
 
+
+.masonry-container {
+    display: flex;
+    flex-wrap: wrap;
+    margin: -15px; /* Adjust as needed */
+  }
+  
+  .masonry-card {
+    flex: 1;
+    margin: 15px; /* Adjust as needed */
+    max-width: 28%; /* Set to 25% for a dynamic width of 1/4 */
+    min-width: 28%;
+    box-sizing: border-box;
+  }

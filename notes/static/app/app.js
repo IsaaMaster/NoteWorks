@@ -22,6 +22,15 @@ $(document).ready( function() {
     console.log('app.js loaded!');
 
 
+    var masonryContainer = document.querySelector('.masonry-container');
+    var masonry = new Masonry(masonryContainer, {
+    itemSelector: '.masonry-card',
+    columnWidth: '.masonry-card',
+    gutter: 0, // Adjust as needed
+    });
+
+
+
     //var div = $('#top');
     //var autoHeight = div.css('height', 'auto').height();
 
