@@ -13,6 +13,7 @@ from django.http import FileResponse
 from reportlab.pdfgen import canvas
 from reportlab.lib.utils import ImageReader
 from reportlab.platypus import Image
+from reportlab.pdfbase.pdfmetrics import stringWidth
 from io import BytesIO
 from django.http import JsonResponse
 from django.contrib.humanize.templatetags.humanize import naturaltime
@@ -478,41 +479,42 @@ def downloadPDF(request, note_id):
     # Create a new PDF object
     pdf = canvas.Canvas(buffer)
 
-
+    #format text
     text = note['text'].split("\n")
-
+    for i in range(len(text)):
+        text[i] = text[i].split(" ")
 
 
     #Generate the tile of the PDF
     pdf.setFont("Helvetica", 24)
     pdf.drawString(40, 775, note['title'])
-    """
-    pdf.setFont("Helvetica", 14)
-    pdf.drawString(475, 800, "NoteWorks5")
-   
-    image = ImageReader("./static/app/noteIcon.png")
-    img = Image(image, 50, 50)
-    img.drawOn(pdf, 420, 800)
-    """
+
+    #Generate the author of the note
+    user = User.objects.get(id = note['owner_id'])
+    pdf.setFont("Helvetica", 12)
+    pdf.drawString(40, 760 , "Author: " + user.username)
+    
+    
     # Generate the content of the PDF
     pdf.setFont("Times-Roman", 12)
-    location = 750
+    MAX_WIDTH = 500
+    y = 735
     for line in text:
-        length = len(line)
-        while (length >= 0):
-            if(length > 93):
-                pdf.drawString(40, location, line[:93])
-                line = line[93:]
-                length-=93
-                location-=15
-            else:
-                pdf.drawString(40, location, line)
-                length-=93
-                location-=15
-            if(location < 50):
-                pdf.showPage()
-                location = 750
+        x = 0
+        for word in line:
+            length = stringWidth(word + " ", "Times-Roman", 12); 
+            if(length + x >= 500):
+                x = 0   
+                y-=15
+                if(y < 50):
+                    pdf.showPage()
+                    y = 750
 
+            pdf.drawString(40 + x, y, word)
+            x+=length
+          
+        y-=15
+        
 
     
 
