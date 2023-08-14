@@ -36,13 +36,13 @@ def index(request):
 Handles all requests that are related to displaying all notes and folders located within a given folder, including
 the home folder. Has the options for how the content should be sorted upon delivery. 
 """
-def notes(request, folder_id, sort="date"):
+def notes(request, folder_id, sort="date", message="None"):
     if not request.user.is_authenticated:
         return redirect('home')
 
-
-
-
+    print(message)
+    print(sort)
+    
     try:
         folder = Folder.objects.get(id=folder_id)
     except:
@@ -86,7 +86,7 @@ def notes(request, folder_id, sort="date"):
     #context to be passed into the django template
     context = {"notes": notes, "prevFolder": prevFolder, "isHome": folder.home,
                "folder_title": title,    "folder_id": folder_id, "folders": folders, "sharedNotes": notesSharedWithUser,
-               "background" : request.user.preferances.backgroundImage, "path": path}
+               "background" : request.user.preferances.backgroundImage, "path": path, "message": message}
 
     return render(request, "app/notes.html", context=context)
 
@@ -389,7 +389,7 @@ This is an example note to get you started! Here are several things to try:\r\n
                 login(request, user)
 
                 # redirect to accounts page:
-                return redirect("notes", folder_id=homeFolder.id)
+                return redirect("notesMsg", folder_id=homeFolder.id, message = "welcome")
 
    # No post data availabe, let's just show the page.
     else:

@@ -29,6 +29,12 @@ $(document).ready( function() {
     gutter: 0, // Adjust as needed
     });
 
+    var myModal = new bootstrap.Modal(document.getElementById('welcomeModal'), {
+        keyboard: false
+      })
+    myModal.show(); 
+
+
 
 
     //var div = $('#top');
@@ -110,6 +116,23 @@ $(document).ready( function() {
     }
 
     
+    var curr = 1; 
+    $('#intronext').on('click', function(event) {
+        if(curr === 4){
+            myModal.hide();
+        }
+
+        $('#intro' + curr).css({display: 'none'}, 500);
+        curr++;
+        $('#intro' + curr).css({display: 'block'}, 500);
+
+        if(curr === 4){
+            $('#intronext').text('Finish');
+            $('#introclose').css({display: 'none'});
+        }
+    });
+
+
 
     $('#updateAccountButton').on('click', function(event) {
         updateAccount();

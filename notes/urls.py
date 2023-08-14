@@ -27,4 +27,5 @@ urlpatterns = [
     path("deleteFolder/<int:folder_id>/", views.deleteFolder, name="deleteFolder"),
     #path("renameFolder/<int:folder_id>/", views.renameFolder, name="renameFolder"),
     path("notes/<int:folder_id>/<str:sort>/", views.notes, name="notesSorted"),
+    path("notes/<int:folder_id>/msg/<str:message>/", views.notes, name="notesMsg"),
 ]

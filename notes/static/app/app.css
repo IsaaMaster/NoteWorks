@@ -287,3 +287,12 @@ p{
 .folderTab:hover{
     transform: translateX(20px);
 }
+
+
+#intro2, #intro3, #intro4{
+    display: none;
+}
+
+#welcomeModal p{
+    font-size: 115%;
+}
