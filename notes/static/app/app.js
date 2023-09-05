@@ -29,10 +29,14 @@ $(document).ready( function() {
     gutter: 0, // Adjust as needed
     });
 
-    var myModal = new bootstrap.Modal(document.getElementById('welcomeModal'), {
-        keyboard: false
-      })
-    myModal.show(); 
+    try{
+        var myModal = new bootstrap.Modal(document.getElementById('welcomeModal'), {
+            keyboard: false
+        })
+        myModal.show(); 
+    } catch(err) {
+        console.log("welcome modal not found");
+    }
 
 
 
