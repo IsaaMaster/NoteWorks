@@ -284,7 +284,7 @@ p{
   
 .masonry-card {
     flex: 1;
-    padding: 0px; /* Adjust as needed */
+    padding: 8px; /* Adjust as needed */
     max-width: 33.33%; /* Set to 25% for a dynamic width of 1/4 */
     min-width: 33.33%;
     box-sizing: border-box;
@@ -294,7 +294,7 @@ p{
     /* CSS rules for smaller screens */
     .masonry-card {
         flex: 1;
-        padding:7px 40px;
+        padding:7px 15px;
         max-width: 100%; /* Set to 25% for a dynamic width of 1/4 */
         min-width: 100%;
         box-sizing: border-box;
