@@ -284,9 +284,9 @@ p{
   
 .masonry-card {
     flex: 1;
-    padding: 15px; /* Adjust as needed */
-    max-width: 33%; /* Set to 25% for a dynamic width of 1/4 */
-    min-width: 33%;
+    padding: 0px; /* Adjust as needed */
+    max-width: 33.33%; /* Set to 25% for a dynamic width of 1/4 */
+    min-width: 33.33%;
     box-sizing: border-box;
 }
 
@@ -303,7 +303,13 @@ p{
         margin-top:10px;
     }
 
+    #searchBar{
+        min-width: 100%;
+    }
+
 }
+
+
 
 .folderTab{
     transition: all 0.3s ease;
