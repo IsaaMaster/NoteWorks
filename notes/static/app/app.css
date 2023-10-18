@@ -74,6 +74,16 @@ img {
     font-size: 16px;
 }
 
+@media (max-width: 768px) {
+    /* CSS rules for smaller screens */
+    #textbox {
+        padding: 35px; 
+    }
+
+}
+
+
+
 #textbox:onclick {
     border-color: white;
 }
@@ -274,10 +284,25 @@ p{
   
 .masonry-card {
     flex: 1;
-    margin: 15px; /* Adjust as needed */
-    max-width: 28%; /* Set to 25% for a dynamic width of 1/4 */
-    min-width: 28%;
+    padding: 15px; /* Adjust as needed */
+    max-width: 33%; /* Set to 25% for a dynamic width of 1/4 */
+    min-width: 33%;
     box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+    /* CSS rules for smaller screens */
+    .masonry-card {
+        flex: 1;
+        padding:7px 40px;
+        max-width: 100%; /* Set to 25% for a dynamic width of 1/4 */
+        min-width: 100%;
+        box-sizing: border-box;
+    }
+    .masonry-container{
+        margin-top:10px;
+    }
+
 }
 
 .folderTab{
