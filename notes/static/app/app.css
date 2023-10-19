@@ -310,7 +310,24 @@ p{
 
 }
 
+.folder.dragover{
+    border: 3px solid var(--primary-color);
+    size: 110%; 
+}
 
+.folder.breadcrumb-item{
+    height:100%; 
+}
+
+.folder.breadcrumb-item.dragover{
+    border-radius: 20px;
+    padding:3px;
+}
+
+
+.folder{
+    height: 70px;
+}
 
 .folderTab{
     transition: all 0.3s ease;

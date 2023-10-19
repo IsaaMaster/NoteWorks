@@ -7,14 +7,6 @@ function getCookie(name) {
 
 
 
-
-
-
-
-
-
-
-
 $(document).ready( function() {
     $.ajaxSetup({cache: false});
 
@@ -66,7 +58,7 @@ $(document).ready( function() {
     }
 
 
-
+    ///This function updates the Folder title
     function updateFolder(){
         var newtitle  = $('#newtitle').val();
         console.log(newtitle);
@@ -94,7 +86,7 @@ $(document).ready( function() {
 
     }
 
-
+    ///This function updates the Account information
     function updateAccount() {
         var username = $('#username').val();
         var email = $('#email').val();
@@ -120,6 +112,7 @@ $(document).ready( function() {
     }
 
     
+    ///welcome modal javascript
     var curr = 1; 
     $('#intronext').on('click', function(event) {
         if(curr === 4){
@@ -217,6 +210,69 @@ $(document).ready( function() {
         updateBackground('wavyorange');
     }); 
    
+
+
+
+    ///section of code for dragging and dropping notes into folders
+    const draggables = document.querySelectorAll('.draggable');
+    const folders = document.querySelectorAll('.folder');
+
+    draggables.forEach((draggable) => {
+        draggable.addEventListener('dragstart', (e) => {
+            e.dataTransfer.setData('itemID', e.target.getAttribute('data-item-id'));
+        });
+    });
+
+    folders.forEach((folder) => {
+        folder.addEventListener('dragover', (e) => {
+            e.preventDefault();
+            folder.classList.add('dragover');
+            
+        });
+
+        folder.addEventListener('dragleave', () => {
+            folder.classList.remove('dragover');
+        });
+
+        folder.addEventListener('drop', (e) => {
+            e.preventDefault();
+
+            
+            //remove the black outline hover hightlight
+            folder.classList.remove('dragover');
+
+            const itemID = e.dataTransfer.getData('itemID');
+            const folderID = folder.getAttribute('data-folder-id');
+            var csrfToken = getCookie('csrftoken');
+            
+            var path = window.location.pathname;
+            var pathArray = path.split('/');
+            if(pathArray[2] === folderID){
+                return;
+            }
+
+            // Send an AJAX request to update the database
+            $.ajax({
+                type: 'POST', 
+                url: '/updateNoteFolder/',
+                data: {'noteID': itemID, 'folderID': folderID},
+                headers: { "X-CSRFToken": csrfToken },
+                ///on success, remove the note from the page
+                success: function(response) {
+                    const item = document.querySelector('#note' + itemID);
+                    item.remove();
+
+                    //resets the masonry layout
+                    masonry.layout();
+                }, 
+                error: function(error) {
+                    console.error('An error occurred while updating the account.')
+                },
+            }); 
+
+        });
+    });
+
     
 
 

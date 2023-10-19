@@ -22,15 +22,17 @@
 </head>
 
 <body style="background-color:black">
-    <nav class="navbar navbar-expand-sm bg-body-tertiary sticky-top" id="navbar-custom">
+    <nav class="navbar bg-dark navbar-dark navbar-expand-sm bg-body-tertiary sticky-top" id="navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}"><div id="brand" class="navbarm" style="margin-left:40px; font-size:120%">
                 <img src="{% static 'app/whiteNoteIcon.png' %}" alt="Logo" class="d-inline-block align-text-top" id="logo" style="width:30px;">
                 NoteWorks 5
             </div></a>
+
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
+
             <div class="collapse navbar-collapse" id="menuItems">
                 <ul class = "navbar-nav ms-auto mb-2 mb-lg-0">
                     <li class = "nav-item">
