@@ -40,8 +40,7 @@ def notes(request, folder_id, sort="date", message="None"):
     if not request.user.is_authenticated:
         return redirect('home')
 
-    print(message)
-    print(sort)
+    
     
     try:
         folder = Folder.objects.get(id=folder_id)
@@ -248,6 +247,23 @@ def saveNote(request, note_id):
         return JsonResponse({"success": True})
         
     return redirect('detail', note_id=note_id)
+
+
+def updateNoteFolder(request):
+    if request.method == 'POST':
+        note_id = request.POST["noteID"]
+        folder_id = request.POST["folderID"]
+        try:
+            note = Note.objects.get(id=note_id)
+            folder = Folder.objects.get(id=folder_id)
+        except:
+            return redirect('home')
+    
+        note.folder = folder
+        note.save()
+        return JsonResponse({"success": True})
+        
+    return redirect('home')
 
 #Handles the request for changing the background image for the user. And redirects to where the user was with the new background image
 def changeBackground(request, background):
