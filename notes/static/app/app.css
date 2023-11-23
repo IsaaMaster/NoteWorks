@@ -74,16 +74,6 @@ img {
     font-size: 16px;
 }
 
-@media (max-width: 768px) {
-    /* CSS rules for smaller screens */
-    #textbox {
-        padding: 20px; 
-        border-radius: 40px;
-    }
-
-}
-
-
 
 #textbox:onclick {
     border-color: white;
@@ -261,8 +251,6 @@ textarea::-webkit-scrollbar {
 }
 
 
-
-
 a{
     text-decoration: none;
 }
@@ -291,24 +279,6 @@ p{
     box-sizing: border-box;
 }
 
-@media (max-width: 768px) {
-    /* CSS rules for smaller screens */
-    .masonry-card {
-        flex: 1;
-        padding:7px 15px;
-        max-width: 100%; /* Set to 25% for a dynamic width of 1/4 */
-        min-width: 100%;
-        box-sizing: border-box;
-    }
-    .masonry-container{
-        margin-top:10px;
-    }
-
-    #searchBar{
-        min-width: 100%;
-    }
-
-}
 
 .folder.dragover{
     border: 3px solid var(--primary-color);
@@ -348,4 +318,43 @@ p{
 
 .gridBtn{
     margin: 2.1px 0px;
+}
+
+#searchBar{
+    min-width: 40%;
+}
+
+@media (max-width: 1080px){
+    .masonry-card{
+        padding: 7px 15px;
+        max-width: 50%;
+        min-width: 50%;
+    }
+}
+
+
+@media (max-width: 768px) {
+    /* CSS rules for smaller screens */
+    .masonry-card {
+        flex: 1;
+        padding:7px 15px;
+        max-width: 100%; /* Set to 25% for a dynamic width of 1/4 */
+        min-width: 100%;
+        box-sizing: border-box;
+    }
+    .masonry-container{
+        margin-top:10px;
+    }
+
+    #textbox {
+        padding: 20px; 
+        border-radius: 40px;
+    }
+
+}
+
+@media (max-width: 576){
+    #searchBar{
+        min-width: 90%;
+    }
 }

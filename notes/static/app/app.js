@@ -13,7 +13,7 @@ $(document).ready( function() {
   
     console.log('app.js loaded!');
 
-
+    //masonary configuration
     var masonryContainer = document.querySelector('.masonry-container');
     var masonry = new Masonry(masonryContainer, {
     itemSelector: '.masonry-card',
@@ -169,6 +169,8 @@ $(document).ready( function() {
         $(this).removeClass('shadow-lg');
     }); 
 
+
+    ///change the background of the page
     $('#wavy').on('click', function() {
         $('body').css('background-image', 'url("' + wavy +'")');
         updateBackground('wavy');
