@@ -193,6 +193,11 @@ textarea::-webkit-scrollbar {
     border:white 2px solid; 
     padding:10px; 
 }
+
+.card-header{
+    background-color: white !important;
+}
+
 .webSection {
     border: soild white 1px;
     background-color: white;
@@ -320,9 +325,7 @@ p{
     margin: 2.1px 0px;
 }
 
-#searchBar{
-    min-width: 40%;
-}
+
 
 @media (max-width: 1080px){
     .masonry-card{
@@ -353,8 +356,26 @@ p{
 
 }
 
-@media (max-width: 576){
+#searchBar{
+    min-width: 40%;
+}
+
+@media (max-width: 576px){
     #searchBar{
         min-width: 90%;
     }
+}
+
+#navbarProfileIcon{
+    height:40px; 
+    width:40px; 
+    border-radius:50px;
+}
+
+#manageAccountProfilePicture{
+    height:100px; 
+    width:100px;
+    padding:0px;
+    margin: 0px; 
+    border-radius: 50px;
 }

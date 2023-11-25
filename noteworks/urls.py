@@ -20,8 +20,8 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', include('notes.urls')), 
     path('accounts/', include("django.contrib.auth.urls")),
+    path('', include('notes.urls')), 
     path('api/', include('api.urls')),
 
     

@@ -100,13 +100,23 @@ $(document).ready( function() {
             data: { 'username': username, 'email': email, 'first_name': firstName, 'last_name': lastName },
             headers: { "X-CSRFToken": csrfToken },
             success: function(response) {
-                console.log('Account updated successfully.');
-                var modal = $('#accountUpdateSuccess'); 
-                modal.modal('show');
+                console.log(response['success']);
+                if (response['success']) {
+                    console.log('Account updated successfully.');
+                    var modal = $('#accountUpdateSuccess'); 
+                    modal.modal('show');
+
+                    $('#accountName').text(username);
+
+                }
+                else {
+                    var modal = $('#accountUpdateError');
+                    modal.modal('show');
+                }
 
             }, 
             error: function(error) {
-                console.error('An error occurred while updating the account.')
+                console.log('An error occurred while updating the account.')
             },
         });
     }

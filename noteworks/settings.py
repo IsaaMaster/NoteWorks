@@ -163,3 +163,11 @@ LOGIN_REDIRECT_URL = "notes"
 LOGOUT_REDIRECT_URL = "home"
 
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# settings.py
+
+DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 5  # 5 MB (adjust as needed)
+FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 5  # 5 MB (adjust as needed)
+
+MEDIA_ROOT = BASE_DIR 
+MEDIA_URL = "/"

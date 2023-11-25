@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from .models import Note, Folder, Preferances
+from .models import Note, Folder, Preferances, Profile
 from django.contrib.auth import authenticate, login
 from django.contrib.auth.models import User
 from .forms import RegisterForm
@@ -33,15 +33,12 @@ def index(request):
 
 
 """
-Handles all requests that are related to displaying all notes and folders located within a given folder, including
-the home folder. Has the options for how the content should be sorted upon delivery. 
+List for all notes that the user owns
+Handles all requests that are related to displaying all notes and folders located within a given folder, including the home folder. 
+Has the options for how the content should be sorted upon delivery. 
 """
+@login_required
 def notes(request, folder_id, sort="date", message="None"):
-    if not request.user.is_authenticated:
-        return redirect('home')
-
-    
-    
     try:
         folder = Folder.objects.get(id=folder_id)
     except:
@@ -78,19 +75,21 @@ def notes(request, folder_id, sort="date", message="None"):
 
     notesSharedWithUser = Note.objects.filter(sharedUsers = request.user).values()
 
-
-
-
+    
 
     #context to be passed into the django template
     context = {"notes": notes, "prevFolder": prevFolder, "isHome": folder.home,
                "folder_title": title,    "folder_id": folder_id, "folders": folders, "sharedNotes": notesSharedWithUser,
-               "background" : request.user.preferances.backgroundImage, "path": path, "message": message}
+               "background" : request.user.preferances.backgroundImage, "path": path, "message": message, 
+               "profile_picture": getProfilePictureURL(request.user)}
 
     return render(request, "app/notes.html", context=context)
 
-
-#detail view for a specific note. Takes an id for the note and returns the note if the user is the owner of the note. 
+"""
+detail view for a specific note. 
+Takes an id for the note and returns the note if the user is the owner of the note.
+else it redirects the user back to the home page 
+"""
 def detail(request, note_id):
     if not request.user.is_authenticated:
         return redirect('home')
@@ -110,13 +109,17 @@ def detail(request, note_id):
     context['lastAccessed'] = naturaltime(context['lastAccessed'])
     context['sharedUsers'] = note.sharedUsers.all()
     context['background'] = request.user.preferances.backgroundImage
+    context['profile_picture'] = getProfilePictureURL(request.user)
 
 
     return render(request, "app/detail.html", context)
 
 
 
-#similar to the "notes" function, this function returns all notes that have been shared with the user using same template. 
+"""
+This function handles the request for the notes that have been shared with the user.
+Similar to the "notes" function, this function returns all notes that have been shared with the user using same template.
+""" 
 def sharedNotes(request):
 
     if not request.user.is_authenticated:
@@ -129,13 +132,16 @@ def sharedNotes(request):
     folders = Folder.objects.filter(owner=request.user, parent = homeFolder[0].id).values()
     
     context=  {"folders": folders, "notes": notesSharedWithUser, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, "folder_title": "Notes Shared With Me",
-               "background" : request.user.preferances.backgroundImage}
+               "background" : request.user.preferances.backgroundImage, "profile_picture": getProfilePictureURL(request.user)}
     
     return render (request, "app/notes.html", context=context); 
 
-
-#Handles a note sharing request, given a note_id and a username, which is retrived from the post data.
-#This is done by adding the Username to the list of sharedUsers for the note.  
+"""
+The function allows users to share notes with other users.
+Handles a note sharing request, given a note_id and a username, which is retrived from the post data.
+This is done by adding the Username to the list of sharedUsers for the note. 
+If no username is found, this view does nothing. 
+""" 
 def shareNote(request, note_id):
     if not request.user.is_authenticated:
         return redirect('home')
@@ -144,7 +150,6 @@ def shareNote(request, note_id):
         username = request.POST['username']
         user = User.objects.filter(username=username)
 
-        print(username)
 
         #no user with that username found
         if (len(user) == 0):
@@ -168,7 +173,11 @@ def shareNote(request, note_id):
     return redirect('detail', note_id)
 
 
-
+"""
+Allows users to unshare notes with other users. 
+We prevent the user from unsharing if they are not the owner of the note. 
+Otherwise, the user is removed from the list of sharedUsers for that note. 
+"""
 def unshare(request, note_id, username):
     if not request.user.is_authenticated:
         return redirect('home')
@@ -191,15 +200,31 @@ def unshare(request, note_id, username):
     return redirect('detail', note_id)
 
 
-#Renders the login page
+
+"""
+Renders the login page, where users can login to their account
+"""
 def loginpage(request):
     return render(request, 'app/login.html')
 
-#Renders the registration page
+
+
+"""
+Renders the registration page, where users can create a new account
+"""
 def registerpage(request):
     return render(request, 'app/register.html')
 
-#Handles request to create a new note, given a folder id in which the note will be stored. 
+
+
+"""
+Handles request to create a new note, given a folder id in which the note will be stored. 
+The folder_id argument is the folder in which the new note will be stored in. 
+If not name is provided in making the note, it the note will be named "Unnamed Note"
+
+The newNote.html is legacy code, and is not used in the current version of the app.
+Instead of having a whole new page to create a note, we simply use a modal on the notes page to create a new note.
+"""
 def createNewNote(request, folder_id):
     if request.method == 'POST':
         title = request.POST['title']
@@ -213,7 +238,16 @@ def createNewNote(request, folder_id):
     else:
         return render(request, 'app/newNote.html', context={"folder": folder_id})
 
-#Handles request to create new folder, given a folder id in which the new folder will be stored.
+
+
+""""
+Handles request to create new folder, given a folder id in which the new folder will be stored.
+The folder_id argument is the folder in which the new folder will be stored in.
+If no name is provided in making the folder, it will be named "Unnamed Folder"
+
+Similar to create new Note, the newFolder.html is legacy code, and is not used in the current version of the app.
+Instead of having a whole new page to create a folder, we simply use a modal on the notes page to create a new folder.
+"""
 def createNewFolder(request, folder_id):
     if request.method == 'POST':
         title = request.POST['title']
@@ -228,7 +262,13 @@ def createNewFolder(request, folder_id):
 
 
 
-#Saves the note given the changes that the user have made to the text, font style, font size, etc.
+"""
+Saves the note given the changes that the user have made to the text, font style, font size, etc.
+Everytime the user makes a change to the note, the note is saved. 
+
+The view simply waits for an AJAX request from the frontend to be made, and then saves the note in real time. 
+If the request is faulty, it redirects the user back to the note detail page.
+"""
 def saveNote(request, note_id):
     try:
         note = Note.objects.get(id=note_id)
@@ -236,7 +276,6 @@ def saveNote(request, note_id):
         return redirect('detail', note_id=note_id)
     
     if request.method == 'POST':
-        print("Data call used")
         text = request.POST["text"]
         font = request.POST["font"]
         fontSize = request.POST["fontSize"]
@@ -249,6 +288,15 @@ def saveNote(request, note_id):
     return redirect('detail', note_id=note_id)
 
 
+
+"""
+UpdateNoteFolder allows uses to move a note from one folder to another. 
+
+Currently, users can drag and drop notes into folders, and this function simply handles the AJAX 
+requests that are made when a note is dropped into a folder.
+
+folderID refers to the folder that the note is being moved to, NOT the old folder
+"""
 def updateNoteFolder(request):
     if request.method == 'POST':
         note_id = request.POST["noteID"]
@@ -265,10 +313,17 @@ def updateNoteFolder(request):
         
     return redirect('home')
 
-#Handles the request for changing the background image for the user. And redirects to where the user was with the new background image
+
+
+
+"""
+Handles the request for changing the background image for the user. 
+
+This view simply handles the AJAX request that is made when the user changes the background image.
+The background image is stored in the user's preferances, and is set to the image that the user has selected.
+"""
+@login_required
 def changeBackground(request, background):
-    if not request.user.is_authenticated:    
-        return redirect('home')
     if request.method == 'POST':
         background  = request.POST['background']
         preferances = request.user.preferances
@@ -279,7 +334,15 @@ def changeBackground(request, background):
 
     return redirect('home')
 
-#Handles the request for renaming a folder and updating the name. 
+
+"""
+Handles the request for renaming a folder and updating the name. 
+
+Takes an AJAX request and updates the folder title to the new title that the user has provided.
+The folder_id is the folder that is being renamed. 
+And the new title is the new title that the user has provided in the POST request
+"""
+@login_required
 def renameFolderTitle(request, folder_id):
     if request.method == 'POST':
         folder = Folder.objects.get(id = folder_id)
@@ -294,10 +357,17 @@ def renameFolderTitle(request, folder_id):
 
 
 """
-searches the all notes for the search terms
+searches the all notes and folders based on a keyword that the user has provided.
 
-here we use 0 as the folder for the search results
+Currently, it just uses helper function searchEngine and searchFolder to search the title of notes and folders and 
+the contents of the notes. 
+
+In the future, searchEngine and searchFolder could be improved to provide better search results. 
+
+
+Here we use 0 as the folder for the search results as a placeholder, which is needed since many tasks (rename folder, delete folder, etc) require a folder id.
 """
+@login_required
 def search(request):
     if request.method == 'GET':
         search = request.GET["search"]
@@ -310,15 +380,23 @@ def search(request):
 
         homeFolder = Folder.objects.filter(owner=request.user, home=True)
 
-        return render(request, "app/notes.html", context={"folders": folders, "notes": notes, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, 
-                                                          "background": background, "folder_title": folder_title})
+        return render(request, "app/notes.html", 
+                      context={"folders": folders, "notes": notes, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, 
+                                "profile_picture": getProfilePictureURL(request.user) , "background": background, "folder_title": folder_title})
     return redirect('home')
 
-#Handles the request for deleting a note, given a note id.
+
+
+
+"""
+Handles the request for deleting a note, given a note id.
+
+In order to delete the note, the user must be the owner of the note and the note must exist. 
+
+Once the note it delete, we redirect the user back to the folder that the note was it.
+"""
+@login_required
 def deleteNote(request, note_id):
-    if not request.user.is_authenticated:
-        return redirect('home')
-    
     notes = Note.objects.filter(id=note_id)
     #make sure that the user is the owner of the note
     if (len(notes) == 0 or notes[0].owner != request.user):
@@ -329,12 +407,16 @@ def deleteNote(request, note_id):
     return redirect('notes', folder_id=parent)
 
 
+"""
+Handles the request for deleting a folder, given a folder id. Since in the models we have defined on_delete=models.CASCADE for parent relationships, 
+all child notes and folders will be automaticlly deleted. 
 
-#Handles the request for deleting a folder, given a folder id. Since in the models we have defined on_delete=models.CASCADE for parent relationships, 
-# all child notes and folders will be automaticlly deleted. 
+In order to delete the folder, the user must be the owner of the folder and the folder must exist.
+
+Similar to deleting a note, once the folder is delete, we redirect the user back to the folder that the folder was in.
+"""
+@login_required
 def deleteFolder(request, folder_id):
-    if not request.user.is_authenticated:
-        return redirect('home')
     folder = Folder.objects.get(id=folder_id)
     if (folder.owner != request.user):
         return redirect('home')
@@ -345,8 +427,18 @@ def deleteFolder(request, folder_id):
     return redirect('notes', folder_id=parent)
 
 
-#Handles the request for a new account, given the post data which contains new user regristration data. 
 
+
+"""
+Handles the request for a new account, given the post data which contains new user regristration data.
+The username the user has provided must not already exist, and the password and password_repeat must match.
+
+For now, the user is not required to provide an email, and we use example@gmail.com as a placeholder.
+
+To create a new account, we create a new user, a new default preferances for the user, and a new default home page. 
+
+We also create a new note, which is an example note to get the user started. Additionaly, provide a welcome message to the user that guides them through using noteworks5
+"""
 def user_registration(request):
     # if this is a POST request we need to process the form data
     template = 'app/register.html'
@@ -388,13 +480,13 @@ def user_registration(request):
                 homeFolder.save()
 
                 #create an example note for the user to see
-                newNoteText = """NoteWorks is a simple note-taking app that brings functional elegance to the next level. Use it to jot down your thoughts, make a to-do list, or take notes for a class all without the distractions of unnecessary features. \r\n\r\n\r\n
+                newNoteText = """NoteWorks is a simple note-taking app that brings functional elegance to the next level. Use it to jot down your thoughts, make a to-do list, or take notes for a class all without the distractions of unnecessary features. \r\n\r\n
 This is an example note to get you started! Here are several things to try:\r\n
-    - Create a new note or a new folder using the buttons on the home page. If you create a new note and edit it, make sure to save it!\r\n
-    - Share a note with a friend using the share button on the right.\r\n
+    - Create a new note or a new folder using the buttons on the home page. Notes are automatically saved to the cloud, so you never need to worry about manually saving anything.\r\n
     - Download a PDF of your note to save for later. \r\n
-    - Customize your note using the options on the right.\r\n
-    - Change the background theme using the customize button on the home page.\r\n"""
+    - Organize your notes! Drag and drop notes into folders on the home page to organize your notes.\r\n
+    - Change the background theme using the customize button on the home page.\r\n
+    - Add a profile picture on the my account page.\r\n"""
 
                 note = Note(title='Welcome to NoteWorks!', text=newNoteText, owner=user, folder=homeFolder)
                 note.save()
@@ -415,7 +507,10 @@ This is an example note to get you started! Here are several things to try:\r\n
 
 
 
-#Handles request for existing user login, given the credientials in the post data.
+"""
+Handles the request for logging in, given the post data which contains the username and password.
+Currently, we are using Django's built in authentication system, which checks if the username and password combination is correct.
+"""
 def user_login(request):
     if request.method == 'POST':
         # Process the request if posted data are available
@@ -437,13 +532,29 @@ def user_login(request):
 
 
 
-#Handles request for the account page, which displays the user's information and allows them to update it.
+"""
+Handles request for the account page, which displays the user's information and allows them to update it.
+"""
 @login_required
 def account(request):
-    context = {'background': request.user.preferances.backgroundImage}
+    numberOfNotes = len(Note.objects.filter(owner=request.user))
+    numberOfFolders = len(Folder.objects.filter(owner=request.user))
+    favoriteBackground = request.user.preferances.backgroundImage.capitalize()
+    friends = 0; 
+
+    context = {'background': request.user.preferances.backgroundImage, 'profile_picture': getProfilePictureURL(request.user), 
+                'numberOfNotes': numberOfNotes, 'numberOfFolders': numberOfFolders, 'favoriteBackground': favoriteBackground, 'friends': friends
+               }
     return render(request, 'app/account.html', context=context)
 
-#Handles request for updating the user's account information, given the post data containing the new information.
+
+
+"""
+Handles request for updating the user's account information, given the post data containing the new information.
+The user's username, email, first name, and last name are updated.
+
+Currently, we do not have support for updating the password, but this can be added in the future.
+"""
 @login_required
 def update_account(request):
     if request.method == 'POST':
@@ -459,7 +570,10 @@ def update_account(request):
         user.email = email
         user.first_name = first_name
         user.last_name = last_name
-        user.save()
+        try:
+            user.save()
+        except:
+            return JsonResponse({"success": False})
 
         # display a success message
         messages.success(request, 'Your account information has been updated.')
@@ -473,10 +587,45 @@ def update_account(request):
 
 
 
+"""
+Updates the users profile picture
+if the user does not currently have a profile that needs to be updated we create one for them
+"""
+@login_required
+def updateProfilePicture(request):
+    if request.method == 'POST':
+        # get the form data from the request
+        profile_picture = request.FILES.get('profile_picture')
 
 
-#Handles the request for downloading a note as a PDF, given a note id. Creates a new PDF and draws the specific notes information on it,
-#then allows the PDF to be downlaoded by the user. 
+
+        try:
+            profile = Profile.objects.get(user=request.user)
+        except:
+            profile = Profile(user=request.user)
+        
+        #delete the old profile picture if it exists, so that we do not have to store it
+        profile.profilePicture.delete()
+        profile.profilePicture = profile_picture
+        profile.save()
+
+        # display a success message
+        messages.success(request, 'Your profile picture has been updated.')
+
+        # redirect the user to the home page
+        return redirect('account')
+
+    # if the request method is not POST, render the account page template
+    return render(request, 'account.html')
+
+
+
+"""
+Handles the request for downloading a note as a PDF, given a note id. Creates a new PDF and draws the specific notes information on it,
+then allows the PDF to be downlaoded by the user. 
+
+The PDF is generated using the reportlab library, which is a python library for generating PDFs.
+"""
 @login_required
 def downloadPDF(request, note_id):
     userNotes = Note.objects.filter(owner=request.user)
