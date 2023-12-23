@@ -357,7 +357,7 @@ p{
 }
 
 #searchBar{
-    min-width: 40%;
+    min-width: 60%;
 }
 
 @media (max-width: 576px){
@@ -378,4 +378,35 @@ p{
     padding:0px;
     margin: 0px; 
     border-radius: 50px;
+}
+
+.searchSuggestion{
+    color:black;
+    text-decoration: none;
+}
+
+.searchSuggestion:hover{
+    color:gray;
+}
+
+
+#textedit{
+    background-color:white;
+    height: 450px; 
+    font-size:100%;
+    border-bottom-right-radius: 20px;
+    border-bottom-left-radius: 20px;
+    padding-bottom: 16px;
+}
+
+.ql-toolbar.ql-snow{
+    border-top-right-radius: 20px;
+    border-top-left-radius: 20px;
+    padding-top: 16px;
+    padding-bottom: 12px;
+}
+
+.noteOptionButton:hover{
+    transform: translateX(5px);
+    transition: all 0.3s ease;
 }

@@ -121,6 +121,9 @@ $(document).ready( function() {
         });
     }
 
+
+    
+
     
     ///welcome modal javascript
     var curr = 1; 

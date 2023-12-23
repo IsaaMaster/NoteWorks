@@ -16,7 +16,7 @@ from reportlab.platypus import Image
 from reportlab.pdfbase.pdfmetrics import stringWidth
 from io import BytesIO
 from django.http import JsonResponse
-from django.contrib.humanize.templatetags.humanize import naturaltime
+from django.contrib.humanize.templatetags.humanize import naturaltime, naturalday
 
 
 
@@ -287,6 +287,38 @@ def saveNote(request, note_id):
         
     return redirect('detail', note_id=note_id)
 
+"""
+Unstable Version: 
+New note save function thats compatitable with the new editor: quill
+"""
+def noteSave(request, note_id):
+    try:
+        note = Note.objects.get(id=note_id)
+    except:
+        return redirect('detail', note_id=note_id)
+    
+    if request.method == 'POST':
+        text = request.POST["text"]
+        note.text = text
+        note.displayText = deltaToText(text)
+        note.save()
+        return JsonResponse({"success": True})
+        
+    return redirect('detail', note_id=note_id)
+
+
+"""
+New note retrival function thats compatitable with the new editor: quill
+"""
+def noteGetContents(request, note_id):
+    try:
+        note = Note.objects.get(id=note_id)
+    except:
+        return redirect('detail', note_id=note_id)
+    
+    if request.method == 'GET':
+        return JsonResponse({"text": note.text})
+
 
 
 """
@@ -383,6 +415,26 @@ def search(request):
         return render(request, "app/notes.html", 
                       context={"folders": folders, "notes": notes, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, 
                                 "profile_picture": getProfilePictureURL(request.user) , "background": background, "folder_title": folder_title})
+    return redirect('home')
+
+
+"""
+Handles the AJAS request for search suggestions, given a search keyword. 
+"""
+@login_required
+def searchSuggestions(request):
+    if request.method == 'GET':
+        keyword = request.GET['keyword']
+
+        #search the title of the notes and folders
+        #also makes such the format is parsable by the frontend
+        notes = searchEngine(Note.objects.filter(owner=request.user).values().order_by('-lastAccessed'), keyword)[:4]
+        for note in notes:
+            note['time'] = naturalday(note['lastAccessed'])
+
+        folders = searchFolder(Folder.objects.filter(owner=request.user).values(), keyword)[:2]
+        
+        return JsonResponse({"success": True, "notes": list(notes), "folders": list(folders)})
     return redirect('home')
 
 
@@ -645,7 +697,7 @@ def downloadPDF(request, note_id):
     pdf = canvas.Canvas(buffer)
 
     #format text
-    text = note['text'].split("\n")
+    text = note['displayText'].split("\n")
     for i in range(len(text)):
         text[i] = text[i].split(" ")
 

@@ -29,8 +29,6 @@
 
 
 
-
-
       <!--New Note button-->
       <button type="button" class="gridBtn btn btn-lg btn-primary bumpUp button1 shadow"  data-bs-toggle="modal" data-bs-target="#newNoteModal">
         <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
@@ -256,6 +254,7 @@
         </div>
       </div>
 
+
       
 
 
@@ -267,7 +266,7 @@
 
     <div class = "col-md-3 text-end">
       <div class="btn-group">
-        <button type="button" class="btn btn-success dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style = "margin-top:10px;">
+        <button type="button" class="btn btn-primary button1 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style = "margin-top:10px;">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
             <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
           </svg>
@@ -366,10 +365,10 @@
                       </span>
                     </div>
                   </h5>
-                  <p class="card-text" style="color: grey"></p>
-                  <p class="card-text" style="font-family: {{ note.font|safe }}">{{ note.text|truncatechars:150 }}</p>
+                  <p class="card-text text-secondary"></p>
+                  <p class="card-text">{{ note.displayText|truncatechars:150 }}</p>
                   {% load humanize %}
-                  <p class="card-text" style="color: grey">Last Updated: {{ note.lastAccessed|naturaltime }}</p>
+                  <p class="card-text text-secondary">Last Updated: {{ note.lastAccessed|naturaltime }}</p>
                 </div>
               </div>
             </a>

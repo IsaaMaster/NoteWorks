@@ -14,8 +14,90 @@ $(document).ready( function() {
   
     console.log('note.js loaded!');
 
+    var Delta = Quill.import('delta');
+
+    var toolbarOptions = [
+      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
+      ['blockquote', 'code-block'],
+    
+      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+      [{ 'list': 'ordered'}, { 'list': 'bullet' }],
+      [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
+      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
+      [{ 'direction': 'rtl' }],                         // text direction
+    
+      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+    
+      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
+      [{ 'font': [] }],
+      [{ 'align': [] }],
+    
+      ['clean']                                         // remove formatting button
+    ];
 
 
+
+    var quill = new Quill('#textedit', {
+      modules: {
+        toolbar: toolbarOptions
+      },
+      placeholder: '   Jot something down...',
+      theme: 'snow'  
+    });
+
+    //get the contents of the note from the server
+    $.ajax({
+      type: 'GET',
+      url: './get_note_contents/',
+      success: function(response) {
+        var content = JSON.parse(response['text']);
+        quill.setContents(content);
+      },
+    })
+
+    
+    // Store accumulated changes
+    var change = new Delta();
+    quill.on('text-change', function(delta) {
+      change = change.compose(delta);
+    });
+
+
+
+    // Save periodically
+    setInterval(function() {
+      if (change.length() > 0) {
+        console.log('Saving changes', change);
+
+       // Get the CSRF token from the cookie (you may need to adjust this based on your setup)
+      var csrftoken = getCookie('csrftoken');
+
+      // Include the CSRF token in the headers of the AJAX request
+      $.ajax({
+        url: './new_save_note/',
+        type: 'POST',
+        headers: {
+          'X-CSRFToken': csrftoken
+        },
+        data: {
+          'text': JSON.stringify(quill.getContents())
+        },
+        success: function(response) {
+          console.log('Save successful', response);
+        },
+        error: function(error) {
+          console.error('Error saving changes', error);
+        }
+      });
+
+        change = new Delta();
+      }
+    }, 2.5*1000);
+
+    
+
+    /*
     function saveNote() {
       
       var noteText = $('#textbox').val();
@@ -64,7 +146,7 @@ $(document).ready( function() {
     var lastSize = $('#fontSize-select').val();
     var lastFont = $('#font-select').val();
     setInterval(saveNote, 4000);
-
+    */
 
     $('#shareNote').on('click', function() {
         var user = $('#username').val();

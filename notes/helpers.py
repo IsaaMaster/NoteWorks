@@ -1,4 +1,4 @@
-
+import json
 """
 Helper function for the notes app that helps format the grid of notes
 """
@@ -19,9 +19,19 @@ At the momemt it is a simple search that searches for the text in the title or t
 But in the future this can be improved to be a more complex search algorithm
 """
 def searchEngine(notes, text):
+    text = text.strip()
     found = []
     for note in notes:
-        if text in note["title"] or text in note["text"]:
+        relevant = False
+        for word in note["title"].split():
+            if text.lower() in word.lower():
+                relevant  = True
+                break
+        for word in note["displayText"].split():
+            if text.lower() in word.lower():
+                relevant  = True
+                break
+        if relevant:
             found.append(note)
     return found
 
@@ -33,9 +43,11 @@ See note in the searchEngine documentation for more details
 def searchFolder(folders, text):
     found = []
     for folder in folders:
-        if(text in folder["title"]):
-            found.append(folder)
-
+        relevant = False
+        for word in folder["title"].split():
+            if text.lower() in word.lower():
+                found.append(folder)
+                break
     return found
 
 """
@@ -47,3 +59,18 @@ def getProfilePictureURL(user):
     except:
         image_url = "/media/profile_pictures/default.png"
     return image_url
+
+
+
+"""
+Helper function that converts Quill Editor files changes to text
+Needed for the quill editor to work in the frontend
+"""
+def deltaToText(noteText):
+    noteText = json.loads(noteText)
+    text = ""
+    for ops in noteText['ops']:
+        if "insert" in ops:
+            text += ops["insert"]
+    
+    return text

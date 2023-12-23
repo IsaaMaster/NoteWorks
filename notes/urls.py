@@ -32,9 +32,11 @@ urlpatterns = [
     path("notes/<int:folder_id>/<str:sort>/", views.notes, name="notesSorted"),
     path("notes/<int:folder_id>/msg/<str:message>/", views.notes, name="notesMsg"),
     path("updateNoteFolder/", views.updateNoteFolder, name="updateNoteFolder"), 
-    path("updateProfilePicture/", views.updateProfilePicture, name="updateProfilePicture"), 
+    path("updateProfilePicture/", views.updateProfilePicture, name="updateProfilePicture"),
+    path("searchSuggestions/", views.searchSuggestions, name="searchSuggestions"),
+    path("note/<int:note_id>/new_save_note/", views.noteSave, name="noteSave"),
+    path("note/<int:note_id>/get_note_contents/", views.noteGetContents, name="noteGetContents"),
 ]
-
 
 if settings.DEBUG:
     urlpatterns += static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
