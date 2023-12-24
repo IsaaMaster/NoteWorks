@@ -17,34 +17,37 @@ $(document).ready( function() {
     var Delta = Quill.import('delta');
 
     var toolbarOptions = [
+      [{ 'header': [1, 2, 3, 4, 5, 6, false] }, { 'font': [] }],
+      
       ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
       ['blockquote', 'code-block'],
-    
-      [{ 'header': 1 }, { 'header': 2 }],               // custom button values
+  
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-      [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-      [{ 'direction': 'rtl' }],                         // text direction
+      [{ 'indent': '-1'}, { 'indent': '+1' }, { 'align': [] }],          // outdent/indent
     
-      [{ 'size': ['small', false, 'large', 'huge'] }],  // custom dropdown
-      [{ 'header': [1, 2, 3, 4, 5, 6, false] }],
+     
     
       [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
-      [{ 'font': [] }],
-      [{ 'align': [] }],
-    
-      ['clean']                                         // remove formatting button
+      ['link'],
+      
+      ['formula', 'clean']
+                           
     ];
 
-
+    hljs.configure({   // optionally configure hljs
+      languages: ['javascript', 'java', 'python']
+    });
 
     var quill = new Quill('#textedit', {
       modules: {
-        toolbar: toolbarOptions
+        toolbar: toolbarOptions,
+        syntax: true,
       },
       placeholder: '   Jot something down...',
       theme: 'snow'  
     });
+
 
     //get the contents of the note from the server
     $.ajax({
@@ -167,10 +170,19 @@ $(document).ready( function() {
 
         });
 
-
-
-
     }); 
+
+    $('#downloadPDF').on('click', function() {
+      var html = $('#textedit').html(); 
+      var doc = new jsPDF();
+      doc.setFont('sans-serif');
+      doc.fromHTML(html, 15, 15, {
+        'width': 170,
+      });    
+      doc.save($('#noteTitle').text() + '.pdf');
+    }); 
+
+
 
 
     

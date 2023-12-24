@@ -387,6 +387,25 @@ def renameFolderTitle(request, folder_id):
     return redirect('notes', folder_id=folder_id)
 
 
+"""
+Handles the request for renaming a note and updating the name. 
+
+Takes an AJAX request and updates the note title to the new title that the user has provided.
+The note_id is the note that is being renamed. 
+And the new title is the new title that the user has provided in the POST request
+"""
+@login_required
+def renameNoteTitle(request, note_id):
+    if request.method == 'POST':
+        note = Note.objects.get(id = note_id)
+        print(request.POST)
+        new_title = request.POST['title']
+        note.title = new_title
+        note.save()
+
+        return JsonResponse({"success": True, "new_title": new_title})
+
+
 
 """
 searches the all notes and folders based on a keyword that the user has provided.

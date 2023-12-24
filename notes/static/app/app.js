@@ -86,6 +86,33 @@ $(document).ready( function() {
 
     }
 
+
+    function updateNote() {
+        var newtitle  = $('#newNoteTitle').val();
+
+        var csrfToken = getCookie('csrftoken');
+        console.log(newtitle)
+        $.ajax({
+            type: 'POST',
+            url: './rename_note/', 
+            data: {'title': newtitle},
+            headers: { "X-CSRFToken": csrfToken },
+            success: function(response) {
+                console.log('Note renamed successfully.');
+                $('#noteTitle').text(newtitle);
+                $('#newtitle').val('');
+            }, 
+            error: function(error) {
+                console.error('An error occurred while renaming the note.')
+            }
+            
+
+
+        }); 
+
+
+    }
+
     ///This function updates the Account information
     function updateAccount() {
         var username = $('#username').val();
@@ -122,6 +149,21 @@ $(document).ready( function() {
     }
 
 
+    $('#newNoteTitle').keyup(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#renameNoteButton').click(); 
+            $('#noteTitle').click();
+        }
+    });
+
+    $('#newtitle').keyup(function(event) {
+        if (event.keyCode === 13) {
+            event.preventDefault();
+            $('#renameFolderButton').click();
+        }
+    });
+
     
 
     
@@ -152,6 +194,10 @@ $(document).ready( function() {
     $('#renameFolderButton').on('click', function(event) {
         updateFolder(); 
        
+    }); 
+
+    $('#renameNoteButton').on('click', function(event) {
+        updateNote(); 
     }); 
 
     // Font change event handler

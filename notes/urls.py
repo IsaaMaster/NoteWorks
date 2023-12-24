@@ -7,6 +7,7 @@ from . import views
 urlpatterns = [
     path("", views.index, name="home"), 
     path("notes/<int:folder_id>/rename_folder/", views.renameFolderTitle, name="renameFolder"),
+    path("note/<int:note_id>/rename_note/", views.renameNoteTitle, name="renameNote"),
     path("notes/<int:folder_id>/", views.notes, name="notes"),
     path("note/<int:note_id>/", views.detail, name="detail"),
     path("notes/<int:folder_id>/newNote", views.createNewNote, name="newNote"),

@@ -23,7 +23,7 @@ class Note(models.Model):
     lastAccessed = models.DateTimeField(auto_now=True)
     folder = models.ForeignKey('Folder', on_delete=models.CASCADE, default=0)
     sharedUsers = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name='sharedUsers')
-    displayText = models.TextField(max_length=5000, default='')
+    displayText = models.TextField(max_length=7000, default='')
 
     def __str__(self):
         return self.title
