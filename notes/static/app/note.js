@@ -41,12 +41,13 @@ $(document).ready( function() {
 
     var quill = new Quill('#textedit', {
       modules: {
-        toolbar: toolbarOptions,
         syntax: true,
+        toolbar: toolbarOptions, 
       },
       placeholder: '   Jot something down...',
       theme: 'snow'  
     });
+
 
 
     //get the contents of the note from the server

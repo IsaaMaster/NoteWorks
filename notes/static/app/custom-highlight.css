@@ -1,0 +1,28 @@
+/* Custom highlight.js styles */
+
+/* Keyword color */
+.hljs-keyword {
+    color: darkcyan; /* Change to your desired color */
+}
+  
+/* String color */
+.hljs-string {
+    color: darkorange; /* Change to your desired color */
+}
+
+
+.hljs-built_in {
+    color: rgb(253, 255, 124); /* Change to your desired color */
+}
+
+.hljs-title{
+    color: rgb(185, 40, 185);
+}
+
+.hljs-number{
+    color: lightgreen;
+}
+
+.hljs-comment{
+    color: green;
+}

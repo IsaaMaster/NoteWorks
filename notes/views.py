@@ -430,11 +430,11 @@ def search(request):
         background = request.user.preferances.backgroundImage
 
         homeFolder = Folder.objects.filter(owner=request.user, home=True)
-
         return render(request, "app/notes.html", 
                       context={"folders": folders, "notes": notes, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, 
                                 "profile_picture": getProfilePictureURL(request.user) , "background": background, "folder_title": folder_title})
     return redirect('home')
+
 
 
 """
