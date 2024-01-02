@@ -46,7 +46,12 @@ class Folder(models.Model):
 
 
 
-"""Preferances of the user"""
+"""
+Preferances of the user
+    user - the user who owns the preferances
+    backgroundImage - the background image of the user's notes
+For now the sole purpose of this is to link a background image to the user
+"""
 class Preferances(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     #Background options: hex, wavy, polyGrid, circles, blob, wavypink, retro, wavyorange
@@ -55,7 +60,10 @@ class Preferances(models.Model):
         return self.user.username
 
 
-"""The user's profile"""
+"""
+The user's profile
+For now the sole purpose of this is to link a profile picture to the user
+"""
 class Profile(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
     profilePicture = models.ImageField(upload_to='media/profile_pictures/', blank=True, null=True)
