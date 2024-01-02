@@ -19,16 +19,15 @@ $(document).ready( function() {
     var toolbarOptions = [
       [{ 'header': [1, 2, 3, 4, 5, 6, false] }, { 'font': [] }],
       
-      ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-      ['blockquote', 'code-block'],
+      ['bold', 'italic', 'underline', 'strike'],    
+      [{ 'color': [] }, { 'background': [] }],  
+      // toggled buttons
+      ['code-block', 'blockquote'],
   
       [{ 'list': 'ordered'}, { 'list': 'bullet' }],
       [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
       [{ 'indent': '-1'}, { 'indent': '+1' }, { 'align': [] }],          // outdent/indent
     
-     
-    
-      [{ 'color': [] }, { 'background': [] }],          // dropdown with defaults from theme
       ['link'],
       
       ['formula', 'clean']
@@ -47,6 +46,11 @@ $(document).ready( function() {
       placeholder: '   Jot something down...',
       theme: 'snow'  
     });
+
+    quill.formatLine(0, 1, 'header', 1);
+
+ 
+
 
 
 

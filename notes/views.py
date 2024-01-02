@@ -550,17 +550,6 @@ def user_registration(request):
                 homeFolder = Folder(title="My Stuff", parent=None, owner=user, home=True)
                 homeFolder.save()
 
-                #create an example note for the user to see
-                newNoteText = """NoteWorks is a simple note-taking app that brings functional elegance to the next level. Use it to jot down your thoughts, make a to-do list, or take notes for a class all without the distractions of unnecessary features. \r\n\r\n
-This is an example note to get you started! Here are several things to try:\r\n
-    - Create a new note or a new folder using the buttons on the home page. Notes are automatically saved to the cloud, so you never need to worry about manually saving anything.\r\n
-    - Download a PDF of your note to save for later. \r\n
-    - Organize your notes! Drag and drop notes into folders on the home page to organize your notes.\r\n
-    - Change the background theme using the customize button on the home page.\r\n
-    - Add a profile picture on the my account page.\r\n"""
-
-                note = Note(title='Welcome to NoteWorks!', text=newNoteText, owner=user, folder=homeFolder)
-                note.save()
 
         
 

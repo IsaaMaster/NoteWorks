@@ -10,6 +10,8 @@ function getCookie(name) {
 $(document).ready( function() {
     $.ajaxSetup({cache: false});
 
+
+
   
     console.log('app.js loaded!');
 
@@ -29,6 +31,10 @@ $(document).ready( function() {
     } catch(err) {
         console.log("welcome modal not found");
     }
+
+    //tooltip configuration
+    tippy('[data-tippy-content]', {placement: 'bottom'});
+
 
 
 

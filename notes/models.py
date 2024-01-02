@@ -49,7 +49,8 @@ class Folder(models.Model):
 """Preferances of the user"""
 class Preferances(models.Model):
     user = models.OneToOneField(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    backgroundImage = models.CharField(max_length=100, default='wavy')
+    #Background options: hex, wavy, polyGrid, circles, blob, wavypink, retro, wavyorange
+    backgroundImage = models.CharField(max_length=100, default='retro')
     def __str__(self):
         return self.user.username
 
