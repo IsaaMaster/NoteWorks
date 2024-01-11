@@ -409,16 +409,14 @@ p{
 
 #textedit{
     background-color:white;
-    height: 650px; 
+    height: 685px; 
     font-size:100%;
     border-bottom-right-radius: 20px;
     border-bottom-left-radius: 20px;
-    padding-bottom: 16px;
 }
-
 @media (max-width: 1366px){
     #textedit{
-        height: 450px;
+        height: 422.5px;
     }
 }
 
