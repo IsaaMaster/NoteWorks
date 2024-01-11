@@ -51,6 +51,19 @@ $(document).ready( function() {
         }
       }, 
 
+      customClean: {
+        key: 'D', 
+        shortKey: true,
+        handler: function(range, context) {
+          this.quill.format('bold', false);
+          this.quill.format('color', '#000000');
+          this.quill.format('underline', false);
+          this.quill.format('strike', false);
+          this.quill.format('italic', false);
+          this.quill.format('header', false);
+        }
+      }
+
     }
 
     var quill = new Quill('#textedit', {
