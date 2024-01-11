@@ -38,10 +38,28 @@ $(document).ready( function() {
       languages: ['javascript', 'java', 'python']
     });
 
+
+    ///keybindings for Quill
+    var bindings = {
+      customSubSection: {
+        key: 'S',
+        shortKey: true,
+        handler: function(range, context) {
+          this.quill.format('bold', true);
+          this.quill.format('color', '#0066cc');
+          this.quill.format('header', 3);
+        }
+      }, 
+
+    }
+
     var quill = new Quill('#textedit', {
       modules: {
         syntax: true,
         toolbar: toolbarOptions, 
+        keyboard: {
+          bindings: bindings
+        }
       },
       placeholder: '   Jot something down...',
       theme: 'snow'  
@@ -49,6 +67,16 @@ $(document).ready( function() {
 
     quill.formatLine(0, 1, 'header', 1);
 
+    
+
+    /*  
+    For some reason, we cannot get custom keybindinds to work with Quill. 
+    We have tried the following:
+      Using the syntax in the Quill documentation
+      Looking at the source code in the Github repo
+      Trying keybindings with things that already work - like Bold 
+      Worked on it some in the Quill Playground - couldn't even get it to work there (but could do some more)
+    */
  
 
 
@@ -180,15 +208,15 @@ $(document).ready( function() {
     $('#downloadPDF').on('click', function() {
       var html = $('#textedit').html(); 
       var doc = new jsPDF();
-      doc.setFont('sans-serif');
       doc.fromHTML(html, 15, 15, {
         'width': 170,
       });    
+      doc.setFont('sans-serif');
       doc.save($('#noteTitle').text() + '.pdf');
     }); 
 
 
-
+   
 
     
     
