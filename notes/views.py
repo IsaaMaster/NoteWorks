@@ -524,11 +524,18 @@ def user_registration(request):
                     'form': form,
                     'error_message': 'Username already exists.'
                 })
+            
           
             elif form.cleaned_data['password'] != form.cleaned_data['password_repeat']:
                 return render(request, template, {
                     'form': form,
                     'error_message': 'Passwords do not match.'
+                })
+            
+            elif len(form.cleaned_data['password']) < 8:
+                return render(request, template, {
+                    'form': form,
+                    'error_message': 'Password must be at least 8 characters long.'
                 })
             else:
                 # Create the user:
@@ -585,7 +592,7 @@ def user_login(request):
             return redirect('home')
         else:
             # Incorrect credentials, let's throw an error to the screen.
-            return render(request, 'app/login.html', {'error_message': 'Incorrect username and / or password.'})
+            return render(request, 'app/login.html', {'error_message': 'Incorrect username and/or password.'})
     else:
         # No post data availabe, let's just show the page to the user.
         return render(request, 'app/login.html')
