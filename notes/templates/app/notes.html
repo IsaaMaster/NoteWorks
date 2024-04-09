@@ -360,6 +360,7 @@
     <div class="col-md-8">
       <div class="masonry-container d-flex flex-wrap">
         {% for note in notes %}
+          <!--Note Section HTML-->
           <div class="masonry-card mb-1" id = "note{{note.id}}">
             <a href="{% url 'detail' note.id %}" class="notebox">
               <div class="card draggable shadow noteMini bumpUp" draggable = "true" data-item-id="{{note.id}}">
@@ -382,6 +383,7 @@
               </div>
             </a>
           </div>
+          <!--End Note Section HTML-->
         {% empty %}
           <p>No NotesWorks found. Create your first one now!</p>
         {% endfor %}

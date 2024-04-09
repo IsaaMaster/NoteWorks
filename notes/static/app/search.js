@@ -1,3 +1,8 @@
+
+
+
+///javascript to manage search functionality in the navbar used across the website
+
 function getCookie(name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");

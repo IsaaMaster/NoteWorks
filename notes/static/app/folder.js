@@ -1,3 +1,15 @@
+/**
+ * @file This file contains the JavaScript code for the folder page level functionality in the NotesApp.
+ * It includes functions for updating the folder title, updating the note title, updating the account information,
+ * changing the background of the page, and handling drag and drop functionality for notes into folders.
+ * It also includes event handlers for various actions and AJAX requests to update the database.
+ * 
+ * @requires jQuery
+ * @requires Masonry
+ * @requires bootstrap.Modal
+*/
+
+
 function getCookie(name) {
     var value = "; " + document.cookie;
     var parts = value.split("; " + name + "=");

@@ -85,6 +85,8 @@ def notes(request, folder_id, sort="date", message="None"):
 
     return render(request, "app/notes.html", context=context)
 
+
+
 """
 detail view for a specific note. 
 Takes an id for the note and returns the note if the user is the owner of the note.
@@ -135,6 +137,7 @@ def sharedNotes(request):
                "background" : request.user.preferances.backgroundImage, "profile_picture": getProfilePictureURL(request.user)}
     
     return render (request, "app/notes.html", context=context); 
+
 
 """
 The function allows users to share notes with other users.
@@ -208,13 +211,11 @@ def loginpage(request):
     return render(request, 'app/login.html')
 
 
-
 """
 Renders the registration page, where users can create a new account
 """
 def registerpage(request):
     return render(request, 'app/register.html')
-
 
 
 """
@@ -239,7 +240,6 @@ def createNewNote(request, folder_id):
         return render(request, 'app/newNote.html', context={"folder": folder_id})
 
 
-
 """"
 Handles request to create new folder, given a folder id in which the new folder will be stored.
 The folder_id argument is the folder in which the new folder will be stored in.
@@ -259,7 +259,6 @@ def createNewFolder(request, folder_id):
         return redirect('notes', folder_id=folder.id)
     else:
         return render(request, 'app/newFolder.html', context={"folder": folder_id})
-
 
 
 """
@@ -286,6 +285,7 @@ def saveNote(request, note_id):
         return JsonResponse({"success": True})
         
     return redirect('detail', note_id=note_id)
+
 
 """
 Unstable Version: 
@@ -320,7 +320,6 @@ def noteGetContents(request, note_id):
         return JsonResponse({"text": note.text})
 
 
-
 """
 UpdateNoteFolder allows uses to move a note from one folder to another. 
 
@@ -344,7 +343,6 @@ def updateNoteFolder(request):
         return JsonResponse({"success": True})
         
     return redirect('home')
-
 
 
 
@@ -457,8 +455,6 @@ def searchSuggestions(request):
     return redirect('home')
 
 
-
-
 """
 Handles the request for deleting a note, given a note id.
 
@@ -496,8 +492,6 @@ def deleteFolder(request, folder_id):
     folder.delete()
 
     return redirect('notes', folder_id=parent)
-
-
 
 
 """
@@ -573,7 +567,6 @@ def user_registration(request):
     return render(request, template, {'form': form})
 
 
-
 """
 Handles the request for logging in, given the post data which contains the username and password.
 Currently, we are using Django's built in authentication system, which checks if the username and password combination is correct.
@@ -598,7 +591,6 @@ def user_login(request):
         return render(request, 'app/login.html')
 
 
-
 """
 Handles request for the account page, which displays the user's information and allows them to update it.
 """
@@ -613,7 +605,6 @@ def account(request):
                 'numberOfNotes': numberOfNotes, 'numberOfFolders': numberOfFolders, 'favoriteBackground': favoriteBackground, 'friends': friends
                }
     return render(request, 'app/account.html', context=context)
-
 
 
 """

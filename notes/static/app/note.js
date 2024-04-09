@@ -1,3 +1,13 @@
+/**
+ * @file This file contains the JavaScript code for the note-taking application.
+ * It includes functions for handling user interactions, saving notes, and sharing notes.
+ * The code uses the Quill library for rich text editing and the jQuery library for AJAX requests.
+ * The file also includes comments explaining the purpose and functionality of each section of code.
+ *
+ * @see {@link https://quilljs.com/|Quill}
+ * @see {@link https://jquery.com/|jQuery}
+ */
+// 
 
 function getCookie(name) {
   var value = "; " + document.cookie;
@@ -11,7 +21,7 @@ function getCookie(name) {
 
 $(document).ready( function() {
 
-  
+
     console.log('note.js loaded!');
 
     var Delta = Quill.import('delta');
@@ -39,8 +49,11 @@ $(document).ready( function() {
     });
 
 
-    ///keybindings for Quill
+    ///keybindings for Quill. Description of the keybindings is as follows:
     var bindings = {
+      /*
+      CustomSubSeciton: creates a new subsection in the note. 
+      */
       customSubSection: {
         key: 'S',
         shortKey: true,
@@ -51,6 +64,9 @@ $(document).ready( function() {
         }
       }, 
 
+      /*
+      CustomClean: removes all formatting from the selected text.
+      */
       customClean: {
         key: 'D', 
         shortKey: true,
@@ -61,6 +77,38 @@ $(document).ready( function() {
           this.quill.format('strike', false);
           this.quill.format('italic', false);
           this.quill.format('header', false);
+        }
+      }, 
+
+      /*
+      CustomSubScript: creates a subscript for the selected text.
+      */
+      customSubScript:{
+        key: 188,
+        shortKey: true,
+        handler: function(range, context) {
+          if (quill.getFormat().script === 'sub') {
+            this.quill.format('script', false);
+          }
+          else{
+            this.quill.format('script', 'sub');
+          }
+        }
+      }, 
+
+      /*
+      CustomSuperScript: creates a superscript for the selected text.
+      */
+      customSuperScript:{
+        key: 190,
+        shortKey: true,
+        handler: function(range, context) {
+          if (quill.getFormat().script === 'super') {
+            this.quill.format('script', false);
+          } 
+          else {
+            this.quill.format('script', 'super');
+          }
         }
       }
 
