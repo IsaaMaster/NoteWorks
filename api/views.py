@@ -77,7 +77,7 @@ def user_login_view(request):
             user = serializer.validated_data['user']
             token, created = Token.objects.get_or_create(user=user)
             return Response({'token': token.key, 'user_id': user.id}, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP)
+        return Response(serializer.errors, status=400)
 
 
 
