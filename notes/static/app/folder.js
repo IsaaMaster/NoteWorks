@@ -78,7 +78,7 @@ $(document).ready( function() {
 
     ///This function updates the Folder title
     function updateFolder(){
-        var newtitle  = $('#newtitle').val();
+        var newtitle  = $('#newFolderTitle').val();
         console.log(newtitle);
  
         var csrfToken = getCookie('csrftoken'); 
@@ -91,7 +91,7 @@ $(document).ready( function() {
             success: function(response) {
                 console.log('Folder renamed successfully.');
                 $('#folderTitle').text(newtitle);
-                $('#newtitle').val('');
+                $('#newFolderTitle').val('');
             }, 
             error: function(error) {
                 console.error('An error occurred while renaming the folder.')

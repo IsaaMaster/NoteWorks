@@ -83,7 +83,7 @@ def notes(request, folder_id, sort="date", message="None"):
                "background" : request.user.preferances.backgroundImage, "path": path, "message": message, 
                "profile_picture": getProfilePictureURL(request.user)}
 
-    return render(request, "app/notes.html", context=context)
+    return render(request, "app/folder.html", context=context)
 
 
 
@@ -114,7 +114,7 @@ def detail(request, note_id):
     context['profile_picture'] = getProfilePictureURL(request.user)
 
 
-    return render(request, "app/detail.html", context)
+    return render(request, "app/note.html", context)
 
 
 
@@ -136,7 +136,7 @@ def sharedNotes(request):
     context=  {"folders": folders, "notes": notesSharedWithUser, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, "folder_title": "Notes Shared With Me",
                "background" : request.user.preferances.backgroundImage, "profile_picture": getProfilePictureURL(request.user)}
     
-    return render (request, "app/notes.html", context=context); 
+    return render (request, "app/folder.html", context=context); 
 
 
 """
@@ -400,6 +400,7 @@ def renameNoteTitle(request, note_id):
         new_title = request.POST['title']
         note.title = new_title
         note.save()
+        print(note.title)
 
         return JsonResponse({"success": True, "new_title": new_title})
 
@@ -428,7 +429,7 @@ def search(request):
         background = request.user.preferances.backgroundImage
 
         homeFolder = Folder.objects.filter(owner=request.user, home=True)
-        return render(request, "app/notes.html", 
+        return render(request, "app/folder.html", 
                       context={"folders": folders, "notes": notes, "isHome":False, "folder_id":homeFolder[0].id, "prevFolder": homeFolder[0].id, 
                                 "profile_picture": getProfilePictureURL(request.user) , "background": background, "folder_title": folder_title})
     return redirect('home')
@@ -509,6 +510,7 @@ def user_registration(request):
     template = 'app/register.html'
 
     if request.method == 'POST':
+        print(request.POST)
         # create a form instance and populate it with data from the request:
         form = RegisterForm(request.POST)
         # check whether it's valid:
