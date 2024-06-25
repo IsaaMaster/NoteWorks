@@ -39,7 +39,7 @@ jobs:
         sudo apt-get install -y chromium-chromedriver
     - name: Run Tests 
       run: |
-        python manage.py test notes\tests\
+        python manage.py test notes/tests/
     - name: Stop Django server
       run: |
         pkill -f "python manage.py runserver"
