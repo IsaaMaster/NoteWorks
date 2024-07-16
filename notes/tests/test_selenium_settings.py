@@ -9,14 +9,11 @@ from notes.tests.genericSeleniumTest import LoginTest
 class SettingsTest(LoginTest):
     def test_settings_dropdown_link(self):
         self.driver.get('http://localhost:8000')
-        self.driver.find_element(By.ID, 'navbarDropdown').click()
-        sleep(0.5)
-        self.driver.find_element(By.ID, 'accountSettingsLink').click()
+        self.driver.find_element(By.ID, 'navbarProfileIcon').click()
         sleep(2)
         self.assertEqual('http://localhost:8000/account/', self.driver.current_url)
     
     def test_update_account_info(self):
-
         self.driver.get('http://localhost:8000/account/')
         sleep(0.5)
         self.driver.find_element(By.ID, 'username').clear()

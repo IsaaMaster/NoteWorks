@@ -52,6 +52,7 @@ class TestAuth(BasicTest):
             self.driver.find_element(By.ID, 'login').click()
             sleep(3)
             self.driver.find_element(By.ID, 'navbarProfileIcon').click()
+            sleep(1)
             self.driver.find_element(By.ID, 'logout').click()
             sleep(2)
             self.assertEqual('http://localhost:8000/', self.driver.current_url)
