@@ -223,9 +223,7 @@ textarea::-webkit-scrollbar {
     margin-bottom: 20px;
 }
 
-
-
-#wavy, #hex, #polyGrid, #circles, #blob, #wavy-pink, #retro, #wavy-orange {
+#wavy, #none, #polyGrid, #circles, #blob, #wavy-pink, #retro, #wavy-orange {
     height: 120px; 
     border: solid 1px white;
     padding: 10px; 
@@ -241,8 +239,8 @@ textarea::-webkit-scrollbar {
 }
 
 
-#hex{
-    background-image: url('backgrounds/hex.svg');
+#none{
+    background-image: url('backgrounds/none.svg');
 }
 
 #polyGrid{
@@ -435,7 +433,6 @@ p{
     transform: translateX(10px);
     transition: all 0.3s ease;
 }
-
 
 #textEditCol{
     padding-left:0px;
