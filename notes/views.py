@@ -26,6 +26,7 @@ sending them their home page, else, sending them to their home page
 """
 def index(request):
     if (request.user.is_authenticated):
+     
         homeFolder = Folder.objects.filter(owner=request.user, home=True)
         return redirect('notes', folder_id=homeFolder[0].id)
     return render(request, "app/home.html")

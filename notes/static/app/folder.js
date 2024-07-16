@@ -251,12 +251,11 @@ $(document).ready( function() {
     $('#wavy').on('click', function() {
         $('body').css('background-image', 'url("' + wavy +'")');
         updateBackground('wavy');
-        console.log("done")
     }); 
 
-    $('#hex').on('click', function() {
-        $('body').css('background-image', 'url("' + hex +'")');
-        updateBackground('hex');
+    $('#none').on('click', function() {
+        $('body').css('background-image', 'url("' + none +'")');
+        updateBackground('none');
     });
     
     $('#polyGrid').on('click', function() {

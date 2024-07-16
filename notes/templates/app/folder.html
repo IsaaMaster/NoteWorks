@@ -5,27 +5,26 @@
 {% load static %}
 
 
-<h1 id  = "folderTitle">{{folder_title}}</h1>
+
 
 
 
 <div class = "container-fluid">
+  <h1 id  = "folderTitle">{{folder_title}}</h1>
   <div class = "row">
-    <div class = "col-md-3 text-start">
-      <div class="ubutton">
-        {% if not isHome%}
-          <div aria-label="breadcrumb" id = "folderPath">
-            <ol class="breadcrumb">
-              {% for folder in path %}
-                <li class="breadcrumb-item folder" aria-current="page" data-folder-id="{{ folder.id }}"><a href="{% url 'notes' folder.id %}"><h6>{{folder}}<h6></a></li>
-              {% endfor %}
-            </ol>
-          </div>
-        {% endif %}  
-      </div>
+    <div class = "col-md-4 text-start">
+      {% if not isHome%}
+        <div aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+          <ol class="breadcrumb">
+            {% for folder in path %}
+              <li class="breadcrumb-item folder" aria-current="page" data-folder-id="{{ folder.id }}"><a href="{% url 'notes' folder.id %}">{{folder}}</a></li>
+            {% endfor %}
+          </ol>
+        </div>
+      {% endif %}  
     </div>
 
-    <div class = "col-md-6 text-center">
+    <div class = "col-md-4 text-center">
 
 
 
@@ -179,18 +178,21 @@
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
+
               <div class = "row align-items-center justify-content-center">
+                   
+                <div class = "col-6">
+                  <div class = "d-flex align-items-center justify-content-center" id = "none">
+                    <h5>None</h5>
+                  </div>
+                </div> 
+
                 <div class = "col-6">
                   <div class = "d-flex align-items-center justify-content-center" id = "wavy">
                     <h5>Wavy</h5>
                   </div>
                 </div>
-                <div class = "col-6">
-                  <div class = "d-flex align-items-center justify-content-center" id = "hex">
-                    <h5>Hex</h5>
-                  </div>
-                </div>           
-
+           
                 <div class = "col-6">
                   <div class = "d-flex align-items-center justify-content-center" id = "blob">
                     <h5>Blob</h5>
@@ -273,7 +275,7 @@
     </div>
 
 
-    <div class = "col-md-3 text-end">
+    <div class = "col-md-4 text-end">
       <div class="btn-group">
         <button type="button" class="btn btn-primary button5 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style = "margin-top:10px;">
           <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
@@ -369,11 +371,6 @@
                   <h5 class="card-title">
                     <div class="d-flex justify-content-between">
                       <span>{{ note.title }}</span>
-                      <span class="text-end">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-pen" viewBox="0 0 16 16">
-                          <path d="m13.498.795.149-.149a1.207 1.207 0 1 1 1.707 1.708l-.149.148a1.5 1.5 0 0 1-.059 2.059L4.854 14.854a.5.5 0 0 1-.233.131l-4 1a.5.5 0 0 1-.606-.606l1-4a.5.5 0 0 1 .131-.232l9.642-9.642a.5.5 0 0 0-.642.056L6.854 4.854a.5.5 0 1 1-.708-.708L9.44.854A1.5 1.5 0 0 1 11.5.796a1.5 1.5 0 0 1 1.998-.001zm-.644.766a.5.5 0 0 0-.707 0L1.95 11.756l-.764 3.057 3.057-.764L14.44 3.854a.5.5 0 0 0 0-.708l-1.585-1.585z"/>
-                        </svg>
-                      </span>
                     </div>
                   </h5>
                   <p class="card-text text-secondary"></p>
