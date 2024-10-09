@@ -15,6 +15,8 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='note',
             name='sharedUsers',
-            field=models.ManyToManyField(related_name='sharedUsers', to=settings.AUTH_USER_MODEL),
+            field=models.ManyToManyField(
+                related_name='sharedUsers',
+                to=settings.AUTH_USER_MODEL),
         ),
     ]
