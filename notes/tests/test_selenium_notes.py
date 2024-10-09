@@ -24,6 +24,7 @@ class TestNote(LoginTest):
     """
     def test_open_existing_note(self):
         self.driver.get('http://localhost:8000')
+        sleep(0.5)
         self.driver.find_element(By.ID, '173').click()
         sleep(2)
         self.assertEqual('http://localhost:8000/note/173/', self.driver.current_url)
