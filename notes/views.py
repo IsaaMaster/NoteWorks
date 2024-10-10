@@ -41,7 +41,7 @@ def notes(request, folder_id, sort="date", message="None"):
     # makes sure that user is the owner of the requestd folder
     if (not folder or not folder.owner == request.user):
         return redirect('home')
-    
+
     title = folder.title
     if (not folder.home):
         prevFolder = folder.parent.id
@@ -279,7 +279,7 @@ def createNewFolder(request, folder_id):
         folder = Folder(title=title, parent=parent, owner=request.user)
         folder.save()
         return redirect('notes', folder_id=folder.id)
-    
+
     return render(
         request,
         'app/newFolder.html',
@@ -429,6 +429,7 @@ def renameNoteTitle(request, note_id):
         return JsonResponse({"success": True, "new_title": new_title})
 
     return JsonResponse({"success": False})
+
 
 @login_required
 def search(request):
@@ -633,7 +634,7 @@ def user_login(request):
 
         # Incorrect credentials, let's throw an error to the screen.
         return render(request, 'app/login.html',
-                        {'error_message': 'Incorrect username and/or password.'})
+                      {'error_message': 'Incorrect username and/or password.'})
     # No post data availabe, let's just show the page to the user.
     return render(request, 'app/login.html')
 
