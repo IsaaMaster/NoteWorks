@@ -48,7 +48,7 @@ class TestNote(LoginTest):
     """
     def test_rename_note(self):
         self.driver.get(self.shared_data['new_note_url'])
-
+        sleep(0.5)
         self.driver.find_element(By.ID, 'settingsButton').click()
 
         sleep(0.5)
