@@ -33,7 +33,6 @@ class BasicTest(unittest.TestCase):
     def setUp(self):
         pass
         
-
 """
 LoginTest class that inherits from BasicTest and provides a
 framework for tests were login is required. In order to be more 
