@@ -27,6 +27,7 @@ class TestNote(LoginTest):
 
     def test_open_existing_note(self):
         self.driver.get('http://localhost:8000')
+        sleep(0.5)
         self.driver.find_element(By.ID, '173').click()
         sleep(2)
         self.assertEqual(
@@ -52,7 +53,7 @@ class TestNote(LoginTest):
 
     def test_rename_note(self):
         self.driver.get(self.shared_data['new_note_url'])
-
+        sleep(0.5)
         self.driver.find_element(By.ID, 'settingsButton').click()
 
         sleep(0.5)
