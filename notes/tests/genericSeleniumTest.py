@@ -19,7 +19,7 @@ class BasicTest(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
         options = Options()
-        # options.add_argument("--headless")
+        options.add_argument("--headless")
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-gpu")
         options.add_argument("--log-level=3")
@@ -33,7 +33,6 @@ class BasicTest(unittest.TestCase):
     def setUp(self):
         pass
         
-
 """
 LoginTest class that inherits from BasicTest and provides a
 framework for tests were login is required. In order to be more 
