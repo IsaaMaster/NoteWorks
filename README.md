@@ -26,11 +26,24 @@ View the live site [here](https://noteworks5.herokuapp.com/).
 4. Run the development server
    ```
    python manage.py runsever
-   
 ### Running Tests: 
+Please make sure you have all other dependencies installed first. 
 1. Run all tests
    ```
-   python manage.py test notes/tests
-
+   python manage.py test notes/
+2. Running a single test
+   ```
+   python manage.py test notes.tests.test_selenium_notes
+### Running Pylint
+1. Install Pylint
+   ```
+   pip install pytlint
+2. Running Pylint
+   Navigate to the project directory and run:
+   ```
+   pylint $(git ls-files '*.py')
+3. Make automatic corrections
+   ```
+   autopep8 --in-place --aggressive --aggressive --recursive .
 ### Contact Information: 
 Please reach out to isong@westmont for any questions or comments. 
