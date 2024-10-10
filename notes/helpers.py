@@ -1,9 +1,9 @@
-import json
 """
 Helper function for the notes app that helps format the grid of notes
 """
 
-
+# deprecated
+"""
 def format3(items, row=3):
     PERROW = row
     items2d = []
@@ -12,7 +12,7 @@ def format3(items, row=3):
             items2d.append([])
         items2d[-1].append(items[i])
     return items2d
-
+"""
 
 """
 Helper function for the ntoes app that is the search alorithem for note searching

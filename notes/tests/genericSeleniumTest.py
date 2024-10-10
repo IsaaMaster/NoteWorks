@@ -34,7 +34,7 @@ class BasicTest(unittest.TestCase):
 
     def setUp(self):
         pass
-        
+
 
 """
 LoginTest class that inherits from BasicTest and provides a
