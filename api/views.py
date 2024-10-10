@@ -73,6 +73,7 @@ def user_login_view(request):
         serializer = AuthTokenSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
+            # pylint: disable=unused-variable
             token, created = Token.objects.get_or_create(user=user)
             return Response(
                 {'token': token.key, 'user_id': user.id}, status=status.HTTP_200_OK)

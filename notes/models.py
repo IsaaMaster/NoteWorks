@@ -27,7 +27,7 @@ class Note(models.Model):
     displayText = models.TextField(max_length=7000, default='')
 
     def __str__(self):
-        return self.title
+        return str(self.title)
 
 
 class Folder(models.Model):

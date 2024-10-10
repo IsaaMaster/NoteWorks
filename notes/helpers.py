@@ -1,10 +1,10 @@
 import json
-"""
-Helper function for the notes app that helps format the grid of notes
-"""
 
 # deprecated
 def format3(items, row=3):
+    """
+    Helper function for the notes app that helps format the grid of notes
+    """
     PERROW = row
     items2d = []
     for i in range(len(items)):
@@ -52,7 +52,6 @@ def searchFolder(folders, text):
     """
     found = []
     for folder in folders:
-        relevant = False
         for word in folder["title"].split():
             if text.lower() in word.lower():
                 found.append(folder)
