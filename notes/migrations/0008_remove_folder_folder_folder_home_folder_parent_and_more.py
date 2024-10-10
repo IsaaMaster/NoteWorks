@@ -18,16 +18,23 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='folder',
             name='home',
-            field=models.BooleanField(default=False),
+            field=models.BooleanField(
+                default=False),
         ),
         migrations.AddField(
             model_name='folder',
             name='parent',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='notes.folder'),
+            field=models.ForeignKey(
+                default=0,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='notes.folder'),
         ),
         migrations.AlterField(
             model_name='note',
             name='folder',
-            field=models.ForeignKey(default=0, on_delete=django.db.models.deletion.CASCADE, to='notes.folder'),
+            field=models.ForeignKey(
+                default=0,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='notes.folder'),
         ),
     ]

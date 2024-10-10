@@ -34,14 +34,14 @@ ALLOWED_HOSTS = ['*',
 # Application definition
 
 INSTALLED_APPS = [
-    'notes', 
+    'notes',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'django.contrib.humanize', 
+    'django.contrib.humanize',
 
     'rest_framework',
     'rest_framework.authtoken',
@@ -63,7 +63,7 @@ ROOT_URLCONF = 'noteworks.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [BASE_DIR / "templates"], 
+        'DIRS': [BASE_DIR / "templates"],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -84,7 +84,7 @@ WSGI_APPLICATION = 'noteworks.wsgi.application'
 
 DATABASES = {
     'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
+        # 'ENGINE': 'django.db.backends.sqlite3',
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'postgres',
         'USER': 'songi',
@@ -135,7 +135,6 @@ REST_FRAMEWORK = {
 }
 
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/4.0/topics/i18n/
 
@@ -169,5 +168,5 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 DATA_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 5  # 5 MB (adjust as needed)
 FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 5  # 5 MB (adjust as needed)
 
-MEDIA_ROOT = BASE_DIR 
+MEDIA_ROOT = BASE_DIR
 MEDIA_URL = "/"

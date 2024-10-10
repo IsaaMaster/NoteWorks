@@ -5,8 +5,9 @@ from .serializers import NoteSerializer, FolderSerializer
 from rest_framework.authtoken.models import Token
 from rest_framework import status
 
-#in progress RESTful API built with Django REST Framework for Noteworks5
-#current its very skecky and still needs a lot of work
+# in progress RESTful API built with Django REST Framework for Noteworks5
+# current its very skecky and still needs a lot of work
+
 
 @api_view(['GET'])
 def apiOverview(request):
@@ -22,10 +23,9 @@ def apiOverview(request):
         'Folder Detail': '/folder-detail/<int:id>/',
         'Create Folder': '/folder-create/',
         'Delete Folder': '/folder-delete/<int:id>/',
-        
+
     }
     return Response(api_urls)
-
 
 
 @api_view(['GET'])
@@ -34,12 +34,12 @@ def noteList(request):
     serializer = NoteSerializer(notes, many=True)
     return Response(serializer.data)
 
+
 @api_view(['GET'])
 def noteDetail(request, id):
     note = Note.objects.get(id=id)
     serializer = NoteSerializer(note, many=False)
     return Response(serializer.data)
-
 
 
 @api_view(['POST'])
@@ -66,8 +66,6 @@ def noteDelete(request, id):
     return Response('Note deleted successfully!')
 
 
-
-
 @api_view(['POST'])
 def user_login_view(request):
     if request.method == 'POST':
@@ -75,10 +73,11 @@ def user_login_view(request):
         serializer = AuthTokenSerializer(data=request.data)
         if serializer.is_valid():
             user = serializer.validated_data['user']
+            # pylint: disable=unused-variable
             token, created = Token.objects.get_or_create(user=user)
-            return Response({'token': token.key, 'user_id': user.id}, status=status.HTTP_200_OK)
+            return Response(
+                {'token': token.key, 'user_id': user.id}, status=status.HTTP_200_OK)
         return Response(serializer.errors, status=400)
-
 
 
 @api_view(['POST'])
@@ -87,8 +86,11 @@ def user_login_view(request):
 def user_logout_view(request):
     if request.auth:
         request.auth.delete()
-        return Response({'message': 'User logged out successfully'}, status=status.HTTP_200_OK)
-    return Response({'message': 'User not logged in'}, status=status.HTTP_401_UNAUTHORIZED)
+        return Response(
+            {'message': 'User logged out successfully'}, status=status.HTTP_200_OK)
+    return Response({'message': 'User not logged in'},
+                    status=status.HTTP_401_UNAUTHORIZED)
+
 
 @api_view(['GET'])
 def folderList(request):
@@ -103,12 +105,14 @@ def folderDetail(request, id):
     serializer = FolderSerializer(folder, many=False)
     return Response(serializer.data)
 
+
 @api_view(['POST'])
 def folderCreate(request):
     serializer = FolderSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save()
     return Response(serializer.data)
+
 
 @api_view(['DELETE'])
 def folderDelete(request, id):

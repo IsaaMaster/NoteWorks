@@ -17,22 +17,29 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='Note',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=100)),
                 ('text', models.TextField(max_length=5000)),
                 ('lastAccessed', models.DateTimeField(auto_now=True)),
                 ('folder', models.IntegerField(default=0)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('sharedUsers', models.ManyToManyField(blank=True, related_name='sharedUsers', to=settings.AUTH_USER_MODEL)),
+                ('owner', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('sharedUsers',
+                 models.ManyToManyField(blank=True,
+                                        related_name='sharedUsers',
+                                        to=settings.AUTH_USER_MODEL)),
             ],
         ),
         migrations.CreateModel(
             name='Folder',
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
+                ('id', models.BigAutoField(auto_created=True,
+                 primary_key=True, serialize=False, verbose_name='ID')),
                 ('title', models.CharField(max_length=50)),
                 ('folder', models.IntegerField(default=0)),
-                ('owner', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
+                ('owner', models.ForeignKey(
+                    on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
             ],
         ),
     ]

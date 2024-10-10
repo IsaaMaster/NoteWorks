@@ -7,13 +7,16 @@ import django.db.models.deletion
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('notes', '0008_remove_folder_folder_folder_home_folder_parent_and_more'),
-    ]
+        ('notes', '0008_remove_folder_folder_folder_home_folder_parent_and_more'), ]
 
     operations = [
         migrations.AlterField(
             model_name='folder',
             name='parent',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, to='notes.folder'),
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                to='notes.folder'),
         ),
     ]
