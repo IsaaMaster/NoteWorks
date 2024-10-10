@@ -1,24 +1,19 @@
 from django.db import models
 from django.conf import settings
-import datetime
-
-# Create your models here.
-
-
-"""
-Notes -
-    title - the title of the note
-    text - the contents of the note
-    owner - the user who created the note
-    lastAccessed - the last time the note was opened
-    folder - the folder the note is in, defaults to the main root folder of the user
-    sharedUsers - the users the note is shared with
-    font - the font of the note
-    fontSize - the size of the font
-"""
 
 
 class Note(models.Model):
+    """
+    Notes -
+        title - the title of the note
+        text - the contents of the note
+        owner - the user who created the note
+        lastAccessed - the last time the note was opened
+        folder - the folder the note is in, defaults to the main root folder of the user
+        sharedUsers - the users the note is shared with
+        font - the font of the note
+        fontSize - the size of the font
+    """
     title = models.CharField(max_length=100)
     text = models.TextField(max_length=8000)
     owner = models.ForeignKey(
@@ -35,16 +30,14 @@ class Note(models.Model):
         return self.title
 
 
-"""
-Folder -
-    title - the title of the folder
-    parent - the folder this folder is in, defaults to the main root folder of the user
-    owner - the user who created the folder
-    home - if this folder is the main root folder of the user. True if it is the main root folder of the user
-"""
-
-
 class Folder(models.Model):
+    """
+    Folder -
+        title - the title of the folder
+        parent - the folder this folder is in, defaults to the main root folder of the user
+        owner - the user who created the folder
+        home - if this folder is the main root folder of the user. True if it is the main root folder of the user
+    """
     title = models.CharField(max_length=50)
     parent = models.ForeignKey(
         'Folder',
@@ -57,18 +50,16 @@ class Folder(models.Model):
     home = models.BooleanField(default=False)
 
     def __str__(self):
-        return self.title
-
-
-"""
-Preferances of the user
-    user - the user who owns the preferances
-    backgroundImage - the background image of the user's notes
-For now the sole purpose of this is to link a background image to the user
-"""
+        return str(self.title)
 
 
 class Preferances(models.Model):
+    """
+    Preferances of the user
+        user - the user who owns the preferances
+        backgroundImage - the background image of the user's notes
+    For now the sole purpose of this is to link a background image to the user
+    """
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
@@ -77,16 +68,16 @@ class Preferances(models.Model):
     backgroundImage = models.CharField(max_length=100, default='retro')
 
     def __str__(self):
-        return self.user.username
+        return str(self.user.username)
 
 
-"""
-The user's profile
-For now the sole purpose of this is to link a profile picture to the user
-"""
 
 
 class Profile(models.Model):
+    """
+    The user's profile
+    For now the sole purpose of this is to link a profile picture to the user
+    """
     user = models.OneToOneField(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE)
@@ -94,4 +85,4 @@ class Profile(models.Model):
         upload_to='media/profile_pictures/', blank=True, null=True)
 
     def __str__(self):
-        return self.user.username
+        return str(self.user.username)
