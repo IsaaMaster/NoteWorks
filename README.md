@@ -30,7 +30,7 @@ View the live site [here](https://noteworks5.herokuapp.com/).
 Please make sure you have all other dependencies installed first. 
 1. Run all tests
    ```
-   python manage.py test notes/
+   python manage.py test notes/tests
 2. Running a single test
    ```
    python manage.py test notes.tests.test_selenium_notes

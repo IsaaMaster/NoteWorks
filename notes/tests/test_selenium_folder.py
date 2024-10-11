@@ -21,7 +21,7 @@ class TestFolder(LoginTest):
 
     def test_open_existing_folder(self):
         self.driver.get('http://localhost:8000')
-        sleep(0.5)
+        sleep(2)
         self.driver.find_element(By.ID, '81').click()
         sleep(1)
         self.assertEqual(
