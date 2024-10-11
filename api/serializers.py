@@ -6,7 +6,8 @@ class NoteSerializer(serializers.ModelSerializer):
     class Meta:
         model = Note
         fields = ('id', 'title', 'text')
-    
+
+
 class FolderSerializer(serializers.ModelSerializer):
     class Meta:
         model = Folder

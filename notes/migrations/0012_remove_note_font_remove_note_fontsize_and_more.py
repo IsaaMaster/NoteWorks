@@ -31,6 +31,9 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='profile',
             name='profilePicture',
-            field=models.ImageField(blank=True, null=True, upload_to='media/profile_pictures/'),
+            field=models.ImageField(
+                blank=True,
+                null=True,
+                upload_to='media/profile_pictures/'),
         ),
     ]
