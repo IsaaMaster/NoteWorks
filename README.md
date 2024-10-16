@@ -48,4 +48,4 @@ Pyling custom arguments should be modified in .pylintrc
    autopep8 --in-place --aggressive --aggressive --recursive .
    isort .
 ### Contact Information: 
-Please reach out to isong@westmont for any questions or comments. 
+Please reach out to isong@westmont.edu for any questions or comments. 
