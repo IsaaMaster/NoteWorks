@@ -47,5 +47,8 @@ Pyling custom arguments should be modified in .pylintrc
    ```
    autopep8 --in-place --aggressive --aggressive --recursive .
    isort .
-### Contact Information: 
+## License
+This software is licensed under the GNU General Public License. 
+
+## Contact Information: 
 Please reach out to isong@westmont.edu for any questions or comments. 
