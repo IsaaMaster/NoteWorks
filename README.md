@@ -32,7 +32,7 @@ Please make sure you have all other dependencies installed first.
    ```
    python manage.py test notes.tests.test_selenium_notes
 ### Running Pylint
-Pyling custom arguments should be modified in .pylintrc
+Pylint custom arguments should be modified in .pylintrc
 1. Install Pylint
    ```
    pip install pytlint
