@@ -1,7 +1,5 @@
 
 from selenium.webdriver.common.by import By
-from selenium.webdriver.support.ui import WebDriverWait
-from selenium.webdriver.support import expected_conditions as EC
 from time import sleep
 from notes.tests.genericSeleniumTest import LoginTest
 
@@ -38,49 +36,8 @@ class TestNote(LoginTest):
         sleep(2)
         self.assertIn('http://localhost:8000/note/', self.driver.current_url)
         self.shared_data['new_note_url'] = self.driver.current_url
-
-    
-    
-    """
-    Makes sure that the user is able to rename a note
-    
-
-    def test_rename_note(self):
-        self.driver.get(self.shared_data['new_note_url'])
-        sleep(2)
-
-        # Scroll the element into view
-        settings_button = self.driver.find_element(By.ID, 'settingsButton')
-        self.driver.execute_script("arguments[0].scrollIntoView(true);", settings_button)
-        
-        # Wait until the element is clickable
-        WebDriverWait(self.driver, 10).until(EC.element_to_be_clickable((By.ID, 'settingsButton')))
-
-        settings_button.click()
-
-        sleep(0.5)
-        self.driver.find_element(By.ID, 'newNoteTitle').send_keys(
-            'New Note! Do not delete!')
-        self.driver.find_element(By.ID, 'renameNoteButton').click()
-        sleep(2)
-        self.driver.get(self.shared_data['new_note_url'])
-        sleep(2)
-
-        self.assertIn('New Note! Do not delete!', self.driver.find_element(By.ID, 'noteTitle').text)
-    """
-        
-    """
-    Makes sure that the user is able to delete a note. 
-    Note: is the same note that was just created in a previous test so that we 
-    do not build up test notes in the databse. 
-    """
-
+ 
     def test_trash_note(self):
-        """
-        Makes sure that the user is able to delete a note.
-        Note: is the same note that was just created in a previous test so that we
-        do not build up test notes in the databse.
-        """
         self.driver.get(self.shared_data['new_note_url'])
         self.driver.find_element(By.ID, 'deleteNoteButton').click()
         sleep(0.5)
