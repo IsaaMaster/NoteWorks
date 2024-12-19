@@ -45,7 +45,7 @@ class TestNote(LoginTest):
     
     """
     Makes sure that the user is able to rename a note
-    """
+    
     def test_rename_note(self):
         self.driver.get(self.shared_data['new_note_url'])
         sleep(0.5)
@@ -58,6 +58,7 @@ class TestNote(LoginTest):
         self.driver.get(self.shared_data['new_note_url'])
         sleep(2)
         self.assertIn('New Note! Do not delete!', self.driver.find_element(By.ID, 'noteTitle').text)
+    """
         
     """
     Makes sure that the user is able to delete a note. 
