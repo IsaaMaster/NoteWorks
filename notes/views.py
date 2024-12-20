@@ -10,7 +10,7 @@ from django.db.models.functions import Length
 from django.http import FileResponse, JsonResponse
 from django.contrib.humanize.templatetags.humanize import naturaltime, naturalday
 from .models import Note, Folder, Preferances, Profile
-from .helpers import searchEngine, searchFolder, getProfilePictureURL, deltaToText
+from .helpers import searchEngine, searchFolder, getProfilePictureURL, deltaToText, createNewGoogleUser
 from .forms import RegisterForm
 
 
@@ -22,7 +22,15 @@ def index(request):
     if (request.user.is_authenticated):
 
         homeFolder = Folder.objects.filter(owner=request.user, home=True)
-        return redirect('notes', folder_id=homeFolder[0].id)
+        home = None
+        message = "None"
+        if (len(homeFolder) == 0):
+            home = createNewGoogleUser(request.user)
+            message = "welcome"
+        else:
+            home = homeFolder[0]
+
+        return redirect('notesMsg', folder_id=home.id, message = message)
     return render(request, "app/home.html")
 
 
@@ -565,12 +573,6 @@ def user_registration(request):
                     'error_message': 'Username already exists.'
                 })
 
-            if form.cleaned_data['password'] != form.cleaned_data['password_repeat']:
-                return render(request, template, {
-                    'form': form,
-                    'error_message': 'Passwords do not match.'
-                })
-
             if len(form.cleaned_data['password']) < 8:
                 return render(request, template, {
                     'form': form,
@@ -583,6 +585,7 @@ def user_registration(request):
                 form.cleaned_data['password']
             )
 
+            user.backend = 'django.contrib.auth.backends.ModelBackend'
             # user.first_name = form.cleaned_data['first_name']
             # user.last_name = form.cleaned_data['last_name']
             # user.phone_number = form.cleaned_data['phone_number']
@@ -649,6 +652,10 @@ def account(request):
     favoriteBackground = request.user.preferances.backgroundImage.capitalize()
     friends = 0
 
+    name = request.user.first_name
+    if name == '':
+        name = request.user.username
+       
     context = {
         'background': request.user.preferances.backgroundImage,
         'profile_picture': getProfilePictureURL(
@@ -656,7 +663,8 @@ def account(request):
         'numberOfNotes': numberOfNotes,
         'numberOfFolders': numberOfFolders,
         'favoriteBackground': favoriteBackground,
-        'friends': friends}
+        'friends': friends,
+        'name': name}
     return render(request, 'app/account.html', context=context)
 
 
