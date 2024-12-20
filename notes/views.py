@@ -515,7 +515,12 @@ def deleteNote(request, note_id):
     # if the user is the owner of the note, then we can safely delete
     parent = notes.values()[0]["folder_id"]
     notes.delete()
-    return redirect('notes', folder_id=parent)
+    
+    if request.method == 'DELETE':
+        return JsonResponse({"success": True})
+
+    if request.method == 'GET':
+        return redirect('notes', folder_id=parent)
 
 
 @login_required
@@ -767,7 +772,7 @@ def downloadPDF(request, note_id):
     pdf.drawString(40, 760, "Author: " + user.username)
 
     # Generate the content of the PDF
-    pdf.setFont("Times-Roman", 12)
+    pdf.setFont("Sans Serif", 12)
     MAX_WIDTH = 500
     y = 735
     for line in text:

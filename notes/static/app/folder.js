@@ -351,7 +351,81 @@ $(document).ready( function() {
         });
     });
 
+
+
+    function deleteNote(noteID) {
+        var csrftoken = getCookie('csrftoken');
+
+        $.ajax({
+            type: 'DELETE',
+            url: `/delete/${noteID}/`,
+            headers: {'X-CSRFToken': csrftoken},   
+            success: function(response) {
+                console.log('Note deleted', response);
+
+                $("#note" + noteID).remove();
+
+                //resets the masonry layout
+                masonry.layout();
+
+                
+            },
+            error: function(error) {
+                console.error('Error deleting note', error);
+            }
+        });
+
+        // Remove the card from the DOM
+        
+    }
+
+
+
+
+    // Custom right-click menu.
+    document.querySelectorAll('.masonry-card').forEach(card => {
+        card.addEventListener('contextmenu', function (event) {
+          event.preventDefault(); // Prevent the default right-click menu
+
+          const itemID = card.getAttribute('id').substring(4); 
     
+
+          // Remove any existing custom menus before creating a new one
+          const existingMenu = document.querySelector('.custom-menu');
+          if (existingMenu) existingMenu.remove();
+      
+          // Optionally, create a custom context menu
+          const customMenu = document.createElement('div');
+          customMenu.classList.add('custom-menu');
+          customMenu.style.position = 'absolute';
+          customMenu.style.top = `${event.pageY}px`;
+          customMenu.style.left = `${event.pageX}px`;
+          customMenu.style.backgroundColor = 'white'
+          customMenu.style.border = '2px solid lightgray';
+          customMenu.style.opacity = '0.975';
+          customMenu.style.borderRadius = '15px';
+          customMenu.style.padding = '5px 15px';
+          customMenu.style.zIndex = '1000';
+          customMenu.innerHTML = `
+            <a id = "rightClickDelete" href = "#" data-id = "${itemID}"><p>Delete</p></a>
+            `;
+      
+          document.body.appendChild(customMenu);
+
+          // Remove the custom menu when clicking anywhere else
+          document.addEventListener('click', function removeMenu() {
+            customMenu.remove();
+            document.removeEventListener('click', removeMenu);
+          });
+        });
+    });
+
+    // Use event delegation for dynamically created elements
+    $(document).on('click', '#rightClickDelete', function (event) {
+        event.preventDefault();
+        const cardId = $(this).data('id'); // Retrieve the ID from the data attribute
+        deleteNote(cardId);
+    });
 
 
 });

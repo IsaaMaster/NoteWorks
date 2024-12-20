@@ -375,6 +375,7 @@
                   </h5>
                   <p class="card-text text-secondary"></p>
                   <p class="card-text">{{ note.displayText|truncatechars:150 }}</p>
+                  
                   {% load humanize %}
                   <p class="card-text text-secondary">Last Updated: {{ note.lastAccessed|naturaltime }}</p>
                 </div>
