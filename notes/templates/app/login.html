@@ -3,35 +3,55 @@
 {% block content %}
     <div class = "spacer layer1">
         <div class="container loginForm">
-            <form action="{% url 'userlogin' %}" method="post">
-                {% csrf_token %}
-                <div class="col-md-8 col-md-offset-2">
-                    <div class="panel panel-default">
-                        <div class="panel-heading" style="color:white"><h3>Login</h3></div>
-                        <div class="panel-body">
-                            <div class="form-group clearfix">
-                                <label for="username" class="col-md-4 control-label text-right" style="color:white">Username:</label>
-                                <div class="col-md-6">
-                                    <input id="username" name="username" value="" type="text" class="form-control rounded-pill"/>
+            <div class = "row">
+                <div class = "col-md-10">
+                    <form action="{% url 'userlogin' %}" method="post">
+                        {% csrf_token %}
+                            <div class="panel panel-default">
+                                <div class="panel-heading" style="color:white"><h3>Login to NoteWorks</h3></div>
+                                <div class="panel-body">
+                                    <div class = "col-md-8 py-2">
+                                        {% load socialaccount %}
+                                        <a href="{% provider_login_url 'google' %}" class="btn btn-light rounded-pill">
+                                            <div class = "px-4">
+                                                {% load static %}
+                                                <img src="{% static "app/Google.png" %}" alt="Google logo" height="20" width="20" style = "margin-bottom:2px;"/>
+                                                Google
+                                            </div>
+                                        </a>
+                                    </div>
+                                    <div class = "col-md-5 text-center py-0">
+                                        <div style = "color:white;">or</div>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <label for="username" class="col-md-4 control-label text-right" style="color:white">Username</label>
+                                        <div class="col-md-5">
+                                            <input id="username" name="username" value="" type="text" class="form-control rounded-pill"/>
+                                        </div>
+                                    </div>
+                                    <div class="form-group clearfix">
+                                        <label for="password" class="col-md-4 control-label text-right" style="color:white">Password</label>
+                                        <div class="col-md-5">
+                                            <input id="password" name="password" type="password" class="form-control rounded-pill" />
+                                        </div>
+                                    </div>
+                                    {% if error_message %}
+                                    <div class="alert alert-danger mt-3" style = "width:50%;">{{ error_message }}</div>
+                                    {% endif %}
+                                    <div class="col-md-6 col-md-offset-4" style="margin:15px 0px 10px 0px">
+                                        <input id = "login" name="login" type="submit" value="Login" class="btn btn-primary button1" /> &nbsp;
+                                    </div>
                                 </div>
                             </div>
-                            <div class="form-group clearfix">
-                                <label for="password" class="col-md-4 control-label text-right" style="color:white">Password:</label>
-                                <div class="col-md-6">
-                                    <input id="password" name="password" type="password" class="form-control rounded-pill" />
-                                </div>
-                            </div>
-                            {% if error_message %}
-                            <div class="alert alert-danger mt-3" style = "width:50%;">{{ error_message }}</div>
-                            {% endif %}
-                            <div class="col-md-6 col-md-offset-4" style="margin:15px 0px 10px 0px">
-                                <input id = "login" name="login" type="submit" value="Login" class="btn btn-primary button1" /> &nbsp;
-                            </div>
-                        </div>
-                    </div>
+                    </form>
+                    <a class = "credentialsAlt" href="{% url 'register' %}">Don't have an account? Sign up here!</a>
+            
                 </div>
-            </form>
-            <a class = "credentialsAlt" href="{% url 'register' %}">Don't have an account? Register here!</a>
-        </div>
+                <div class = "col-md-6 justify-content-center align-items-center text-center">
+                        
+        
+                </div>
+            </div>
+        
     </div>
 {% endblock %}

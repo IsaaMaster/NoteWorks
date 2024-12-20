@@ -1,4 +1,8 @@
 import json
+from .models import Folder, Preferances, Profile
+from allauth.socialaccount.models import SocialAccount
+from django.core.files.base import ContentFile
+import requests
 
 # deprecated
 def format3(items, row=3):
@@ -88,3 +92,31 @@ def deltaToText(noteText):
             text += ops["insert"]
 
     return text
+
+
+def createNewGoogleUser(user):
+    """
+    Helper function that creates a new user in the database
+    """
+    home = Folder(
+        title="My Stuff",
+        parent=None,
+        owner=user,
+        home=True)
+    home.save()
+
+    preferances = Preferances(user=user)
+    preferances.save()
+
+    social_account = SocialAccount.objects.filter(user=user, provider='google').first()
+
+    if social_account:
+        # Get the user's profile picture
+        extra_data = social_account.extra_data
+        profile_picture = extra_data.get('picture', '')
+        response = requests.get(profile_picture)
+        profile_picture = ContentFile(response.content, name=f'{user.username}_profile_picture.jpg')
+
+        profile = Profile(user=user, profilePicture=profile_picture)
+        profile.save()
+    return home
