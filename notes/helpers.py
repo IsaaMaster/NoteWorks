@@ -113,8 +113,9 @@ def createNewGoogleUser(user):
     if social_account:
         # Get the user's profile picture
         extra_data = social_account.extra_data
+
         profile_picture = extra_data.get('picture', '')
-        response = requests.get(profile_picture)
+        response = requests.get(profile_picture, timeout=10)
         profile_picture = ContentFile(response.content, name=f'{user.username}_profile_picture.jpg')
 
         profile = Profile(user=user, profilePicture=profile_picture)
