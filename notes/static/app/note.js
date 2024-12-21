@@ -266,21 +266,19 @@ $(document).ready( function() {
 
     }); 
 
-    $('#downloadPDF').on('click', function() {
-      var html = $('#textedit').html(); 
-      var doc = new jsPDF();
-      doc.fromHTML(html, 15, 15, {
-        'width': 170,
-      });    
-      doc.setFont('sans-serif');
-      doc.save($('#noteTitle').text() + '.pdf');
-    }); 
 
 
-   
+  function downloadPDF() {
+    var title = $('#noteTitle').html();
+    var text = $('#textedit').html(); 
+    var doc = new jsPDF();
+    doc.fromHTML(title, 15, 15, {'width': 170});
+    doc.fromHTML(text, 15, 40, {
+      'width': 170,
+    });    
+    doc.save($('#noteTitle').text() + '.pdf');
+  }
 
-    
-    
-
+  $('#downloadPDF').on('click', downloadPDF); 
 
 });
