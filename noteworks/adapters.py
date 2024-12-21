@@ -1,6 +1,7 @@
 from allauth.socialaccount.adapter import DefaultSocialAccountAdapter
 from allauth.exceptions import ImmediateHttpResponse
 from django.http import HttpResponseRedirect
+from django.core.exceptions import ObjectDoesNotExist
 
 class MySocialAccountAdapter(DefaultSocialAccountAdapter):
     def pre_social_login(self, request, sociallogin):
@@ -15,7 +16,7 @@ class MySocialAccountAdapter(DefaultSocialAccountAdapter):
                 existing_user = self.get_user_by_email(email)
                 sociallogin.connect(request, existing_user)
                 raise ImmediateHttpResponse(HttpResponseRedirect(""))
-            except:
+            except ObjectDoesNotExist:
                 pass
 
     def get_user_by_email(self, email):
