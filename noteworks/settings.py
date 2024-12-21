@@ -52,7 +52,6 @@ INSTALLED_APPS = [
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',  # Add the Google provider
     'allauth.socialaccount.providers.facebook', # Add the Facebook provider
-    'sslserver',
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
