@@ -641,6 +641,12 @@ def user_login(request):
     # No post data availabe, let's just show the page to the user.
     return render(request, 'app/login.html')
 
+def social_login_cancelled(request):
+    """
+    Handles the request for when a social login is cancelled.
+    """
+    return redirect('loginpage')
+
 
 @login_required
 def account(request):
