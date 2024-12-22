@@ -51,13 +51,22 @@ INSTALLED_APPS = [
     'allauth.account',
     'allauth.socialaccount',
     'allauth.socialaccount.providers.google',  # Add the Google provider
+    'allauth.socialaccount.providers.facebook', # Add the Facebook provider
 ]
 
 SOCIALACCOUNT_PROVIDERS = {
     "google": {
         "SCOPE": ["profile", "email"], 
         "AUTH_PARAMS": {"access_type": "online"},
-        }
+    },
+    'facebook': {
+        'SCOPE': ['email', 'public_profile'],
+        'FIELDS': ['email', 'name', 'first_name', 'last_name'],
+        'AUTH_PARAMS': {},
+        'METHOD': 'oauth2',  # Default method
+        'VERIFIED_EMAIL': False,  # Set this to True if you want to verify email before creating a user
+        'VERSION': 'v10.0',  # Use the latest Facebook Graph API version
+    }
 
 }
 
@@ -192,3 +201,9 @@ MEDIA_URL = "/"
 SITE_ID = 2
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
+
+ACCOUNT_EMAIL_VERIFICATION = 'none'  # Disables email verification
+ACCOUNT_EMAIL_REQUIRED = False       # Makes email optional
+
+SOCIALACCOUNT_ADAPTER = 'noteworks.adapters.MySocialAccountAdapter'
+
