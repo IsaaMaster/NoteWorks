@@ -7,6 +7,7 @@ $(document).ready( function() {
 
 
     //Preparing the 'Experience the magic today' text animation
+    /** 
     let magic = document.querySelector('#magic');
     let strmagic = magic.textContent;
     let splitmagic = strmagic.split("");
@@ -15,6 +16,8 @@ $(document).ready( function() {
         magic.innerHTML += "<span class = 'magic'>" + splitmagic[i] + "</span>";
 
     }
+    */
+    
 
     //Preparing the 'Reimagined' text animation
     let imagine = document.querySelector('#reimagined');
@@ -58,7 +61,7 @@ $(document).ready( function() {
 
 
     //Simply Elegant text fadeIn animation
-    var reveal =  $('#simpleandelegant').animate({opacity: '1'}, 3000);
+    //var reveal =  $('#simpleandelegant').animate({opacity: '1'}, 3000);
 
 
 

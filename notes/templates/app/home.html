@@ -1,15 +1,12 @@
 {% extends "app/base.html" %}
 {% block content %}
-<div class = "container-fluid text-center frontpage">
+<div class = "container-fluid frontpage">
   <div class = "row" id="top">
-    <div class = "col">
-      <h1 style="font-size:65px; margin-top:80px">NoteWorks 5. <span id="reimagined" class = 'color-2'> Notes Reimagined.</span></h1>
-      <h1 style="font-size:55px; " id = "simpleandelegant">
-        Simply <span style="font-family:'Satisfy', cursive;">Elegant</span>. Simply <span style="font-family: 'Indie Flower', cursive;">Notes.</span>
-      </h1>
-      <h1  id = "magic" class = "font-size-lg">Experience the magic today.</h1>
-      <p style="margin-top:30px"><a class= "fbutton" href= "{% url 'register' %}"><button type="button"  id = "signupbutton" class="btn btn-lg btn-primary button1">Sign Up</button></a></p>
-    </div>
+    <div class = "col-md-6 mx-1 px-5">
+      <h1 style="font-size:55px; margin-top:80px">NoteWorks. </h1>
+      <h1 style="font-size:45px;"><span id="reimagined" class = 'color-2'> Notes Reimagined.</span></h1>
+      <p class = "my-4 geist" style = "color:gray; font-size:18px;">Supercharge your notes with NoteWorks, now AI-powered with SmartSearch, FactCheck, and AIFlashcards.</p>
+      <p style="margin-top:30px"><a class= "fbutton" href= "{% url 'register' %}"><button type="button"  id = "signupbutton" class="geist btn btn-primary button1">Sign Up Today.</button></a></p>
   </div>
   <div class="row" id="top2">
     <div class="col">

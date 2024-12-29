@@ -6,11 +6,15 @@
 }
 
 
-
+.geist{
+  font-family: "Geist", serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
 
 .frontpage {
   color: white;
-  text-align: center;
 }
 
 #navbar-custom {
@@ -41,22 +45,16 @@
 }
 
 #top {
+  background: url("lines.jpg");
   background-color: black;
   margin-top: 5px;
-
-}
-
-#top2 {
-  background-image: url("./Laptop.jpg");
-  height: 900px;
-  scale: 100%;
+  height: calc(100vh - 50px);
   background-position: center;
-  /* Center the image */
   background-repeat: no-repeat;
-  /* Do not repeat the image */
   background-size: cover;
-  
+
 }
+
 
 #middle {
   background-color: #000000;
@@ -173,9 +171,6 @@ span.magic.fadeIn{
 }
 
 
-#simpleandelegant, #signupbutton{
-  opacity: 0;
-}
 
 
 span.reimagined{

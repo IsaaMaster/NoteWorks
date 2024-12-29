@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>NoteWorks5</title>
+    <title>NoteWorks</title>
     {% load static %}
     <link rel="icon" type="image/x-icon"  href="{% static 'app/favicon.ico' %}"/>
     <meta charset="utf-8">
@@ -14,7 +14,9 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Indie+Flower&family=Satisfy&display=swap" rel="stylesheet">
-    
+   
+    <link href="https://fonts.googleapis.com/css2?family=Geist:wght@100..900&display=swap" rel="stylesheet">    
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
 
@@ -26,8 +28,8 @@
     <nav class="navbar bg-dark navbar-dark navbar-expand-sm bg-body-tertiary sticky-top" id="navbar-custom">
         <div class="container-fluid">
             <a class="navbar-brand" href="{% url 'home' %}"><div id="brand" class="navbarm" style="margin-left:40px; font-size:120%">
-                <img src="{% static 'app/whiteNoteIcon.png' %}" alt="Logo" class="d-inline-block align-text-top" id="logo" style="width:30px;">
-                NoteWorks 5
+                <img src="{% static 'app/whiteNoteIcon.png' %}" alt="Logo" class="d-inline-block align-text-top mt-1" id="logo" style="width:30px;">
+                NoteWorks
             </div></a>
 
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#menuItems" aria-controls="menuItems" aria-expanded="false" aria-label="Toggle navigation">
@@ -41,14 +43,14 @@
                             <div class = "fs-5">Home</div>   
                         </a>
                     </li>
-                    <li class="nav-item me-4">
-                        <a href= "{% url 'loginpage' %}" class="navbarm nav-link active">
-                                <div class = "fs-5">Login</div>
+                    <li class="nav-item">
+                        <a href= "{% url 'register' %}" class="navbarm nav-link active" style="margin-right:25px" tabindex="-1" aria-disabled="true">
+                            <div class = "fs-5">Sign Up</div>
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a href= "{% url 'register' %}" class="navbarm nav-link active" style="margin-right:25px" tabindex="-1" aria-disabled="true">
-                            <div class = "fs-5">Sign up</div>
+                        <a href= "{% url 'loginpage' %}" class=" navbarm nav-link active">
+                                <div class = "fs-5"><button class="btn geist btn-primary button1">Login</button></div>
                         </a>
                     </li>
                 </ul>
