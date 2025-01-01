@@ -34,6 +34,7 @@ urlpatterns = [
     path('sharednotes/', views.sharedNotes, name='sharedNotes'),
     # path('share/<int:note_id>/', views.share, name='share'),
     path('note/<int:note_id>/share_note/', views.shareNote, name='share_note'),
+    path('note/<int:note_id>/summarize/', views.aiSummarize, name='summarize'),
     path('unshare/<int:note_id>/<str:username>', views.unshare, name='unshare'),
     path('download/<int:note_id>/', views.downloadPDF, name='downloadPDF'),
     # path("background/<int:folder_id>/<str:background>/", views.changeBackground, name="backgroundChange"),
@@ -60,6 +61,7 @@ urlpatterns = [
         "searchSuggestions/",
         views.searchSuggestions,
         name="searchSuggestions"),
+    path("smartSearchSuggestions/", views.smartSearchSuggestions,  name="smartSearchSuggestions"),
     path("note/<int:note_id>/new_save_note/", views.noteSave, name="noteSave"),
     path(
         "note/<int:note_id>/get_note_contents/",

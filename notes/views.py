@@ -12,6 +12,7 @@ from django.contrib.humanize.templatetags.humanize import naturaltime, naturalda
 from .models import Note, Folder, Preferances, Profile
 from .helpers import searchEngine, searchFolder, getProfilePictureURL, deltaToText, createNewGoogleUser
 from .forms import RegisterForm
+import cohere
 
 
 def index(request):
@@ -508,6 +509,50 @@ def searchSuggestions(request):
 
 
 @login_required
+def smartSearchSuggestions(request):
+    """
+    Handles the AJAX request for search suggestions, given a search keyword.
+    """
+    if request.method == 'GET':
+        keyword = request.GET['keyword']
+
+        # search the title of the notes and folders
+        # also makes such the format is parsable by the frontend
+        notes = Note.objects.filter(
+                owner=request.user).values().order_by('-lastAccessed')
+
+     
+
+        co = cohere.ClientV2(api_key="FoyQ2yGlFRkeY4rbDkqDsj12kt6uapx3DFY5s1jq")
+
+        docs = []
+        
+        for note in notes:
+            docs.append(note["text"])
+
+        response = co.rerank(
+            model="rerank-v3.5",
+            query=keyword,
+            documents=docs,
+            top_n=5,
+        )
+        
+
+        topNotes = []
+        for note in response.results:
+            print(notes[int(note.index)]['title'], note.relevance_score)
+            if(note.relevance_score > 0.05): 
+                topNotes.append(notes[int(note.index)])
+
+        for note in topNotes:
+            note['time'] = naturalday(note['lastAccessed'])
+
+        return JsonResponse(
+            {"success": True, "notes": list(topNotes)})
+    return redirect('home')
+
+
+@login_required
 def deleteNote(request, note_id):
     """
     Handles the request for deleting a note, given a note id.
@@ -817,3 +862,17 @@ def downloadPDF(request, note_id):
     response["Content-Disposition"] = 'attachment; filename="' + filename + '"'
 
     return response
+
+
+def aiSummarize(request, note_id):  
+    note = Note.objects.get(id=note_id)
+    text = note.text
+
+    co = cohere.ClientV2(api_key="FoyQ2yGlFRkeY4rbDkqDsj12kt6uapx3DFY5s1jq")
+
+    print("starting")
+    response = co.summarize(text = text)
+    text = response.summary
+    print(text)
+
+    return JsonResponse({"success": True, "text": text})

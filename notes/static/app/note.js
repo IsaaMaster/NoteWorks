@@ -281,4 +281,48 @@ $(document).ready( function() {
 
   $('#downloadPDF').on('click', downloadPDF); 
 
+
+  function aiSummarize() {
+    const aiSummerizeButton = document.getElementById('aiSummarizeButton');
+    aiSummerizeButton.outerHTML = `
+      <button class="btn btn-primary" type="button" disabled id = "aiSummarizeButtonLoading">
+        <span class="spinner-border spinner-border-sm" aria-hidden="true"></span>
+        <span role="status">Summarizing...</span>
+      </button>
+    `; 
+    $.ajax({
+      type: 'GET',
+      url: './summarize/',
+      headers: { "X-CSRFToken": csrfToken },
+      success: function(response) {
+        const summary = response['text'];
+        $('#aiSummary').html(summary);
+        $('#aiSummarizeButtonLoading').css('display', 'none');
+      }, 
+      error: function(error) {
+        console.error('An error occurred while summarizing the text.'); 
+      }
+    });
+
+    var csrfToken = getCookie('csrftoken'); 
+
+  }; 
+
+  $('#aiModal').on('shown.bs.modal', function() {
+    $('#aiSummarizeButton').on('click', aiSummarize); // Attach click event when the modal is shown
+  });
+
+  $('#aiModal').on('hidden.bs.modal', function() {
+    $('aiSummary').html(''); // Clear the summary when the modal is closed
+    const aiSummerizeButton = document.getElementById('aiSummarizeButtonLoading');
+    aiSummerizeButton.outerHTML = `
+    <button id = "aiSummarizeButton" class = "btn btn-primary button1">
+      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-body-text" viewBox="0 0 16 16">
+          <path fill-rule="evenodd" d="M0 .5A.5.5 0 0 1 .5 0h4a.5.5 0 0 1 0 1h-4A.5.5 0 0 1 0 .5m0 2A.5.5 0 0 1 .5 2h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m9 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-9 2A.5.5 0 0 1 .5 4h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m5 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1h-3a.5.5 0 0 1-.5-.5m-12 2A.5.5 0 0 1 .5 6h6a.5.5 0 0 1 0 1h-6a.5.5 0 0 1-.5-.5m8 0a.5.5 0 0 1 .5-.5h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m-8 2A.5.5 0 0 1 .5 8h5a.5.5 0 0 1 0 1h-5a.5.5 0 0 1-.5-.5m7 0a.5.5 0 0 1 .5-.5h7a.5.5 0 0 1 0 1h-7a.5.5 0 0 1-.5-.5m-7 2a.5.5 0 0 1 .5-.5h8a.5.5 0 0 1 0 1h-8a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 0 1h-4a.5.5 0 0 1-.5-.5m0 2a.5.5 0 0 1 .5-.5h2a.5.5 0 0 1 0 1h-2a.5.5 0 0 1-.5-.5"/>
+      </svg>
+      Summarize Text
+    </button>
+    `
+  });
+
 });

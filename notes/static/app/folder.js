@@ -44,8 +44,10 @@ $(document).ready( function() {
         console.log("welcome modal not found");
     }
 
-    //tooltip configuration
-    tippy('[data-tippy-content]', {placement: 'bottom'});
+    //tooltip configuration - not currently used due to an ongoing issues
+    //with the tooltip reappearing after the user clicks on the button and a
+    //modal is open and closed. 
+    //tippy('[data-tippy-content]', {placement: 'bottom', hideOnClick: true});
 
 
 
