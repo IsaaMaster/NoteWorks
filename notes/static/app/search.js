@@ -66,7 +66,27 @@ $(document).ready( function() {
         }
     }
 
-
+    function updateSmartSearchSuggestions(notes) { 
+        $('#smartSearchResultsList').empty();
+        for (let i = 0; i < notes.length; i++) {
+            $('#smartSearchResultsList').append(`
+            <a href="/note/${notes[i]['id']}/" class="text-decoration-none text-dark">
+                <div class = "row mb-3 searchSuggestion">
+                    <div class = "col-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark" viewBox="0 0 16 16">
+                            <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5z"/>
+                        </svg>
+                        ${notes[i]['title']}
+                    </div>
+                    <div class="col-6 text-end text-secondary">
+                        Last Opened ${notes[i]['time']}
+                    </div>
+                </div>
+            </a>
+            `); 
+        }; 
+    }; 
+                
 
     function getSearchSuggestions(keyword){
         var csrfToken = getCookie('csrftoken');
@@ -92,16 +112,79 @@ $(document).ready( function() {
     }
 
 
+    function getSmartSearchSuggestions(keyword){
+        var csrfToken = getCookie('csrftoken');
+        $.ajax({
+            type: 'GET',
+            url: '/smartSearchSuggestions/',
+            data: { 'keyword': keyword},
+            headers: { "X-CSRFToken": csrfToken },
+            success: function(response) {
+                if (response['success']) {
+                    $('#smartSearchSpinner').remove();
+                    console.log('Search suggestions retrieved successfully.');
+                    updateSmartSearchSuggestions(response['notes'])
+                }
+                else {
+                    console.log('An error occurred while retrieving search suggestions.')
+                }
+
+            }, 
+            error: function(error) {
+                console.log('An error occurred while retrieving search suggestions')
+            },
+        });
+        
+    }; 
+
+
+    function normalSearch(){
+        $('#searchSuggestions').css('display', 'block');
+        $('#searchInput').focus();
+        $('#normalSearchButton').css('display', 'none');
+        $('#smartSearchButton').css('display', 'block');
+        $('#smartSearchSpinner').remove();
+        $('#smartSearchResults').css('display', 'none');
+        $('#inputGroupSearch').css('display', 'block');
+        getSearchSuggestions($('#searchInput').val());
+    }
+
+    function smartSearch() { 
+        $('#searchSuggestions').css('display', 'none');
+        $('#smartSearchResults').append(`
+            <div id = "smartSearchSpinner" class="d-flex justify-content-center">
+                 <div class="spinner-border" role="status">
+                     <span class="visually-hidden">Loading...</span>
+                 </div>
+             </div>
+         `)
+        $('#smartSearchButton').css('display', 'none');
+        $('#normalSearchButton').css('display', 'block');
+        $('#smartSearchResults').css('display', 'block');
+        $('#smartSearchResultsList').empty();
+        $('#smartSearchResults').css('display', 'block');
+        getSmartSearchSuggestions($('#searchInput').val());
+    }
+
     
     $('#searchModal').on('shown.bs.modal', function() {
         $('#searchInput').val('');
-        $('#searchInput').focus();
-        getSearchSuggestions($('#searchInput').val()); 
+        normalSearch();
     });
 
     $('#searchInput').keyup(function(event) {
-        getSearchSuggestions($('#searchInput').val()); 
+        normalSearch();
     });
+
+
+    $('#smartSearchButton').click(function() {
+        smartSearch();
+    }); 
+
+    $('#normalSearchButton').click(function() {
+        normalSearch();
+    });
+    
 
 
 
