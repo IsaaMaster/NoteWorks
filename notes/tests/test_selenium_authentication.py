@@ -9,7 +9,7 @@ import unittest
 class TestAuth(BasicTest):
     def test_home_page(self):
         print('testing home page')
-        self.driver.get('https://localhost:8000')
+        self.driver.get('https://noteworks5-0c3e8b44eefc.herokuapp.com/')
         self.assertIn('NoteWorks', self.driver.title)
 
     def test_login_page(self):
