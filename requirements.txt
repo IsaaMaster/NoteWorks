@@ -12,3 +12,4 @@ reportlab==4.0.0
 djangorestframework==3.14.0
 selenium==4.1.0
 django-allauth==0.54.0
+cohere
