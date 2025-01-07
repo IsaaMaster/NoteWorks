@@ -523,7 +523,7 @@ def smartSearchSuggestions(request):
 
      
 
-        co = cohere.ClientV2(api_key="FoyQ2yGlFRkeY4rbDkqDsj12kt6uapx3DFY5s1jq")
+        co = cohere.Client(api_key="FoyQ2yGlFRkeY4rbDkqDsj12kt6uapx3DFY5s1jq")
 
         docs = []
         
@@ -868,7 +868,7 @@ def aiSummarize(request, note_id):
     note = Note.objects.get(id=note_id)
     text = note.text
 
-    co = cohere.ClientV2(api_key="FoyQ2yGlFRkeY4rbDkqDsj12kt6uapx3DFY5s1jq")
+    co = cohere.Client(api_key="FoyQ2yGlFRkeY4rbDkqDsj12kt6uapx3DFY5s1jq")
 
     print("starting")
     response = co.summarize(text = text)
