@@ -1,3 +1,4 @@
+pycairo<1.27.0
 asgiref==3.6.0
 Brotli==1.0.9
 Django==4.1.7
