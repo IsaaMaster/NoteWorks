@@ -3,6 +3,8 @@ from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.by import By
 import unittest
 
+USERNAME = 'TestingAccount'
+PASSWORD = 'aVu.rDWLtaxXt.2'
 
 class BasicTest(unittest.TestCase):
     """
@@ -19,6 +21,7 @@ class BasicTest(unittest.TestCase):
         """
         options = Options()
         options.add_argument("--headless")
+        options.add_argument("--window-size=1920,1080") 
         options.add_argument("--no-sandbox")
         options.add_argument("--disable-gpu")
         options.add_argument("--log-level=3")
@@ -56,8 +59,8 @@ class LoginTest(BasicTest):
         logs in the Testing user and returns the cookies for the login session.
         """
         cls.driver.get('http://localhost:8000/login')
-        cls.driver.find_element(By.ID, 'username').send_keys('TestingAccount')
-        cls.driver.find_element(By.ID, 'password').send_keys('password')
+        cls.driver.find_element(By.ID, 'username').send_keys(USERNAME)
+        cls.driver.find_element(By.ID, 'password').send_keys(PASSWORD)
         cls.driver.find_element(By.ID, 'login').click()
         cookies = cls.driver.get_cookies()
         return cookies

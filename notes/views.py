@@ -609,13 +609,12 @@ def user_registration(request):
     """
     # if this is a POST request we need to process the form data
     template = 'app/register.html'
-
     if request.method == 'POST':
-        print(request.POST)
         # create a form instance and populate it with data from the request:
         form = RegisterForm(request.POST)
         # check whether it's valid:
         if form.is_valid():
+            print("here: 618")
             if User.objects.filter(
                     username=form.cleaned_data['username']).exists():
                 return render(request, template, {
