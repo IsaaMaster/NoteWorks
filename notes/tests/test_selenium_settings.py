@@ -2,7 +2,7 @@ from selenium.webdriver.common.by import By
 
 from time import sleep
 from notes.tests.genericSeleniumTest import LoginTest
-
+from notes.tests.genericSeleniumTest import USERNAME
 
 class SettingsTest(LoginTest):
     def test_settings_dropdown_link(self):
@@ -18,19 +18,19 @@ class SettingsTest(LoginTest):
         sleep(0.5)
         self.driver.find_element(By.ID, 'username').clear()
         self.driver.find_element(
-            By.ID, 'username').send_keys('TestingAccount111')
+            By.ID, 'username').send_keys('TestingAccountUpdated')
         sleep(0.5)
         self.click('updateAccountButton')
         sleep(2)
 
         self.driver.get('http://localhost:8000/account/')
         self.assertEqual(
-            'TestingAccount111',
+            'TestingAccountUpdated',
             self.driver.find_element(
                 By.ID,
                 'username').get_attribute('value'))
         self.driver.find_element(By.ID, 'username').clear()
-        self.driver.find_element(By.ID, 'username').send_keys('TestingAccount')
+        self.driver.find_element(By.ID, 'username').send_keys(USERNAME)
         self.click('updateAccountButton')
         sleep(2)
 
