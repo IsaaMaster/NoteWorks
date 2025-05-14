@@ -1,18 +1,18 @@
 {% extends "app/base.html" %}
 
 {% block content %}
-    <div class ="spacer layer2">
-        <div class="container loginForm" class = "info">
+    <div class ="spacer layer2 container-fluid">
+        <div class="row align-items-center justify-content-center loginForm">
+            <div class="col-md-5 col-md-offset-2 loginCard px-4 py-4">
             <form action="{% url 'register' %}" method="post">
                 {% csrf_token %}
-                <div class="col-md-10 col-md-offset-2">
                     <div class="panel panel-default">
-                        <div class="panel-heading", style = "color:white"><h3>Sign Up for NoteWorks</h3></div>
+                        <div class="panel-heading"><h3>Sign Up</h3></div>
                         <div class="panel-body">
-                            <div class = "col-md-8 py-2">
+                            <div class = "col-md-12 py-2">
                                 {% load socialaccount %}
-                                <a href="{% provider_login_url 'google' process='signup' %}" class="btn btn-light rounded-pill mx-1">
-                                    <div class = "px-3">
+                                <a href="{% provider_login_url 'google' process='signup' %}" class="btn btn-light rounded-pill mx-1" style = "border: 1px solid #555555;">
+                                    <div class = "px-4">
                                         {% load static %}
                                         <img src="{% static "app/Google.png" %}" alt="Google logo" height="20" width="20" style = "margin-bottom:2px;"/>
                                         Google
@@ -29,12 +29,12 @@
                                 </a>
                                 -->
                             </div>
-                            <div class = "col-md-5 text-center py-0">
-                                <div style = "color:white;">or</div>
+                            <div class = "col-sm-12 text-center py-0">
+                                <div>or</div>
                             </div>
-                            <div class="form-group clearfix">
-                                <label for="{{ form.username.id_for_label }}" class="col-md-4 control-label text-right" style = "color:white">Username<span style="color:red">*</span></label>
-                                <div class="col-md-5">
+                            <div class="form-group clearfix pb-1">
+                                <label for="{{ form.username.id_for_label }}" class="col-md-4 control-label text-right">Username<span style="color:red">*</span></label>
+                                <div class="col-sm-12">
                                     {{ form.username }}
                                 </div>
                             </div>
@@ -47,13 +47,13 @@
                             </div>
                             -->
                             <div class="form-group clearfix">
-                                <label for="{{ form.password.id_for_label }}" class="col-md-4 control-label text-right" style = "color:white">Password<span style="color:red">*</span></label>
-                                <div class="col-md-5">
+                                <label for="{{ form.password.id_for_label }}" class="col-md-4 control-label text-right">Password<span style="color:red">*</span></label>
+                                <div class="col-sm-12">
                                     {{ form.password }}
                                 </div>
                             </div>
                             {% if error_message %}
-                                <div class="alert alert-danger mt-3" style = "width:50%;">{{ error_message }}</div>
+                                <div class="alert alert-danger mt-3">{{ error_message }}</div>
                             {% endif %}
                             <!--
                             <div class="form-group clearfix">
@@ -77,16 +77,15 @@
                             </div>
                             -->
 
-                            <div class="col-md-6 col-md-offset-4" style="margin: 15px 0px 10px 0px">
+                            <div class="col-sm12 col-md-offset-4" style="margin: 15px 0px 10px 0px">
                                 <input type="submit" value="Register" class="btn btn-primary button1">
                             </div>
                         </div>
                     </div>
-                </div>
-            </form>
+                
             <a class = "credentialsAlt" href = "{%url 'loginpage' %}">Already have an account? Login here!</a>
-        
-
+            </form>
+            </div>
         </div>
     </div>
 {% endblock %}

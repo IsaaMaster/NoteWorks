@@ -25,9 +25,8 @@
 </head>
 
 <body style="background-color:black">
-    <nav class="navbar bg-dark navbar-dark navbar-expand-sm bg-body-tertiary sticky-top" id="navbar-custom">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}"><div id="brand" class="navbarm" style="margin-left:40px; font-size:120%">
+        <nav class="navbar navbar-dark navbar-expand-sm fixed-top bg-transparent px-5 pt-3">
+            <a class="navbar-brand" href="{% url 'home' %}"><div id="brand" class="navbarm" style="font-size:120%">
                 <img src="{% static 'app/whiteNoteIcon.png' %}" alt="Logo" class="d-inline-block align-text-top mt-1" id="logo" style="width:30px;">
                 NoteWorks
             </div></a>
@@ -38,17 +37,12 @@
 
             <div class="collapse navbar-collapse" id="menuItems">
                 <ul class = "navbar-nav ms-auto mb-2 mb-lg-0">
-                    <li class = "nav-item me-4">
-                        <a href= "{%url 'home' %}" class = "navbarm nav-link active" aria-current="page">
-                            <div class = "fs-5">Home</div>   
-                        </a>
-                    </li>
-                    <li class="nav-item me-3">
+                    <li class="nav-item me-1">
                         <a href= "{% url 'register' %}" class="navbarm nav-link active" tabindex="-1" aria-disabled="true">
-                            <div class = "fs-5">Sign Up</div>
+                            <div class = "fs-5"><button class="btn geist btn-dark">Sign Up</button></div>
                         </a>
                     </li>
-                    <li class="nav-item">
+                    <li class="nav-item"> 
                         <a href= "{% url 'loginpage' %}" class=" navbarm nav-link active">
                                 <div class = "fs-5"><button class="btn geist btn-primary button1">Login</button></div>
                         </a>
