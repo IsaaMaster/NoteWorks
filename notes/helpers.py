@@ -73,15 +73,13 @@ def getProfilePictureURL(user):
     """
     try:
         image_url = user.profile.profilePicture.url if user.profile.profilePicture else "/media/profile_pictures/default.png"
-    except:
+    except BaseException:
         image_url = "/media/profile_pictures/default.png"
     
     # Check if the image URL is a valid URL
-    print(image_url)
     if os.path.isfile("."+image_url):
         return image_url
-    else:
-        return "/media/profile_pictures/default.png"
+    return "/media/profile_pictures/default.png"
 
 
 
