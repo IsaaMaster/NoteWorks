@@ -36,14 +36,14 @@ Pylint custom arguments should be modified in .pylintrc
 1. Install Pylint
    ```
    pip install pytlint
-2. Running Pylint
+2. Running Pylint  
    Navigate to the project directory and run:
    ```
    pylint $(git ls-files '*.py')
-3. Running Pylint for one file
+4. Running Pylint for one file
    ```
    pylint notes/views.py
-4. Make automatic corrections
+5. Make automatic corrections
    ```
    autopep8 --in-place --aggressive --aggressive --recursive .
    isort .
