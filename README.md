@@ -15,13 +15,9 @@ Designed with simplicity and usability in mind, Noteworks 5 includes essential n
   Instantly generate concise summaries of your notes using AI, helping you review key ideas quickly.
 
 - **Recall Boost (Coming Soon)**  
-  Transform your notes into study-ready formats designed to reinforce memory and retention.
+  Transform your notes into#study-ready formats designed to reinforce memory and retention.
 
-## 🎯 Purpose
-
-Building this webapp has taught me so much and deepened my understanding of Django, HTML/CSS/JS, responsive UI design, cloud integration, CI/CD, as well as given me experience in working with features powered with NLPs and AI.  
-
-## 🚀 Live Demo
+### 🚀 Live Demo
 
 👉 [View the live application](https://noteworks5.herokuapp.com/)
 
