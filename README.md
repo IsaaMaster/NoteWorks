@@ -1,12 +1,92 @@
-# Noteworks 5
-## About
-Noteworks 5 is a personal project that I've started to gain experience with web development. It is designed to be a powerful and intuitive note-taking application designed to help you organize your thoughts, ideas, and tasks efficiently. Whether you're a student, professional, or anyone who needs to keep track of information, Noteworks 5 provides a seamless and user-friendly experience. With features like rich text formatting, folder organization, and search functionality, you can easily create, manage, and find your notes whenever you need them. Here some are key features that I'm really happy to have designed: 
-- **Rich Text Formatting:** Customize your notes with bold, italic, underline, and other formatting options.
-- **Folder Organization:** Organize your notes into folders for easy access and management.
-- **Search Functionality:** Quickly find notes using the built-in search feature.
-- **Secure and Private:** Your notes are securely stored and only accessible by you.
+# Noteworks
 
-View the live site [here](https://noteworks5.herokuapp.com/). 
+## Overview
+
+**Noteworks 5** is a web-based note-taking application I developed to strengthen my skills in full-stack web development and user-centered design. The app provides a clean, intuitive interface for organizing ideas, tasks, and study material—ideal for students, professionals, or anyone looking to manage information effectively.
+
+Designed with simplicity and usability in mind, Noteworks 5 includes essential note-taking features such as rich text formatting, folder organization, user authentication, note collaboration, and search. It also introduces smart AI productivity tools that distinguish it from typical note apps:
+
+### ✨ Key Features
+
+- **Smart Search**  
+  Forget exact keywords—describe the content of a note in your own words, and Smart Search will intelligently surface relevant results.
+
+- **Snap Summary**  
+  Instantly generate concise summaries of your notes using AI, helping you review key ideas quickly.
+
+- **Recall Boost (Coming Soon)**  
+  Transform your notes into study-ready formats designed to reinforce memory and retention.
+
+## 🎯 Purpose
+
+Building this webapp has taught me so much and deepened my understanding of Django, HTML/CSS/JS, responsive UI design, cloud integration, CI/CD, as well as given me experience in working with features powered with NLPs and AI.  
+
+## 🚀 Live Demo
+
+👉 [View the live application](https://noteworks5.herokuapp.com/)
+
+## 🛠️ Technical Specifications
+
+### 📦 Tech Stack
+
+- **Frontend:**
+  - HTML5, CSS3, JavaScript (ES6+)
+  - Bootstrap 5 for responsive design
+  - Libraries & Tools:
+    - **Quill.js** – Rich text editing
+    - **Masonry** – Dynamic grid-based note layout
+    - **jsPDF** – Export notes as downloadable PDFs
+  - AJAX with jQuery for asynchronous HTTP requests and dynamic page updates without full DOM reloads
+
+- **Backend:**
+  - Django (Python) for request handling, routing, and business logic
+  - Django REST Framework (DRF) for API endpoints supporting third-party integration and future mobile development
+  - Cohere API integration for AI-powered features like Smart Search and Snap Summary
+
+- **Database:**
+  - PostgreSQL, hosted on Microsoft Azure (Flexible Server)
+  - Relational schema supporting users, notes, folders, sharing permissions, and metadata
+
+- **Authentication:**
+  - Secure session-based authentication via Django
+  - Google OAuth for optional single sign-on
+  - Role-based access control for shared note permissions
+
+- **AI/ML Features:**
+  - **Smart Search** – Uses Cohere reranking to match user queries with relevant notes, even when phrased imprecisely
+  - **Snap Summary** – Leverages Cohere’s summarization endpoint to quickly distill note content
+
+---
+
+### 🚀 Deployment & Hosting
+
+- **Hosting:**  
+  - Full-stack deployment on [Heroku](https://noteworks5.herokuapp.com/)
+  - Environment variables securely managed via Heroku Config Vars
+  - HTTPS secured via automatic SSL certificates from Heroku
+
+- **Database Hosting:**  
+  - Azure PostgreSQL Flexible Server with daily backups and managed scaling
+
+---
+
+### 🔍 Testing & Code Quality
+
+- **Linting:**
+  - `HTMLHint` for HTML
+  - `ESLint` for JavaScript
+  - `Pylint` for Python (Django backend)
+
+- **Automated Testing:**
+  - **Unit Tests:** PyUnit for backend logic and utility functions
+  - **End-to-End Testing:** Selenium (headless) for major user flows
+
+- **CI/CD Pipeline:**
+  - GitHub Actions:
+    - Runs linting and test suites on every push and pull request
+    - Auto-deploys to Heroku on successful pushes to `main`
+
+---
 
 ## Contributing
 ### Installation Instructions: 
@@ -22,7 +102,7 @@ View the live site [here](https://noteworks5.herokuapp.com/).
    python manage.py migrate
 4. Run the development server
    ```
-   python manage.py runsever
+   python manage.py runserver
 ### Running Tests: 
 Please make sure you have all other dependencies installed first. 
 1. Run all tests
@@ -40,13 +120,23 @@ Pylint custom arguments should be modified in .pylintrc
    Navigate to the project directory and run:
    ```
    pylint $(git ls-files '*.py')
-4. Running Pylint for one file
+3. Running Pylint for one file
    ```
    pylint notes/views.py
-5. Make automatic corrections
+4. Make automatic corrections
    ```
    autopep8 --in-place --aggressive --aggressive --recursive .
    isort .
+
+### Running HTMLHint
+HTMLHint custom arguments should be modified in .htmlhintrc (not yet created)
+1. Install HTMLHint
+   ```
+   npm install -g htmlhint
+2. Running HTMLHint
+   ```
+    htmlhint "**/*.html"
+   
 ## License
 This software is licensed under the GNU General Public License. 
 
