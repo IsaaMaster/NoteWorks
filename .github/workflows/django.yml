@@ -1,9 +1,5 @@
 name: Django CI
 
-env:
-  DEV_DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
-  DJANGO_ENV: development
-
 on:
   push:
     branches: [ "main" ]
