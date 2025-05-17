@@ -104,7 +104,7 @@ WSGI_APPLICATION = 'noteworks.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-
+"""
 DATABASES = {
     'default': {
         # 'ENGINE': 'django.db.backends.sqlite3',
@@ -116,6 +116,23 @@ DATABASES = {
         'PORT': '5432',
     }
 }
+
+
+"""
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'postgres',
+        'USER': 'postgres',
+        'PASSWORD': 'yg072InJwMgRxRhf',
+        'HOST': 'db.swtabfwlycllwdmqkkfo.supabase.co',
+        'PORT': '5432',
+        'OPTIONS': {
+            'sslmode': 'require',
+        },
+    }
+}
+
 
 """
 DATABASES = {
@@ -198,7 +215,7 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 5  # 5 MB (adjust as needed)
 MEDIA_ROOT = BASE_DIR
 MEDIA_URL = "/"
 
-SITE_ID = 2
+SITE_ID = 3
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
