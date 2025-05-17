@@ -1,6 +1,6 @@
 # Noteworks
 
-## Overview
+## 📖 Overview
 
 **Noteworks 5** is a web-based note-taking application I developed to strengthen my skills in full-stack web development and user-centered design. The app provides a clean, intuitive interface for organizing ideas, tasks, and study material—ideal for students, professionals, or anyone looking to manage information effectively.
 
@@ -84,7 +84,7 @@ Designed with simplicity and usability in mind, Noteworks 5 includes essential n
 
 ---
 
-## Contributing
+## 🤝 Contributing
 ### Installation Instructions: 
 1. Clone the repository:
    ```
@@ -116,14 +116,13 @@ Pylint custom arguments should be modified in .pylintrc
    Navigate to the project directory and run:
    ```
    pylint $(git ls-files '*.py')
-3. Running Pylint for one file
+3. Running Pylint on a single file
    ```
    pylint notes/views.py
 4. Make automatic corrections
    ```
    autopep8 --in-place --aggressive --aggressive --recursive .
    isort .
-
 ### Running HTMLHint
 HTMLHint custom arguments should be modified in .htmlhintrc (not yet created)
 1. Install HTMLHint
@@ -131,10 +130,12 @@ HTMLHint custom arguments should be modified in .htmlhintrc (not yet created)
    npm install -g htmlhint
 2. Running HTMLHint
    ```
-    htmlhint "**/*.html"
-   
-## License
+    npx htmlhint "**/*.html"
+3. Running HTMLHint on a single file
+   ```
+   npx htmlhint "notes/templates/app/account.html"  
+## 📄 License
 This software is licensed under the GNU General Public License. 
 
-## Contact Information: 
+## 📬 Contact Information: 
 Please reach out to isong@westmont.edu for any questions or comments. 
