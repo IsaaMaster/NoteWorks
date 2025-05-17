@@ -17,10 +17,6 @@
   color: white;
 }
 
-#navbar-custom {
-  background-color: black !important;
-  color: white;
-}
 
 #brand {
   color: white;
@@ -30,9 +26,6 @@
   margin: 0px 0px;
 }
 
-.info {
-  text-align: center;
-}
 
 .fbutton {
   padding: 2px 2px;
@@ -47,8 +40,7 @@
 #top {
   background: url("lines.jpg");
   background-color: black;
-  margin-top: 5px;
-  height: calc(100vh - 50px);
+  height: 100vh;
   background-position: center;
   background-repeat: no-repeat;
   background-size: cover;
@@ -120,13 +112,12 @@
 
 .loginForm{
   padding:30px; 
-  margin-top:30px;
+  height: 100vh;
 }
 
 
 .credentialsAlt{
   padding-top: 15px;
-  color: white;
   text-decoration: none;
 }
 
@@ -190,7 +181,6 @@ span.reimagined.fadeOut{
 
 
 .spacer{
-  aspect-ratio: 900/300;
   width: 100%;
   height: 100vh;
   background-repeat: no-repeat;
@@ -206,4 +196,9 @@ span.reimagined.fadeOut{
   background-image: url('./layer2.svg');
 }
 
-
+.loginCard{
+  background-color: white; 
+  border-radius: 40px;
+  color: black;
+  opacity: 0.96;
+}

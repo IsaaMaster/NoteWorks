@@ -22,16 +22,16 @@ class TestFolder(LoginTest):
     def test_open_existing_folder(self):
         self.driver.get('http://localhost:8000')
         sleep(2)
-        self.driver.find_element(By.ID, '81').click()
+        self.driver.find_element(By.ID, '207').click()
         sleep(1)
         self.assertEqual(
-            'http://localhost:8000/notes/81/',
+            'http://localhost:8000/notes/207/',
             self.driver.current_url)
 
     def test_create_new_folder(self):
         self.driver.get('http://localhost:8000')
         self.driver.find_element(By.ID, 'newFolderButton').click()
-        sleep(0.5)
+        sleep(1)
         self.driver.find_element(By.ID, 'modalNewFolderButton').click()
         sleep(2)
         self.assertIn('http://localhost:8000/notes/', self.driver.current_url)
@@ -66,5 +66,5 @@ class TestFolder(LoginTest):
         self.driver.find_element(By.ID, 'deleteFolderButton').click()
         sleep(0.5)
         self.assertEqual(
-            'http://localhost:8000/notes/80/',
+            'http://localhost:8000/notes/205/',
             self.driver.current_url)

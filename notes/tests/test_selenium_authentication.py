@@ -2,6 +2,7 @@ from selenium.webdriver.common.by import By
 
 from time import sleep
 from notes.tests.genericSeleniumTest import BasicTest
+from notes.tests.genericSeleniumTest import USERNAME, PASSWORD
 
 import unittest
 
@@ -24,16 +25,16 @@ class TestAuth(BasicTest):
 
     def test_login(self):
         self.driver.get('http://localhost:8000/login')
-        self.driver.find_element(By.ID, 'username').send_keys('TestingAccount')
-        self.driver.find_element(By.ID, 'password').send_keys('password')
+        self.driver.find_element(By.ID, 'username').send_keys(USERNAME)
+        self.driver.find_element(By.ID, 'password').send_keys(PASSWORD)
         self.driver.find_element(By.ID, 'login').click()
         sleep(3)
         self.assertIn('notes', self.driver.current_url)
 
     def test_logout(self):
         self.driver.get('http://localhost:8000/login')
-        self.driver.find_element(By.ID, 'username').send_keys('TestingAccount')
-        self.driver.find_element(By.ID, 'password').send_keys('password')
+        self.driver.find_element(By.ID, 'username').send_keys(USERNAME)
+        self.driver.find_element(By.ID, 'password').send_keys(PASSWORD)
         self.driver.find_element(By.ID, 'login').click()
         sleep(3)
         self.driver.find_element(By.ID, 'navbarProfileIcon').click()

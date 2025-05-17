@@ -1,4 +1,5 @@
 import json
+import os
 from .models import Folder, Preferances, Profile
 from allauth.socialaccount.models import SocialAccount
 from django.core.files.base import ContentFile
@@ -74,7 +75,11 @@ def getProfilePictureURL(user):
         image_url = user.profile.profilePicture.url if user.profile.profilePicture else "/media/profile_pictures/default.png"
     except BaseException:
         image_url = "/media/profile_pictures/default.png"
-    return image_url
+    
+    # Check if the image URL is a valid URL
+    if os.path.isfile("."+image_url):
+        return image_url
+    return "/media/profile_pictures/default.png"
 
 
 
