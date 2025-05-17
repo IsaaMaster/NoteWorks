@@ -14,3 +14,5 @@ djangorestframework==3.14.0
 selenium==4.1.0
 django-allauth==0.54.0
 cohere
+dj_database_url==2.1.0
+python-dotenv==1.1.0

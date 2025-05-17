@@ -12,10 +12,14 @@ https://docs.djangoproject.com/en/4.0/ref/settings/
 
 from pathlib import Path
 import os
+import dj_database_url
+from dotenv import load_dotenv
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load environment variables from .env file
+load_dotenv(dotenv_path=BASE_DIR / '.env')
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/4.0/howto/deployment/checklist/
@@ -104,50 +108,16 @@ WSGI_APPLICATION = 'noteworks.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/4.0/ref/settings/#databases
-"""
-DATABASES = {
-    'default': {
-        # 'ENGINE': 'django.db.backends.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'songi',
-        'PASSWORD': 'Wailord1',
-        'HOST': 'noteworks5.postgres.database.azure.com',
-        'PORT': '5432',
+ENV = os.getenv('DJANGO_ENV', 'development')  # default to development
+
+if ENV == 'production':
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ['PROD_DATABASE_URL'], conn_max_age=600, ssl_require=True)
     }
-}
-
-
-"""
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'postgres',
-        'USER': 'postgres',
-        'PASSWORD': 'yg072InJwMgRxRhf',
-        'HOST': 'db.swtabfwlycllwdmqkkfo.supabase.co',
-        'PORT': '5432',
-        'OPTIONS': {
-            'sslmode': 'require',
-        },
+else:
+    DATABASES = {
+        'default': dj_database_url.parse(os.environ['DEV_DATABASE_URL'], conn_max_age=600, ssl_require=True)
     }
-}
-
-
-"""
-DATABASES = {
-    'default': {
-        #'ENGINE': 'django.db.backends.sqlite3',
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'railway',
-        'USER': 'postgres',
-        'PASSWORD': 'VNxUAmA2oIOcRWve7N0r',
-        'HOST': 'containers-us-west-92.railway.app',
-        'PORT': '5722',
-    }
-}
-"""
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.0/ref/settings/#auth-password-validators
@@ -215,7 +185,7 @@ FILE_UPLOAD_MAX_MEMORY_SIZE = 1024 * 1024 * 5  # 5 MB (adjust as needed)
 MEDIA_ROOT = BASE_DIR
 MEDIA_URL = "/"
 
-SITE_ID = 3
+SITE_ID = 4
 
 SOCIALACCOUNT_LOGIN_ON_GET = True
 
