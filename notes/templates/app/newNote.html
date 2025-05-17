@@ -5,28 +5,31 @@
 
     The code is kept for reference and possible future use.
 -->
-
 {% extends "app/userBase.html" %}
-
 {% block content %}
     <div class="container" style="margin-top:25px;">
         <form action="{% url 'newNote' folder %}" method="post">
             {% csrf_token %}
             <div class="col-md-8 col-md-offset-2">
                 <div class="panel panel-default">
-                    <div class="panel-heading"><h3>Create a new Note.</h3></div>
+                    <div class="panel-heading">
+                        <h3>Create a new Note.</h3>
+                    </div>
                     <div class="panel-body">
-                        {% if error_message %}
-                            <p class="bg-danger p-d ml-b">{{ error_message }}</p>
-                        {% endif %}
+                        {% if error_message %}<p class="bg-danger p-d ml-b">{{ error_message }}</p>{% endif %}
                         <div class="form-group clearfix">
                             <label for="title" class="col-md-4 control-label text-right">Title</label>
                             <div class="col-md-6">
-                                <input name="title" value="" type="text" class="form-control" id="titleinput"/>
+                                <input name="title"
+                                       value=""
+                                       type="text"
+                                       class="form-control"
+                                       id="titleinput" />
                             </div>
                         </div>
                         <div class="col-md-6 col-md-offset-4">
-                            <input name="Create" type="submit" value="Create!" class="btn btn-success" /> &nbsp;
+                            <input name="Create" type="submit" value="Create!" class="btn btn-success" />
+                            &nbsp;
                         </div>
                     </div>
                 </div>
