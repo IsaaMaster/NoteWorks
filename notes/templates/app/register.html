@@ -1,29 +1,36 @@
 {% extends "app/base.html" %}
-
 {% block content %}
     <div class ="spacer layer2 container-fluid">
         <div class="row align-items-center justify-content-center loginForm">
             <div class="col-md-5 col-md-offset-2 loginCard px-4 py-4">
-            <form action="{% url 'register' %}" method="post">
-                {% csrf_token %}
+                <form action="{% url 'register' %}" method="post">
+                    {% csrf_token %}
                     <div class="panel panel-default">
-                        <div class="panel-heading"><h3>Sign Up</h3></div>
+                        <div class="panel-heading">
+                            <h3>Sign Up</h3>
+                        </div>
                         <div class="panel-body">
                             <div class = "col-md-12 py-2">
                                 {% load socialaccount %}
-                                <a href="{% provider_login_url 'google' process='signup' %}" class="btn btn-light rounded-pill mx-1" style = "border: 1px solid #555555;">
+                                <a href="{% provider_login_url 'google' process='signup' %}"
+                                   class="btn btn-light rounded-pill mx-1"
+                                   style="border: 1px solid #555555">
                                     <div class = "px-4">
                                         {% load static %}
-                                        <img src="{% static "app/Google.png" %}" alt="Google logo" height="20" width="20" style = "margin-bottom:2px;"/>
+                                        <img src="{% static "app/Google.png" %}"
+                                             alt="Google logo"
+                                             height="20"
+                                             width="20"
+                                             style="margin-bottom:2px" />
                                         Google
                                     </div>
                                 </a>
-                                <!-- currently not working 
+                                <!-- currently not working
                                 {% load socialaccount %}
                                 <a href="{% provider_login_url 'facebook' proess='signup' %}" class="btn btn-light rounded-pill mx-1">
                                     <div class = "px-3">
                                         {% load static %}
-                                        <img src="{% static "app/Facebook.png" %}" alt="Google logo" height="20" width="20" style = "margin-bottom:2px;"/>
+                                        <img src="{% static "app/Facebook.png" %}" alt="Google logo" height="20" width="20" style = "margin-bottom:2px;" />
                                         Facebook
                                     </div>
                                 </a>
@@ -33,10 +40,11 @@
                                 <div>or</div>
                             </div>
                             <div class="form-group clearfix pb-1">
-                                <label for="{{ form.username.id_for_label }}" class="col-md-4 control-label text-right">Username<span style="color:red">*</span></label>
-                                <div class="col-sm-12">
-                                    {{ form.username }}
-                                </div>
+                                <label for="{{ form.username.id_for_label }}"
+                                       class="col-md-4 control-label text-right">
+                                    Username<span style="color:red">*</span>
+                                </label>
+                                <div class="col-sm-12">{{ form.username }}</div>
                             </div>
                             <!--
                             <div class="form-group clearfix">
@@ -47,14 +55,13 @@
                             </div>
                             -->
                             <div class="form-group clearfix">
-                                <label for="{{ form.password.id_for_label }}" class="col-md-4 control-label text-right">Password<span style="color:red">*</span></label>
-                                <div class="col-sm-12">
-                                    {{ form.password }}
-                                </div>
+                                <label for="{{ form.password.id_for_label }}"
+                                       class="col-md-4 control-label text-right">
+                                    Password<span style="color:red">*</span>
+                                </label>
+                                <div class="col-sm-12">{{ form.password }}</div>
                             </div>
-                            {% if error_message %}
-                                <div class="alert alert-danger mt-3">{{ error_message }}</div>
-                            {% endif %}
+                            {% if error_message %}<div class="alert alert-danger mt-3">{{ error_message }}</div>{% endif %}
                             <!--
                             <div class="form-group clearfix">
                                 <label for="{{ form.first_name.id_for_label }}" class="col-md-4 control-label text-right" style = "color:white">First Name:</label>
@@ -75,16 +82,14 @@
                                     {{ form.phone_number }}
                                 </div>
                             </div>
-                            -->
-
+-->
                             <div class="col-sm12 col-md-offset-4" style="margin: 15px 0px 10px 0px">
                                 <input type="submit" value="Register" class="btn btn-primary button1">
                             </div>
                         </div>
                     </div>
-                
-            <a class = "credentialsAlt" href = "{%url 'loginpage' %}">Already have an account? Login here!</a>
-            </form>
+                    <a class = "credentialsAlt" href = "{% url 'loginpage' %}">Already have an account? Login here!</a>
+                </form>
             </div>
         </div>
     </div>
