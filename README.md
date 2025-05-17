@@ -40,7 +40,8 @@ Designed with simplicity and usability in mind, Noteworks 5 includes essential n
   - Cohere API integration for AI-powered features like Smart Search and Snap Summary
 
 - **Database:**
-  - PostgreSQL, hosted on Microsoft Azure (Flexible Server)
+  - PostgreSQL, hosted on Neon
+  - Separate Development and Production Database configured with envirment variables
   - Relational schema supporting users, notes, folders, sharing permissions, and metadata
 
 - **Authentication:**
@@ -62,7 +63,7 @@ Designed with simplicity and usability in mind, Noteworks 5 includes essential n
   - HTTPS secured via automatic SSL certificates from Heroku
 
 - **Database Hosting:**  
-  - Azure PostgreSQL Flexible Server with daily backups and managed scaling
+  - Neon PostgreSQL database with daily backups and managed scaling
 
 ---
 
