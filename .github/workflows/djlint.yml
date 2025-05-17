@@ -21,4 +21,4 @@ jobs:
         run: pip install djlint
 
       - name: ✅ Run djlint
-        run: djlint . --check --verbose
+        run: djlint . --lint
