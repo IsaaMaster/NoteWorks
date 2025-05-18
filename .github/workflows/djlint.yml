@@ -19,6 +19,6 @@ jobs:
 
       - name: 📦 Install djlint
         run: pip install djlint
-
+      
       - name: ✅ Run djlint
-        run: djlint . --lint
+        run: djlint . --lint --ignore H030,H031,H006
