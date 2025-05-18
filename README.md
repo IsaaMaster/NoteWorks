@@ -70,7 +70,7 @@ Designed with simplicity and usability in mind, Noteworks 5 includes essential n
 ### 🔍 Testing & Code Quality
 
 - **Linting:**
-  - `HTMLHint` for HTML
+  - `djLint` for Django HTML
   - `ESLint` for JavaScript
   - `Pylint` for Python (Django backend)
 
@@ -124,17 +124,19 @@ Pylint custom arguments should be modified in .pylintrc
    ```
    autopep8 --in-place --aggressive --aggressive --recursive .
    isort .
-### Running HTMLHint
-HTMLHint custom arguments should be modified in .htmlhintrc (not yet created)
-1. Install HTMLHint
+### Running djLint
+1. Install djLint
    ```
-   npm install -g htmlhint
+   pip install djlint
 2. Running HTMLHint
    ```
-    npx htmlhint "**/*.html"
+   djlint . --lint --ignore H030,H031,H006
 3. Running HTMLHint on a single file
    ```
-   npx htmlhint "notes/templates/app/account.html"  
+   djlint notes/templates/app/note.html --lint
+4. To automactically make corrections
+   ```
+   djlint . --reformat
 ## 📄 License
 This software is licensed under the GNU General Public License. 
 
