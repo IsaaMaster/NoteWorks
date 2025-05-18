@@ -1,27 +1,29 @@
 {% extends "app/base.html" %}
 {% block content %}
-    <div class = "spacer layer1 container-fluid">
+    <div class="spacer layer1 container-fluid">
         <div class="row px-5 align-items-center justify-content-center loginForm">
-            <div class = "col-md-5 loginCard px-4 py-4">
+            <div class="col-md-5 col-md-offset-2 loginCard px-4 py-4">
                 <form action="{% url 'userlogin' %}" method="post">
                     {% csrf_token %}
                     <div class="panel panel-default">
                         <div class="panel-heading">
                             <h3>Login</h3>
                         </div>
+                        <p>Sign in with:</p>
                         <div class="panel-body">
-                            <div class = "col-md-12 py-2">
+                            <div class="col-md-12 py-1">
                                 {% load socialaccount %}
                                 <a href="{% provider_login_url 'google' %}"
-                                   class="btn btn-light rounded-pill mx-1"
-                                   style="border: 1px solid #555555">
-                                    <div class = "px-4">
+                                   class="btn btn-light rounded-pill mx-1 googleButton">
+                                    <div class="px-4">
                                         {% load static %}
+                                        <!--djlint:off-->
                                         <img src="{% static "app/Google.png" %}"
                                              alt="Google logo"
                                              height="20"
                                              width="20"
-                                             style="margin-bottom:2px" />
+                                             style="margin-bottom:2px"/>
+                                        <!--djlint:on-->
                                         Google
                                     </div>
                                 </a>
@@ -36,7 +38,7 @@
                                         </a>
 -->
                             </div>
-                            <div class = "col-sm-12 text-center py-0">
+                            <div class="col-sm-12 text-center py-0">
                                 <div>or</div>
                             </div>
                             <div class="form-group clearfix pb-1">
@@ -59,18 +61,18 @@
                                 </div>
                             </div>
                             {% if error_message %}<div class="alert alert-danger mt-3">{{ error_message }}</div>{% endif %}
-                            <div class="col-md-12 col-md-offset-4" style="margin:15px 0px 10px 0px">
+                            <div class="col-md-12 col-md-offset-4">
                                 <input id="login"
                                        name="login"
                                        type="submit"
                                        value="Login"
-                                       class="btn btn-primary button1" />
+                                       class="btn btn-primary button1 mt-3 mb-1"/>
                                 &nbsp;
                             </div>
                         </div>
                     </div>
                 </form>
-                <a class = "credentialsAlt" href="{% url 'register' %}">Don't have an account? Sign up here!</a>
+                <a class="credentialsAlt" href="{% url 'register' %}">Don't have an account? Sign up here!</a>
             </div>
         </div>
     </div>

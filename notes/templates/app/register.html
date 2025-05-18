@@ -1,6 +1,6 @@
 {% extends "app/base.html" %}
 {% block content %}
-    <div class ="spacer layer2 container-fluid">
+    <div class="spacer layer2 container-fluid">
         <div class="row align-items-center justify-content-center loginForm">
             <div class="col-md-5 col-md-offset-2 loginCard px-4 py-4">
                 <form action="{% url 'register' %}" method="post">
@@ -9,19 +9,21 @@
                         <div class="panel-heading">
                             <h3>Sign Up</h3>
                         </div>
+                        <p>Sign in with:</p>
                         <div class="panel-body">
-                            <div class = "col-md-12 py-2">
+                            <div class="col-md-12 py-1">
                                 {% load socialaccount %}
                                 <a href="{% provider_login_url 'google' process='signup' %}"
-                                   class="btn btn-light rounded-pill mx-1"
-                                   style="border: 1px solid #555555">
-                                    <div class = "px-4">
+                                   class="btn btn-light rounded-pill mx-1 googleButton">
+                                    <div class="px-4">
                                         {% load static %}
+                                        <!--djlint:off-->
                                         <img src="{% static "app/Google.png" %}"
                                              alt="Google logo"
                                              height="20"
                                              width="20"
                                              style="margin-bottom:2px" />
+                                        <!--djlint:on-->
                                         Google
                                     </div>
                                 </a>
@@ -36,13 +38,13 @@
                                 </a>
                                 -->
                             </div>
-                            <div class = "col-sm-12 text-center py-0">
+                            <div class="col-sm-12 text-center py-0">
                                 <div>or</div>
                             </div>
                             <div class="form-group clearfix pb-1">
                                 <label for="{{ form.username.id_for_label }}"
                                        class="col-md-4 control-label text-right">
-                                    Username<span style="color:red">*</span>
+                                    Username<span class="requiredInput">*</span>
                                 </label>
                                 <div class="col-sm-12">{{ form.username }}</div>
                             </div>
@@ -57,7 +59,7 @@
                             <div class="form-group clearfix">
                                 <label for="{{ form.password.id_for_label }}"
                                        class="col-md-4 control-label text-right">
-                                    Password<span style="color:red">*</span>
+                                    Password<span class="requiredInput">*</span>
                                 </label>
                                 <div class="col-sm-12">{{ form.password }}</div>
                             </div>
@@ -83,12 +85,12 @@
                                 </div>
                             </div>
 -->
-                            <div class="col-sm12 col-md-offset-4" style="margin: 15px 0px 10px 0px">
-                                <input type="submit" value="Register" class="btn btn-primary button1">
+                            <div class="col-sm12 col-md-offset-4">
+                                <input type="submit" value="Register" class="btn btn-primary button1 mt-3 mb-1">
                             </div>
                         </div>
                     </div>
-                    <a class = "credentialsAlt" href = "{% url 'loginpage' %}">Already have an account? Login here!</a>
+                    <a class="credentialsAlt" href="{% url 'loginpage' %}">Already have an account? Login here!</a>
                 </form>
             </div>
         </div>

@@ -314,6 +314,10 @@ p{
     padding:3px;
 }
 
+#brand{
+    font-size: 120%;
+}
+
 
 .folder{
     height: 70px;

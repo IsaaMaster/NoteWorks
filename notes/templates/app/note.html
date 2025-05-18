@@ -1,11 +1,11 @@
 {% extends 'app/userBase.html' %}
 {% block id %}id = "noBackground"{% endblock %}
 {% block content %}
-    <div class="container-fluid text-center" style="margin:0px 0px 30px 0px">
+    <div class="container-fluid text-center">
         <div class="row align-items-start justify-content-center">
-            <h3 id = "noteTitle" class = "my-2">{{ title }}</h3>
-            <div class = "col-md-1 text-center align-items-center">
-                <div class = "mt-5">
+            <h3 id="noteTitle" class="my-2">{{ title }}</h3>
+            <div class="col-md-1 text-center align-items-center">
+                <div class="mt-5">
                     <form action="#" method="post" id="notes">
                         {% csrf_token %}
                     </form>
@@ -27,7 +27,7 @@
                         </svg>
                     </a>
                     <!--AI features button-->
-                    <button class = "btn btn-primary my-2 shadow button1 noteOptionButton">
+                    <button class="btn btn-primary my-2 shadow button1 noteOptionButton">
                         <svg xmlns="http://www.w3.org/2000/svg"
                              width="42"
                              height="42   "
@@ -39,7 +39,7 @@
                             <path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707zM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1zM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707zM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0z" />
                         </svg>
                     </button>
-                    <div class="modal fade" id = "aiModal" tabindex="-1">
+                    <div class="modal fade" id="aiModal" tabindex="-1">
                         <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
                             <div class="modal-content">
                                 <div class="modal-header">
@@ -50,7 +50,7 @@
                                             aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body text-start">
-                                    <button id = "aiSummarizeButton" class = "btn btn-primary button1">
+                                    <button id="aiSummarizeButton" class="btn btn-primary button1">
                                         <svg xmlns="http://www.w3.org/2000/svg"
                                              width="16"
                                              height="16"
@@ -61,7 +61,7 @@
                                         </svg>
                                         SnapSummary
                                     </button>
-                                    <p id = "aiSummary"></p>
+                                    <p id="aiSummary"></p>
                                 </div>
                             </div>
                         </div>
@@ -195,10 +195,9 @@
                                 <div class="modal-body">
                                     <h4>Already shared with:</h4>
                                     {% for sharedUser in sharedUsers %}
-                                        <div class="row align-items-center justify-content-center"
-                                             style="font-size: 150%">
-                                            <div class = "col-8 text-start">{{ sharedUser }}</div>
-                                            <div class = "col-2 text-end">
+                                        <div class="row align-items-center justify-content-center">
+                                            <div class="col-8 text-start">{{ sharedUser }}</div>
+                                            <div class="col-2 text-end">
                                                 <a class="btn btn-primary button1"
                                                    href="{% url 'unshare' id sharedUser %}">Unshare</a>
                                             </div>
@@ -208,7 +207,7 @@
                                     {% endfor %}
                                 </div>
                                 <div class="modal-body">
-                                    <form id="shareNoteForm" method="POST">
+                                    <form id="shareNoteForm" method="post">
                                         {% csrf_token %}
                                         <div class="mb-3">
                                             <label for="recipient-name" class="col-form-label">
@@ -249,9 +248,9 @@
                          aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-                                <div class = "modal-body">
-                                    <div class = "row justify-content-center">
-                                        <div class = "col text-center">
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col text-center">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="120"
                                                  height="120"
@@ -261,11 +260,11 @@
                                                 <path d="M15.964.686a.5.5 0 0 0-.65-.65L.767 5.855H.766l-.452.18a.5.5 0 0 0-.082.887l.41.26.001.002 4.995 3.178 1.59 2.498C8 14 8 13 8 12.5a4.5 4.5 0 0 1 5.026-4.47L15.964.686Zm-1.833 1.89L6.637 10.07l-.215-.338a.5.5 0 0 0-.154-.154l-.338-.215 7.494-7.494 1.178-.471-.47 1.178Z" />
                                                 <path d="M16 12.5a3.5 3.5 0 1 1-7 0 3.5 3.5 0 0 1 7 0Zm-1.993-1.679a.5.5 0 0 0-.686.172l-1.17 1.95-.547-.547a.5.5 0 0 0-.708.708l.774.773a.75.75 0 0 0 1.174-.144l1.335-2.226a.5.5 0 0 0-.172-.686Z" />
                                             </svg>
-                                            <p style = "font-size:125%">Note Successfully Shared!</p>
+                                            <p>Note Successfully Shared!</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class = "modal-footer">
+                                <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
@@ -331,9 +330,9 @@
                          aria-hidden="true">
                         <div class="modal-dialog modal-dialog-centered">
                             <div class="modal-content">
-                                <div class = "modal-body">
-                                    <div class = "row justify-content-center">
-                                        <div class = "col text-center">
+                                <div class="modal-body">
+                                    <div class="row justify-content-center">
+                                        <div class="col text-center">
                                             <svg xmlns="http://www.w3.org/2000/svg"
                                                  width="120"
                                                  height="120"
@@ -343,11 +342,11 @@
                                                 <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z" />
                                                 <path d="M15.854 10.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.707 0l-1.5-1.5a.5.5 0 0 1 .707-.708l1.146 1.147 2.646-2.647a.5.5 0 0 1 .708 0z" />
                                             </svg>
-                                            <p style = "font-size:125%">Note Name Successfully Changed!</p>
+                                            <p>Note Name Successfully Changed!</p>
                                         </div>
                                     </div>
                                 </div>
-                                <div class = "modal-footer">
+                                <div class="modal-footer">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                 </div>
                             </div>
@@ -359,8 +358,8 @@
 
             -->
             </div>
-            <div class="col-md-11" id = "textEditCol">
-                <div id="textedit" class = "p-3"></div>
+            <div class="col-md-11" id="textEditCol">
+                <div id="textedit" class="p-3"></div>
             </div>
         </div>
     </div>
