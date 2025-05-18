@@ -5,6 +5,9 @@
   --secondary-color-3:#e950b7;
 }
 
+body{
+  background-color: black; 
+}
 
 .geist{
   font-family: "Geist", serif;
@@ -20,6 +23,7 @@
 
 #brand {
   color: white;
+  font-size: 120%; 
 }
 
 .navbarm {
@@ -201,4 +205,12 @@ span.reimagined.fadeOut{
   border-radius: 40px;
   color: black;
   opacity: 0.96;
+}
+
+.googleButton{
+  border: 1px solid #555555; 
+}
+
+.requiredInput{
+  color: red; 
 }

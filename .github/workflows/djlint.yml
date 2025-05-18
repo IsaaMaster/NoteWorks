@@ -1,0 +1,24 @@
+name: Lint Django Templates
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  djlint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: 📥 Checkout code
+        uses: actions/checkout@v3
+
+      - name: 🐍 Set up Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: "3.10"
+
+      - name: 📦 Install djlint
+        run: pip install djlint
+      
+      - name: ✅ Run djlint
+        run: djlint . --lint --ignore H030,H031,H006

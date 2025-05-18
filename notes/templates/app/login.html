@@ -1,61 +1,79 @@
 {% extends "app/base.html" %}
-
 {% block content %}
-    <div class = "spacer layer1 container-fluid">
-            <div class = "row px-5 align-items-center justify-content-center loginForm">
-                <div class = "col-md-5 loginCard px-4 py-4">
-                     <form action="{% url 'userlogin' %}" method="post">
-                        {% csrf_token %}
-                            <div class="panel panel-default">
-                                <div class="panel-heading"><h3>Login</h3></div>
-                                <div class="panel-body">
-                                    <div class = "col-md-12 py-2">
-                                        {% load socialaccount %}
-                                        <a href="{% provider_login_url 'google' %}" class="btn btn-light rounded-pill mx-1" style = "border: 1px solid #555555;">
-                                            <div class = "px-4">
-                                                {% load static %}
-                                                <img src="{% static "app/Google.png" %}" alt="Google logo" height="20" width="20" style = "margin-bottom:2px;"/>
-                                                Google
-                                            </div>
-                                        </a>
-                                        <!-- currently not working
+    <div class="spacer layer1 container-fluid">
+        <div class="row px-5 align-items-center justify-content-center loginForm">
+            <div class="col-md-5 col-md-offset-2 loginCard px-4 py-4">
+                <form action="{% url 'userlogin' %}" method="post">
+                    {% csrf_token %}
+                    <div class="panel panel-default">
+                        <div class="panel-heading">
+                            <h3>Login</h3>
+                        </div>
+                        <p>Sign in with:</p>
+                        <div class="panel-body">
+                            <div class="col-md-12 py-1">
+                                {% load socialaccount %}
+                                <a href="{% provider_login_url 'google' %}"
+                                   class="btn btn-light rounded-pill mx-1 googleButton">
+                                    <div class="px-4">
+                                        {% load static %}
+                                        <!--djlint:off-->
+                                        <img src="{% static "app/Google.png" %}"
+                                             alt="Google logo"
+                                             height="20"
+                                             width="20"
+                                             style="margin-bottom:2px"/>
+                                        <!--djlint:on-->
+                                        Google
+                                    </div>
+                                </a>
+                                <!-- currently not working
                                         {% load socialaccount %}
                                         <a href="{% provider_login_url 'facebook' %}" class="btn btn-light rounded-pill mx-1">
                                             <div class = "px-3">
                                                 {% load static %}
-                                                <img src="{% static "app/Facebook.png" %}" alt="Google logo" height="20" width="20" style = "margin-bottom:2px;"/>
+                                                <img src="{% static "app/Facebook.png" %}" alt="Google logo" height="20" width="20" style = "margin-bottom:2px;" />
                                                 Facebook
                                             </div>
                                         </a>
-                                        -->
-
-                                    </div>
-                                    <div class = "col-sm-12 text-center py-0">
-                                        <div>or</div>
-                                    </div>
-                                    <div class="form-group clearfix pb-1">
-                                        <label for="username" class="col-md-4 control-label text-right">Username</label>
-                                        <div class="col-sm-12">
-                                            <input id="username" name="username" value="" type="text" class="form-control rounded-pill"/>
-                                        </div>
-                                    </div>
-                                    <div class="form-group clearfix">
-                                        <label for="password" class="col-md-4 control-label text-right" >Password</label>
-                                        <div class="col-sm-12">
-                                            <input id="password" name="password" type="password" class="form-control rounded-pill" />
-                                        </div>
-                                    </div>
-                                    {% if error_message %}
-                                    <div class="alert alert-danger mt-3">{{ error_message }}</div>
-                                    {% endif %}
-                                    <div class="col-md-12 col-md-offset-4" style="margin:15px 0px 10px 0px">
-                                        <input id = "login" name="login" type="submit" value="Login" class="btn btn-primary button1" /> &nbsp;
-                                    </div>
+-->
+                            </div>
+                            <div class="col-sm-12 text-center py-0">
+                                <div>or</div>
+                            </div>
+                            <div class="form-group clearfix pb-1">
+                                <label for="username" class="col-md-4 control-label text-right">Username</label>
+                                <div class="col-sm-12">
+                                    <input id="username"
+                                           name="username"
+                                           value=""
+                                           type="text"
+                                           class="form-control rounded-pill" />
                                 </div>
                             </div>
-                    </form>
-                    <a class = "credentialsAlt" href="{% url 'register' %}">Don't have an account? Sign up here!</a>
-                </div>
+                            <div class="form-group clearfix">
+                                <label for="password" class="col-md-4 control-label text-right">Password</label>
+                                <div class="col-sm-12">
+                                    <input id="password"
+                                           name="password"
+                                           type="password"
+                                           class="form-control rounded-pill" />
+                                </div>
+                            </div>
+                            {% if error_message %}<div class="alert alert-danger mt-3">{{ error_message }}</div>{% endif %}
+                            <div class="col-md-12 col-md-offset-4">
+                                <input id="login"
+                                       name="login"
+                                       type="submit"
+                                       value="Login"
+                                       class="btn btn-primary button1 mt-3 mb-1"/>
+                                &nbsp;
+                            </div>
+                        </div>
+                    </div>
+                </form>
+                <a class="credentialsAlt" href="{% url 'register' %}">Don't have an account? Sign up here!</a>
             </div>
+        </div>
     </div>
 {% endblock %}

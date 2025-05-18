@@ -1,140 +1,191 @@
-
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <title>NoteWorks</title>
+    <head>
+        <title>NoteWorks</title>
+        {% load static %}
+        <link rel="icon"
+              type="image/x-icon"
+              type="image/x-icon"
+              href="{% static 'app/favicon.ico' %}" />
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
+        <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+        <link href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css"
+              rel="stylesheet">
+        <link rel="stylesheet"
+              href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/default.min.css">
+        {% load static %}
+        <link rel="stylesheet" href="{% static 'app/app.css' %}">
+        <link rel="stylesheet" href="{% static 'app/custom-highlight.css' %}">
+    </head>
     {% load static %}
-    <link rel="icon" type="image/x-icon"  type="image/x-icon" href="{% static 'app/favicon.ico' %}"/>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/katex@0.13.18/dist/katex.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/highlight.js@10.7.2/styles/default.min.css">
-   
-
-
-    {%load static %}
-    <link rel="stylesheet" href = "{%static 'app/app.css' %}">
-    <link rel="stylesheet" href = "{%static 'app/custom-highlight.css' %}">
-</head>
-
-{% load static %}
-<body {% block id %}{% endblock%} style="background-image: url('{% static 'app/backgrounds/' %}{{ background }}.svg')">
-    <nav class="navbar navbar-expand-md navbar-light sticky-top"  style="background-color: white">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="{% url 'home' %}">
-                <div id="brand" class="navbarm ms-3" style="font-size:120%;">
-                    <img src="{% static 'app/noteIcon.png' %}" alt="Logo" style ="background-color: white" class="d-inline-block align-text-top mt-1" id = "logo">
-                    NoteWorks
-                </div>
-            </a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navSection" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navSection">
-                <form class="d-flex w-100 mx-auto justify-content-center" id='searchBar' style="margin-top:5px; padding-right:140px;" role="search" action = "{%url 'search'%}" method="get">
-                    {% csrf_token %}
+    <!--djlint:off-->
+    <body {% block id %}{% endblock %}
+          style="background-image: url('{% static 'app/backgrounds/' %}{{ background }}.svg')">
+          <!--djlint:on-->        
+        <nav class="navbar navbar-expand-md navbar-light sticky-top bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="{% url 'home' %}">
+                    <div id="brand" class="navbarm ms-3">
+                        <img src="{% static 'app/noteIcon.png' %}"
+                             alt="Logo"
+                             class="d-inline-block align-text-top mt-1"
+                             id="logo">
+                        NoteWorks
+                    </div>
+                </a>
+                <button class="navbar-toggler"
+                        type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#navSection"
+                        aria-controls="navbarNavDropdown"
+                        aria-expanded="false"
+                        aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navSection">
+                    <form class="d-flex w-100 mx-auto justify-content-center"
+                          id="searchBar"
+                          style="margin-top:5px;
+                                 padding-right:140px"
+                          role="search"
+                          action="{% url 'search' %}"
+                          method="get">
+                        {% csrf_token %}
                         <!-- Button trigger modal -->
-                    <a data-bs-toggle="modal" data-bs-target="#searchModal" id="searchModalButton">
-                        <div class = "input-group justify-content-center">
-                            <span class="button1 input-group-text ">
-                                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                                    <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                                </svg>
-                            </span>
-                            <input class="form-control me-2" type="search" placeholder="Find Notes or Folders" aria-label="Search" name="search">
-                        </div>
-                    </a>
-                </form>
-
-                
-                <ul class = "navbar-nav">
-                    <li class="nav-item dropstar">
-                        <a class="nav-link" href="{%url 'account'%}" id="navbarDropdown" role="button">
-                            <img src = "{{profile_picture}}" id = "navbarProfileIcon"> 
-                        </a> 
-                    </li>
-                </ul>
+                        <a data-bs-toggle="modal"
+                           data-bs-target="#searchModal"
+                           id="searchModalButton">
+                            <div class="input-group justify-content-center">
+                                <span class="button1 input-group-text ">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="20"
+                                         height="20"
+                                         fill="currentColor"
+                                         class="bi bi-search"
+                                         viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                    </svg>
+                                </span>
+                                <input class="form-control me-2"
+                                       type="search"
+                                       placeholder="Find Notes or Folders"
+                                       aria-label="Search"
+                                       name="search">
+                            </div>
+                        </a>
+                    </form>
+                    <ul class="navbar-nav">
+                        <li class="nav-item dropstar">
+                            <a class="nav-link"
+                               href="{% url 'account' %}"
+                               id="navbarDropdown"
+                               role="button">
+                                <img src="{{ profile_picture }}" id="navbarProfileIcon" alt="Profile Icon">
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+        <!-- Modal -->
+        <div class="modal fade"
+             id="searchModal"
+             tabindex="-1"
+             aria-labelledby="exampleModalLabel"
+             aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                <div class="modal-content">
+                    <div id="searchModalBody" class="modal-body">
+                        <form class="p-4">
+                            <div class="input-group input-group-lg mb-3">
+                                <span class="input-group-text button1" id="inputGroupSearch">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="20"
+                                         height="20"
+                                         fill="currentColor"
+                                         class="bi bi-search"
+                                         viewBox="0 0 16 16">
+                                        <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z" />
+                                    </svg>
+                                </span>
+                                <input type="text"
+                                       id="searchInput"
+                                       class="form-control"
+                                       aria-label="Sizing example input"
+                                       aria-describedby="inputGroup-sizing-lg">
+                            </div>
+                            <div id="searchSuggestions">
+                                <h5 class="color-off">Notes</h5>
+                                <div id="noteSuggestions">
+                                    <div class="mb-3 text-secondary">No notes match your search</div>
+                                </div>
+                                <h5 class="color-off">Folders</h5>
+                                <div id="folderSuggestions">
+                                    <div class="mb-3 text-secondary">No folders match your search</div>
+                                </div>
+                                <h5 class="color-off">Other</h5>
+                                <div id="otherSuggestions">
+                                    <a href="{% url "account" %}"
+                                       class="mb-3 searchSuggestion text-secondary">Manage Account</a>
+                                </div>
+                            </div>
+                            <div id="smartSearchResults">
+                                <h5 class="color-off">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="16"
+                                         height="16"
+                                         fill="currentColor"
+                                         class="bi bi-magic"
+                                         viewBox="0 0 16 16">
+                                        <path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707zM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1zM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707zM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0z" />
+                                    </svg>
+                                    SmartSearch Results
+                                </h5>
+                                <div id="smartSearchResultsList">
+                                    <div class="mb-3 text-secondary">No results found</div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="modal-footer">
+                        <button id="smartSearchButton" type="button" class="btn btn-primary button1">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="16"
+                                 height="16"
+                                 fill="currentColor"
+                                 class="bi bi-magic"
+                                 viewBox="0 0 16 16">
+                                <path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707zM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1zM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707zM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0z" />
+                            </svg>
+                            SmartSearch
+                        </button>
+                        <button id="normalSearchButton"
+                                type="button"
+                                <!--djlint:off-->
+                                style="display:none"
+                                class="btn btn-secondary"
+                                data-dismiss="modal">Back to Default Search</button>
+                                <!--djlint:on-->
+                    </div>
+                </div>
             </div>
         </div>
-    </nav>
-  
-  <!-- Modal -->
-  <div class="modal fade" id="searchModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" style = "border-radius:30px;">
-    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-      <div class="modal-content">
-        <div id = "searchModalBody" class="modal-body">
-          <form class = "p-4">
-            <div class="input-group input-group-lg mb-3">
-                <span class="input-group-text button1" id="inputGroupSearch">
-                        <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
-                            <path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/>
-                        </svg>
-                </span>
-                <input type="text" id="searchInput" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-lg">
-            </div>
-            <div id = "searchSuggestions">
-                <h5 class = "color-off">Notes</h5>
-                <div id = "noteSuggestions">
-                    <div class = "mb-3 text-secondary">No notes match your search</div>
-                </div>
-                <h5 class = "color-off">Folders</h5>
-                <div id = "folderSuggestions">
-                    <div class = "mb-3 text-secondary">No folders match your search</div>
-                </div>
-                <h5 class = "color-off">Other</h5>
-                <div id = "otherSuggestions">
-                    <a href = "{% url "account" %}" class = "mb-3 searchSuggestion text-secondary">
-                        Manage Account
-                    </a>
-                </div>
-            </div>
-            <div id = "smartSearchResults">
-                <h5 class = "color-off">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magic" viewBox="0 0 16 16">
-                        <path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707zM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1zM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707zM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0z"/>
-                    </svg> 
-                    SmartSearch Results
-                </h5>
-                <div id = "smartSearchResultsList">
-                    <div class = "mb-3 text-secondary">No results found</div>
-                </div>
-            </div>
-          </form>
-        </div>
-        <div class="modal-footer">
-            <button id = "smartSearchButton" type="button" class="btn btn-primary button1">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-magic" viewBox="0 0 16 16">
-                    <path d="M9.5 2.672a.5.5 0 1 0 1 0V.843a.5.5 0 0 0-1 0zm4.5.035A.5.5 0 0 0 13.293 2L12 3.293a.5.5 0 1 0 .707.707zM7.293 4A.5.5 0 1 0 8 3.293L6.707 2A.5.5 0 0 0 6 2.707zm-.621 2.5a.5.5 0 1 0 0-1H4.843a.5.5 0 1 0 0 1zm8.485 0a.5.5 0 1 0 0-1h-1.829a.5.5 0 0 0 0 1zM13.293 10A.5.5 0 1 0 14 9.293L12.707 8a.5.5 0 1 0-.707.707zM9.5 11.157a.5.5 0 0 0 1 0V9.328a.5.5 0 0 0-1 0zm1.854-5.097a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L8.646 5.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0l1.293-1.293Zm-3 3a.5.5 0 0 0 0-.706l-.708-.708a.5.5 0 0 0-.707 0L.646 13.94a.5.5 0 0 0 0 .707l.708.708a.5.5 0 0 0 .707 0z"/>
-                  </svg>
-                SmartSearch
-            </button>
-            <button id = "normalSearchButton" type="button" style = "display:none" class="btn btn-secondary" data-dismiss="modal">
-                Back to Default Search
-            </button>
-        </div>
-      </div>
-    </div>
-  </div>
-
-
-   
-    {% block content %}
-    {% endblock %}
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js" integrity="sha384-Ft/vb48LwsAEtgltj7o+6vtS2esTU9PCpDqcXs4OCVQFZu5BqprHtUCZ4kjK+bpE" crossorigin="anonymous"></script>
-    <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js" integrity="sha384-4D3G3GikQs6hLlLZGdz5wLFzuqE9v4yVGAcOH86y23JqBDPzj9viv0EqyfIa6YUL" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
-    <script src="https://unpkg.com/@popperjs/core@2"></script>
-    <script src="https://unpkg.com/tippy.js@6"></script>
-    
-  
-    {% load static %}
-    <script>
+        {% block content %}{% endblock %}
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"
+                integrity="sha384-Ft/vb48LwsAEtgltj7o+6vtS2esTU9PCpDqcXs4OCVQFZu5BqprHtUCZ4kjK+bpE"
+                crossorigin="anonymous"></script>
+        <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.13.2/jquery-ui.min.js"
+                integrity="sha384-4D3G3GikQs6hLlLZGdz5wLFzuqE9v4yVGAcOH86y23JqBDPzj9viv0EqyfIa6YUL"
+                crossorigin="anonymous"></script>
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/masonry/4.2.2/masonry.pkgd.min.js"></script>
+        <script src="https://unpkg.com/@popperjs/core@2"></script>
+        <script src="https://unpkg.com/tippy.js@6"></script>
+        {% load static %}
+        <script>
         const none =  "{% static 'app/backgrounds/none.svg' %}";
         const wavy = "{% static 'app/backgrounds/wavy.svg' %}"; 
         const polyGrid = "{% static 'app/backgrounds/polyGrid.svg' %}";
@@ -144,12 +195,8 @@
         const retro = "{% static 'app/backgrounds/retro.svg' %}";
         const wavyorange = "{% static 'app/backgrounds/wavyorange.svg' %}";
 
-    </script>
-    <script type = "module" src="{% static 'app/folder.js' %}"></script>
-    <script src="{% static 'app/search.js' %}"></script>
-</body>
-
-
-
-   
-    
+        </script>
+        <script type = "module" src="{% static 'app/folder.js' %}"></script>
+        <script src="{% static 'app/search.js' %}"></script>
+    </body>
+</html>

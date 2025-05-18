@@ -1,467 +1,610 @@
-
 {% extends 'app/userBase.html' %}
-
-{% block content%}
-{% load static %}
-
-
-
-
-
-
-<div class = "container-fluid">
-  <h1 id  = "folderTitle">{{folder_title}}</h1>
-  <div class = "row">
-    <div class = "col-md-4 text-start">
-      {% if not isHome%}
-        <div aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
-          <ol class="breadcrumb">
-            {% for folder in path %}
-              <li class="breadcrumb-item folder" aria-current="page" data-folder-id="{{ folder.id }}"><a href="{% url 'notes' folder.id %}">{{folder}}</a></li>
-            {% endfor %}
-          </ol>
-        </div>
-      {% endif %}  
-    </div>
-
-    <div class = "col-md-4 text-center">
-
-
-
-      <!--New Note button-->
-      <button type="button" id="newNoteButton" class="gridBtn btn btn-lg btn-primary mx-1 bumpUp button1 shadow"  data-bs-toggle="modal" data-bs-target="#newNoteModal" data-tippy-content="New Note">
-        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-          <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
-          <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-        </svg>
-      </button>
-
-      <div class="modal fade" id="newNoteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">New Note</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form  id="newNoteForm" action="{% url 'newNote' folder_id %}" method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label"><h4>Note Name:</h4></label>
-                        <input type="text" class="form-control" id="title" placeholder="Enter a new note name" name = "title" autocomplete = "off">
+{% block content %}
+    {% load static %}
+    <div class="container-fluid">
+        <h1 id="folderTitle">{{ folder_title }}</h1>
+        <div class="row">
+            <div class="col-md-4 text-start">
+                {% if not isHome %}
+                    <!-- Probaly best to keep the breadcrumb divider as an inline style-->
+                    <!--djlint:off-->
+                    <div aria-label="breadcrumb" style="--bs-breadcrumb-divider: '>';">
+                        <!--djlint:on-->
+                        <ol class="breadcrumb">
+                            {% for folder in path %}
+                                <li class="breadcrumb-item folder"
+                                    aria-current="page"
+                                    data-folder-id="{{ folder.id }}">
+                                    <a href="{% url 'notes' folder.id %}">{{ folder }}</a>
+                                </li>
+                            {% endfor %}
+                        </ol>
                     </div>
-                </form>
+                {% endif %}
             </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id="modalNewNoteButton" type="submit" class="btn button1 btn-primary" form="newNoteForm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-                    <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
-                    <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-                  </svg>
-                    Create Note!
-                </button>
-            </div>
-          </div>
-        </div>
-      </div> 
-
-      <!--New Folder button-->
-      <button id = "newFolderButton" type="button" class="gridBtn shadow btn btn-lg mx-1 bumpUp btn-secondary button4" data-bs-toggle="modal" data-bs-target="#newFolderModal" data-tippy-content="New Folder">
-        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-folder-plus" viewBox="0 0 16 16">
-          <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2Zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672Z"/>
-          <path d="M13.5 9a.5.5 0 0 1 .5.5V11h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V12h-1.5a.5.5 0 0 1 0-1H13V9.5a.5.5 0 0 1 .5-.5Z"/>
-        </svg>
-      </button>
-
-      <div class="modal fade" id="newFolderModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="modal-title" id="exampleModalLabel">New Folder</h3>
-                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-                <form id="newFolderForm" action="{% url 'newFolder' folder_id %}" method="POST">
-                    {% csrf_token %}
-                    <div class="mb-3">
-                        <label for="recipient-name" class="col-form-label"><h4>Folder Name:</h4></label>
-                        <input type="text" class="form-control" id="username" placeholder="Enter new folder name" name = "title" autocomplete = "off">
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button id = "modalNewFolderButton" type="submit" class="btn button2 btn-primary" form="newFolderForm">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-folder-plus" viewBox="0 0 16 16">
-                    <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2Zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672Z"/>
-                    <path d="M13.5 9a.5.5 0 0 1 .5.5V11h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V12h-1.5a.5.5 0 0 1 0-1H13V9.5a.5.5 0 0 1 .5-.5Z"/>
-                  </svg>
-                    Create Folder!
-                </button>
-            </div>
-          </div>
-        </div>
-      </div>  
-
-      
-
-   
-      
-
-     
-
-      <!--Settings Button-->
-      <button id = "settingsButton" type= "button" class = "gridBtn btn btn-lg btn-primary bumpUp button2 shadow mx-1" data-bs-toggle="modal" data-bs-target="#settingsModal" data-tippy-content="Settings">
-        <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-gear" viewBox="0 0 16 16">
-          <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z"/>
-          <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z"/>
-        </svg>
-      </button>
-
-      <div class="modal fade" id="settingsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Folder Settings</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-            <h4>
-                Change Background
-                <button type= "button" class = "gridBtn btn btn-lg btn-primary bumpUp mx-1 button3 shadow"  data-bs-toggle="modal" data-bs-target="#backgroundModal">
-                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-image" viewBox="0 0 16 16">
-                    <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z"/>
-                    <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z"/>
-                  </svg>
-                </button>
-              </h4>
-              <hr style="padding:4px">
-
-
-              <div class="mb-3">
-                <label for="recipient-name" class="col-form-label"><h4>Rename Folder</h4></label>
-                <input type="text" class="form-control" id="newFolderTitle" placeholder="Enter a new name" name = "title" autocomplete = "off">
-              </div>
-
-              {% if not isHome %}
-                
-              <hr style="padding:4px">
-                <h4>
-                  Delete Folder
-                  <a id = "deleteFolderButton" href="{% url 'deleteFolder' folder_id %}" class = "gridBtn bumpUp shadow btn-danger btn btn-lg  button4">
-                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-trash" viewBox="0 0 16 16">
-                        <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z"/>
-                        <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z"/>
+            <div class="col-md-4 text-center">
+                <!--New Note button-->
+                <button type="button"
+                        id="newNoteButton"
+                        class="gridBtn btn btn-lg btn-primary mx-1 bumpUp button1 shadow"
+                        data-bs-toggle="modal"
+                        data-bs-target="#newNoteModal"
+                        data-tippy-content="New Note">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="42"
+                         height="42"
+                         fill="currentColor"
+                         class="bi bi-file-earmark-plus"
+                         viewBox="0 0 16 16">
+                        <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z" />
+                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
                     </svg>
-                  </a>
-                </h4>
-                <p>Warming! This will action is irrevsible and will delete all the folder's contents permanently.</p>
-
-                
-              {% endif %}
-
-            </div>
-            <div class="modal-footer">
-              <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-              <button id="renameFolderButton" class="btn btn-primary button4" data-bs-toggle="modal" data-bs-target="#folderRenameSuccess">Save and Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="modal fade" id="backgroundModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Customize Theme</h5>
-              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-            </div>
-            <div class="modal-body">
-
-              <div class = "row align-items-center justify-content-center">
-                   
-                <div class = "col-6">
-                  <div class = "d-flex align-items-center justify-content-center" id = "none">
-                    <h5>None</h5>
-                  </div>
-                </div> 
-
-                <div class = "col-6">
-                  <div class = "d-flex align-items-center justify-content-center" id = "wavy">
-                    <h5>Wavy</h5>
-                  </div>
-                </div>
-           
-                <div class = "col-6">
-                  <div class = "d-flex align-items-center justify-content-center" id = "blob">
-                    <h5>Blob</h5>
-                  </div>
-                </div>
-
-                <div class = "col-6">
-                  <div class = "d-flex align-items-center justify-content-center" id = "wavy-pink">
-                    <h5>Wavy Pink</h5>
-                  </div>
-                </div>
-
-                <div class = "col-6">
-
-                    <div class = "d-flex align-items-center justify-content-center" id = "retro">
-                      <h5>Retro</h5>
-                    </div>
-
-                </div>
-
-                <div class = "col-6">
-                  <div class = "d-flex align-items-center justify-content-center" id = "wavy-orange">
-                    <h5>Wavy Orange</h5>
-                  </div>
-                </div>
-
-                <div class = "col-6">
-                  <div class = "d-flex align-items-center justify-content-center" id = "circles">
-                    <h5>Circles</h5>
-                  </div>
-              </div>
-
-                <div class = "col-6">
-                  <div class = "d-flex align-items-center justify-content-center" id = "polyGrid">
-                    <h5>Poly Grid</h5>
-                  </div>
-                </div>
-
-              </div>
-            </div>
-            <div class="modal-footer">
-              <button type="button" class="btn btn-primary button3" data-bs-dismiss="modal">Save and Close</button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-
-
-      <div class = "modal fade" id = "folderRenameSuccess" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-            <div class="modal-content">
-                <div class = "modal-body">
-                    <div class = "row justify-content-center">
-                        <div class = "col text-center">
-                          <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" fill="currentColor" class="bi bi-folder-check" viewBox="0 0 16 16">
-                            <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z"/>
-                            <path d="M15.854 10.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.707 0l-1.5-1.5a.5.5 0 0 1 .707-.708l1.146 1.147 2.646-2.647a.5.5 0 0 1 .708 0z"/>
-                          </svg>
-                            
-                          <p style = "font-size:125%">Folder Name Successfully Changed!</p>
+                </button>
+                <div class="modal fade"
+                     id="newNoteModal"
+                     tabindex="-1"
+                     aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">New Note</h3>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="newNoteForm" action="{% url 'newNote' folder_id %}" method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="recipient-name" class="col-form-label">
+                                            <h4>Note Name:</h4>
+                                        </label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="title"
+                                               placeholder="Enter a new note name"
+                                               name="title"
+                                               autocomplete="off">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button id="modalNewNoteButton"
+                                        type="submit"
+                                        class="btn button1 btn-primary"
+                                        form="newNoteForm">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="20"
+                                         height="20"
+                                         fill="currentColor"
+                                         class="bi bi-file-earmark-plus"
+                                         viewBox="0 0 16 16">
+                                        <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z" />
+                                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
+                                    </svg>
+                                    Create Note!
+                                </button>
+                            </div>
                         </div>
                     </div>
-
                 </div>
-                <div class = "modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                <!--New Folder button-->
+                <button id="newFolderButton"
+                        type="button"
+                        class="gridBtn shadow btn btn-lg mx-1 bumpUp btn-secondary button4"
+                        data-bs-toggle="modal"
+                        data-bs-target="#newFolderModal"
+                        data-tippy-content="New Folder">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="42"
+                         height="42"
+                         fill="currentColor"
+                         class="bi bi-folder-plus"
+                         viewBox="0 0 16 16">
+                        <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2Zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672Z" />
+                        <path d="M13.5 9a.5.5 0 0 1 .5.5V11h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V12h-1.5a.5.5 0 0 1 0-1H13V9.5a.5.5 0 0 1 .5-.5Z" />
+                    </svg>
+                </button>
+                <div class="modal fade"
+                     id="newFolderModal"
+                     tabindex="-1"
+                     aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h3 class="modal-title" id="exampleModalLabel">New Folder</h3>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <form id="newFolderForm"
+                                      action="{% url 'newFolder' folder_id %}"
+                                      method="post">
+                                    {% csrf_token %}
+                                    <div class="mb-3">
+                                        <label for="recipient-name" class="col-form-label">
+                                            <h4>Folder Name:</h4>
+                                        </label>
+                                        <input type="text"
+                                               class="form-control"
+                                               id="username"
+                                               placeholder="Enter new folder name"
+                                               name="title"
+                                               autocomplete="off">
+                                    </div>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button id="modalNewFolderButton"
+                                        type="submit"
+                                        class="btn button2 btn-primary"
+                                        form="newFolderForm">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="20"
+                                         height="20"
+                                         fill="currentColor"
+                                         class="bi bi-folder-plus"
+                                         viewBox="0 0 16 16">
+                                        <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2Zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672Z" />
+                                        <path d="M13.5 9a.5.5 0 0 1 .5.5V11h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V12h-1.5a.5.5 0 0 1 0-1H13V9.5a.5.5 0 0 1 .5-.5Z" />
+                                    </svg>
+                                    Create Folder!
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!--Settings Button-->
+                <button id="settingsButton"
+                        type="button"
+                        class="gridBtn btn btn-lg btn-primary bumpUp button2 shadow mx-1"
+                        data-bs-toggle="modal"
+                        data-bs-target="#settingsModal"
+                        data-tippy-content="Settings">
+                    <svg xmlns="http://www.w3.org/2000/svg"
+                         width="42"
+                         height="42"
+                         fill="currentColor"
+                         class="bi bi-gear"
+                         viewBox="0 0 16 16">
+                        <path d="M8 4.754a3.246 3.246 0 1 0 0 6.492 3.246 3.246 0 0 0 0-6.492zM5.754 8a2.246 2.246 0 1 1 4.492 0 2.246 2.246 0 0 1-4.492 0z" />
+                        <path d="M9.796 1.343c-.527-1.79-3.065-1.79-3.592 0l-.094.319a.873.873 0 0 1-1.255.52l-.292-.16c-1.64-.892-3.433.902-2.54 2.541l.159.292a.873.873 0 0 1-.52 1.255l-.319.094c-1.79.527-1.79 3.065 0 3.592l.319.094a.873.873 0 0 1 .52 1.255l-.16.292c-.892 1.64.901 3.434 2.541 2.54l.292-.159a.873.873 0 0 1 1.255.52l.094.319c.527 1.79 3.065 1.79 3.592 0l.094-.319a.873.873 0 0 1 1.255-.52l.292.16c1.64.893 3.434-.902 2.54-2.541l-.159-.292a.873.873 0 0 1 .52-1.255l.319-.094c1.79-.527 1.79-3.065 0-3.592l-.319-.094a.873.873 0 0 1-.52-1.255l.16-.292c.893-1.64-.902-3.433-2.541-2.54l-.292.159a.873.873 0 0 1-1.255-.52l-.094-.319zm-2.633.283c.246-.835 1.428-.835 1.674 0l.094.319a1.873 1.873 0 0 0 2.693 1.115l.291-.16c.764-.415 1.6.42 1.184 1.185l-.159.292a1.873 1.873 0 0 0 1.116 2.692l.318.094c.835.246.835 1.428 0 1.674l-.319.094a1.873 1.873 0 0 0-1.115 2.693l.16.291c.415.764-.42 1.6-1.185 1.184l-.291-.159a1.873 1.873 0 0 0-2.693 1.116l-.094.318c-.246.835-1.428.835-1.674 0l-.094-.319a1.873 1.873 0 0 0-2.692-1.115l-.292.16c-.764.415-1.6-.42-1.184-1.185l.159-.291A1.873 1.873 0 0 0 1.945 8.93l-.319-.094c-.835-.246-.835-1.428 0-1.674l.319-.094A1.873 1.873 0 0 0 3.06 4.377l-.16-.292c-.415-.764.42-1.6 1.185-1.184l.292.159a1.873 1.873 0 0 0 2.692-1.115l.094-.319z" />
+                    </svg>
+                </button>
+                <div class="modal fade"
+                     id="settingsModal"
+                     tabindex="-1"
+                     aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Folder Settings</h5>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <h4>
+                                    Change Background
+                                    <button type="button"
+                                            class="gridBtn btn btn-lg btn-primary bumpUp mx-1 button3 shadow"
+                                            data-bs-toggle="modal"
+                                            data-bs-target="#backgroundModal">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             width="24"
+                                             height="24"
+                                             fill="currentColor"
+                                             class="bi bi-image"
+                                             viewBox="0 0 16 16">
+                                            <path d="M6.002 5.5a1.5 1.5 0 1 1-3 0 1.5 1.5 0 0 1 3 0z" />
+                                            <path d="M2.002 1a2 2 0 0 0-2 2v10a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V3a2 2 0 0 0-2-2h-12zm12 1a1 1 0 0 1 1 1v6.5l-3.777-1.947a.5.5 0 0 0-.577.093l-3.71 3.71-2.66-1.772a.5.5 0 0 0-.63.062L1.002 12V3a1 1 0 0 1 1-1h12z" />
+                                        </svg>
+                                    </button>
+                                </h4>
+                                <hr>
+                                <div class="mb-3">
+                                    <label for="recipient-name" class="col-form-label">
+                                        <h4>Rename Folder</h4>
+                                    </label>
+                                    <input type="text"
+                                           class="form-control"
+                                           id="newFolderTitle"
+                                           placeholder="Enter a new name"
+                                           name="title"
+                                           autocomplete="off">
+                                </div>
+                                {% if not isHome %}
+                                    <hr>
+                                    <h4>
+                                        Delete Folder
+                                        <a id="deleteFolderButton"
+                                           href="{% url 'deleteFolder' folder_id %}"
+                                           class="gridBtn bumpUp shadow btn-danger btn btn-lg  button4">
+                                            <svg xmlns="http://www.w3.org/2000/svg"
+                                                 width="24"
+                                                 height="24"
+                                                 fill="currentColor"
+                                                 class="bi bi-trash"
+                                                 viewBox="0 0 16 16">
+                                                <path d="M5.5 5.5A.5.5 0 0 1 6 6v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm2.5 0a.5.5 0 0 1 .5.5v6a.5.5 0 0 1-1 0V6a.5.5 0 0 1 .5-.5Zm3 .5a.5.5 0 0 0-1 0v6a.5.5 0 0 0 1 0V6Z" />
+                                                <path d="M14.5 3a1 1 0 0 1-1 1H13v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V4h-.5a1 1 0 0 1-1-1V2a1 1 0 0 1 1-1H6a1 1 0 0 1 1-1h2a1 1 0 0 1 1 1h3.5a1 1 0 0 1 1 1v1ZM4.118 4 4 4.059V13a1 1 0 0 0 1 1h6a1 1 0 0 0 1-1V4.059L11.882 4H4.118ZM2.5 3h11V2h-11v1Z" />
+                                            </svg>
+                                        </a>
+                                    </h4>
+                                    <p>Warming! This will action is irrevsible and will delete all the folder's contents permanently.</p>
+                                {% endif %}
+                            </div>
+                            <div class="modal-footer">
+                                <button class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                <button id="renameFolderButton"
+                                        class="btn btn-primary button4"
+                                        data-bs-toggle="modal"
+                                        data-bs-target="#folderRenameSuccess">Save and Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade"
+                     id="backgroundModal"
+                     tabindex="-1"
+                     aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered modal-dialog-scrollable">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Customize Theme</h5>
+                                <button type="button"
+                                        class="btn-close"
+                                        data-bs-dismiss="modal"
+                                        aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="row align-items-center justify-content-center">
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center justify-content-center" id="none">
+                                            <h5>None</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center justify-content-center" id="wavy">
+                                            <h5>Wavy</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center justify-content-center" id="blob">
+                                            <h5>Blob</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center justify-content-center"
+                                             id="wavy-pink">
+                                            <h5>Wavy Pink</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center justify-content-center" id="retro">
+                                            <h5>Retro</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center justify-content-center"
+                                             id="wavy-orange">
+                                            <h5>Wavy Orange</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center justify-content-center" id="circles">
+                                            <h5>Circles</h5>
+                                        </div>
+                                    </div>
+                                    <div class="col-6">
+                                        <div class="d-flex align-items-center justify-content-center"
+                                             id="polyGrid">
+                                            <h5>Poly Grid</h5>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-primary button3" data-bs-dismiss="modal">Save and Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal fade"
+                     id="folderRenameSuccess"
+                     tabindex="-1"
+                     aria-labelledby="exampleModalLabel"
+                     aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered">
+                        <div class="modal-content">
+                            <div class="modal-body">
+                                <div class="row justify-content-center">
+                                    <div class="col text-center">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                             width="120"
+                                             height="120"
+                                             fill="currentColor"
+                                             class="bi bi-folder-check"
+                                             viewBox="0 0 16 16">
+                                            <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672z" />
+                                            <path d="M15.854 10.146a.5.5 0 0 1 0 .708l-3 3a.5.5 0 0 1-.707 0l-1.5-1.5a.5.5 0 0 1 .707-.708l1.146 1.147 2.646-2.647a.5.5 0 0 1 .708 0z" />
+                                        </svg>
+                                        <p>Folder Name Successfully Changed!</p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-4 text-end">
+                <div class="btn-group">
+                    <button type="button"
+                            class="btn btn-primary button5 dropdown-toggle mt-3"
+                            data-bs-toggle="dropdown"
+                            aria-expanded="false">
+                        <svg xmlns="http://www.w3.org/2000/svg"
+                             width="20"
+                             height="20"
+                             fill="currentColor"
+                             class="bi bi-funnel"
+                             viewBox="0 0 16 16">
+                            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z" />
+                        </svg>
+                        Filters
+                    </button>
+                    <ul class="dropdown-menu">
+                        <li>
+                            <a class="dropdown-item" href={% url 'notesSorted' folder_id 'date' %}>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="16"
+                                     height="16"
+                                     fill="currentColor"
+                                     class="bi bi-calendar3"
+                                     viewBox="0 0 16 16">
+                                    <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z" />
+                                    <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z" />
+                                </svg>
+                                Sort by Last Opened
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href={% url 'notesSorted' folder_id 'size' %}>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="16"
+                                     height="16"
+                                     fill="currentColor"
+                                     class="bi bi-aspect-ratio"
+                                     viewBox="0 0 16 16">
+                                    <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5v-9zM1.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z" />
+                                    <path d="M2 4.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H3v2.5a.5.5 0 0 1-1 0v-3zm12 7a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H13V8.5a.5.5 0 0 1 1 0v3z" />
+                                </svg>
+                                Sort by Size
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href={% url 'notesSorted' folder_id 'title' %}>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="16"
+                                     height="16"
+                                     fill="currentColor"
+                                     class="bi bi-sort-alpha-down"
+                                     viewBox="0 0 16 16">
+                                    <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z" />
+                                    <path d="M12.96 14H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V14zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z" />
+                                </svg>
+                                Sort by A to Z
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item"
+                               href="{% url 'notesSorted' folder_id 'titlereverse' %}">
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="16"
+                                     height="16"
+                                     fill="currentColor"
+                                     class="bi bi-sort-alpha-up-alt"
+                                     viewBox="0 0 16 16">
+                                    <path d="M12.96 7H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V7z" />
+                                    <path fill-rule="evenodd" d="M10.082 12.629 9.664 14H8.598l1.789-5.332h1.234L13.402 14h-1.12l-.419-1.371h-1.781zm1.57-.785L11 9.688h-.047l-.652 2.156h1.351z" />
+                                    <path d="M4.5 13.5a.5.5 0 0 1-1 0V3.707L2.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L4.5 3.707V13.5z" />
+                                </svg>
+                                Sort by Z to A
+                            </a>
+                        </li>
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href={% url 'sharedNotes' %}>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="16"
+                                     height="16"
+                                     fill="currentColor"
+                                     class="bi bi-share"
+                                     viewBox="0 0 16 16">
+                                    <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z" />
+                                </svg>
+                                Notes Shared with Me
+                            </a>
+                        </li>
+                        <li>
+                            <a class="dropdown-item" href={% url 'home' %}>
+                                <svg xmlns="http://www.w3.org/2000/svg"
+                                     width="16"
+                                     height="16"
+                                     fill="currentColor"
+                                     class="bi bi-house-door"
+                                     viewBox="0 0 16 16">
+                                    <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146ZM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5Z" />
+                                </svg>
+                                My Stuff
+                            </a>
+                        </li>
+                    </ul>
                 </div>
             </div>
         </div>
-      </div>
-
-
-      
-
-
- 
-      
-
     </div>
-
-
-    <div class = "col-md-4 text-end">
-      <div class="btn-group">
-        <button type="button" class="btn btn-primary button5 dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false" style = "margin-top:10px;">
-          <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" fill="currentColor" class="bi bi-funnel" viewBox="0 0 16 16">
-            <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5v-2zm1 .5v1.308l4.372 4.858A.5.5 0 0 1 7 8.5v5.306l2-.666V8.5a.5.5 0 0 1 .128-.334L13.5 3.308V2h-11z"/>
-          </svg>
-          Filters
-        </button>
-
-        <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href={%url 'notesSorted' folder_id 'date'%}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-calendar3" viewBox="0 0 16 16">
-              <path d="M14 0H2a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V2a2 2 0 0 0-2-2zM1 3.857C1 3.384 1.448 3 2 3h12c.552 0 1 .384 1 .857v10.286c0 .473-.448.857-1 .857H2c-.552 0-1-.384-1-.857V3.857z"/>
-              <path d="M6.5 7a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm-9 3a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2zm3 0a1 1 0 1 0 0-2 1 1 0 0 0 0 2z"/>
-            </svg>
-            Sort by Last Opened
-          </a></li>
-          <li><a class="dropdown-item" href={%url 'notesSorted' folder_id 'size'%}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-aspect-ratio" viewBox="0 0 16 16">
-              <path d="M0 3.5A1.5 1.5 0 0 1 1.5 2h13A1.5 1.5 0 0 1 16 3.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 12.5v-9zM1.5 3a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"/>
-              <path d="M2 4.5a.5.5 0 0 1 .5-.5h3a.5.5 0 0 1 0 1H3v2.5a.5.5 0 0 1-1 0v-3zm12 7a.5.5 0 0 1-.5.5h-3a.5.5 0 0 1 0-1H13V8.5a.5.5 0 0 1 1 0v3z"/>
-            </svg>
-            Sort by Size
-          </a></li>
-          <li><a class="dropdown-item" href={%url 'notesSorted' folder_id 'title'%}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-alpha-down" viewBox="0 0 16 16">
-              <path fill-rule="evenodd" d="M10.082 5.629 9.664 7H8.598l1.789-5.332h1.234L13.402 7h-1.12l-.419-1.371h-1.781zm1.57-.785L11 2.687h-.047l-.652 2.157h1.351z"/>
-              <path d="M12.96 14H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V14zM4.5 2.5a.5.5 0 0 0-1 0v9.793l-1.146-1.147a.5.5 0 0 0-.708.708l2 1.999.007.007a.497.497 0 0 0 .7-.006l2-2a.5.5 0 0 0-.707-.708L4.5 12.293V2.5z"/>
-            </svg>
-            Sort by A to Z
-          </a></li>
-          <li><a class="dropdown-item" href={%url 'notesSorted' folder_id 'titlereverse'%}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-sort-alpha-up-alt" viewBox="0 0 16 16">
-              <path d="M12.96 7H9.028v-.691l2.579-3.72v-.054H9.098v-.867h3.785v.691l-2.567 3.72v.054h2.645V7z"/>
-              <path fill-rule="evenodd" d="M10.082 12.629 9.664 14H8.598l1.789-5.332h1.234L13.402 14h-1.12l-.419-1.371h-1.781zm1.57-.785L11 9.688h-.047l-.652 2.156h1.351z"/>
-              <path d="M4.5 13.5a.5.5 0 0 1-1 0V3.707L2.354 4.854a.5.5 0 1 1-.708-.708l2-1.999.007-.007a.498.498 0 0 1 .7.006l2 2a.5.5 0 1 1-.707.708L4.5 3.707V13.5z"/>
-            </svg>
-            Sort by Z to A
-          </a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item" href={% url 'sharedNotes'%}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-share" viewBox="0 0 16 16">
-              <path d="M13.5 1a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zM11 2.5a2.5 2.5 0 1 1 .603 1.628l-6.718 3.12a2.499 2.499 0 0 1 0 1.504l6.718 3.12a2.5 2.5 0 1 1-.488.876l-6.718-3.12a2.5 2.5 0 1 1 0-3.256l6.718-3.12A2.5 2.5 0 0 1 11 2.5zm-8.5 4a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3zm11 5.5a1.5 1.5 0 1 0 0 3 1.5 1.5 0 0 0 0-3z"/>
-            </svg>
-            Notes Shared with Me
-          </a></li>
-          <li><a class="dropdown-item" href={% url 'home'%}>
-            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-house-door" viewBox="0 0 16 16">
-              <path d="M8.354 1.146a.5.5 0 0 0-.708 0l-6 6A.5.5 0 0 0 1.5 7.5v7a.5.5 0 0 0 .5.5h4.5a.5.5 0 0 0 .5-.5v-4h2v4a.5.5 0 0 0 .5.5H14a.5.5 0 0 0 .5-.5v-7a.5.5 0 0 0-.146-.354L13 5.793V2.5a.5.5 0 0 0-.5-.5h-1a.5.5 0 0 0-.5.5v1.293L8.354 1.146ZM2.5 14V7.707l5.5-5.5 5.5 5.5V14H10v-4a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 0-.5.5v4H2.5Z"/>
-            </svg>
-            My Stuff
-          </a></li>
-        </ul>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class = "container-fluid grid">
-  <div class="row">
-    <!--Folder Section-->
-    <div class="col-md-4" >
-      <div class="card shadow">
-        <div class="card-header" style = "background-color:white;">
-          <h3 class="card-title">
-            <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor" class="bi bi-folder" viewBox="0 0 16 16">
-              <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z"/>
-            </svg>
-            Folders
-          </h3>
-        </div>
-        <div class="card-body">
-          <div class="list-group">
-            {% for folder in folders %}
-              <a href="{% url 'notes' folder.id %}" id = "{{folder.id}}" class="folder list-group-item list-group-item-action folderTab"  data-folder-id="{{ folder.id }}">
-                  {{ folder.title }}
-              </a>
-            {% empty %}
-              <p>No folders found. Create a new one now!</p>
-            {% endfor %}
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-md-8">
-      <div class="masonry-container d-flex flex-wrap">
-        {% for note in notes %}
-          <!--Note Section HTML-->
-          <div class="masonry-card mb-1" id = "note{{note.id}}">
-            <a href="{% url 'detail' note.id %}" class="notebox" id="{{note.id}}">
-              <div class="card draggable shadow noteMini bumpUp" draggable = "true" data-item-id="{{note.id}}">
-                <div class="card-body">
-                  <h5 class="card-title">
-                    <div class="d-flex justify-content-between">
-                      <span>{{ note.title }}</span>
+    <div class="container-fluid grid">
+        <div class="row">
+            <!--Folder Section-->
+            <div class="col-md-4">
+                <div class="card shadow">
+                    <div class="card-header">
+                        <h3 class="card-title">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                 width="32"
+                                 height="32"
+                                 fill="currentColor"
+                                 class="bi bi-folder"
+                                 viewBox="0 0 16 16">
+                                <path d="M.54 3.87.5 3a2 2 0 0 1 2-2h3.672a2 2 0 0 1 1.414.586l.828.828A2 2 0 0 0 9.828 3h3.982a2 2 0 0 1 1.992 2.181l-.637 7A2 2 0 0 1 13.174 14H2.826a2 2 0 0 1-1.991-1.819l-.637-7a1.99 1.99 0 0 1 .342-1.31zM2.19 4a1 1 0 0 0-.996 1.09l.637 7a1 1 0 0 0 .995.91h10.348a1 1 0 0 0 .995-.91l.637-7A1 1 0 0 0 13.81 4H2.19zm4.69-1.707A1 1 0 0 0 6.172 2H2.5a1 1 0 0 0-1 .981l.006.139C1.72 3.042 1.95 3 2.19 3h5.396l-.707-.707z" />
+                            </svg>
+                            Folders
+                        </h3>
                     </div>
-                  </h5>
-                  <p class="card-text text-secondary"></p>
-                  <p class="card-text">{{ note.displayText|truncatechars:150 }}</p>
-                  
-                  {% load humanize %}
-                  <p class="card-text text-secondary">Last Updated: {{ note.lastAccessed|naturaltime }}</p>
+                    <div class="card-body">
+                        <div class="list-group">
+                            {% for folder in folders %}
+                                <a href="{% url 'notes' folder.id %}"
+                                   id="{{ folder.id }}"
+                                   class="folder list-group-item list-group-item-action folderTab"
+                                   data-folder-id="{{ folder.id }}">{{ folder.title }}</a>
+                            {% empty %}
+                                <p>No folders found. Create a new one now!</p>
+                            {% endfor %}
+                        </div>
+                    </div>
                 </div>
-              </div>
-            </a>
-          </div>
-          <!--End Note Section HTML-->
-        {% empty %}
-          <p>No NotesWorks found. Create your first one now!</p>
-        {% endfor %}
-      </div>
+            </div>
+            <div class="col-md-8">
+                <div class="masonry-container d-flex flex-wrap">
+                    {% for note in notes %}
+                        <!--Note Section HTML-->
+                        <div class="masonry-card mb-1" id="note{{ note.id }}">
+                            <a href="{% url 'detail' note.id %}" class="notebox" id="{{ note.id }}">
+                                <div class="card draggable shadow noteMini bumpUp"
+                                     draggable="true"
+                                     data-item-id="{{ note.id }}">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <div class="d-flex justify-content-between">
+                                                <span>{{ note.title }}</span>
+                                            </div>
+                                        </h5>
+                                        <p class="card-text text-secondary"></p>
+                                        <p class="card-text">{{ note.displayText|truncatechars:150 }}</p>
+                                        {% load humanize %}
+                                        <p class="card-text text-secondary">Last Updated: {{ note.lastAccessed|naturaltime }}</p>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        <!--End Note Section HTML-->
+                    {% empty %}
+                        <p>No NotesWorks found. Create your first one now!</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
     </div>
-    
-  </div>
-</div>
-
-
-
-{% if  message == "welcome"%}
-<div class="modal fade" tabindex="-1" id = "welcomeModal" data-bs-backdrop="static" data-bs-keyboard="false">
-  <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
-    <div class="modal-content ">
-      <div class="modal-header">
-        <h5 class="modal-title">Getting Started</h5>
-        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-      </div>
-      <div class="modal-body">
-        <div id = "intro1">
-        <p>Welcome to Noteworks! To help you get started, we've prepared a brief introduction. Noteworks is designed with simplicity and elegance in mind, so this won't take long. Click 
-          next to continue.
-        </p>
+    {% if  message == "welcome" %}
+        <div class="modal fade"
+             tabindex="-1"
+             id="welcomeModal"
+             data-bs-backdrop="static"
+             data-bs-keyboard="false">
+            <div class="modal-dialog modal-dialog-scrollable modal-dialog-centered">
+                <div class="modal-content ">
+                    <div class="modal-header">
+                        <h5 class="modal-title">Getting Started</h5>
+                        <button type="button"
+                                class="btn-close"
+                                data-bs-dismiss="modal"
+                                aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div id="intro1">
+                            <p>
+                                Welcome to Noteworks! To help you get started, we've prepared a brief introduction. Noteworks is designed with simplicity and elegance in mind, so this won't take long. Click
+                                next to continue.
+                            </p>
+                        </div>
+                        <div id="intro2">
+                            <div class="col text-center">
+                                <button type="button" class="btn btn-lg btn-primary bumpUp button1 shadow">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="42"
+                                         height="42"
+                                         fill="currentColor"
+                                         class="bi bi-file-earmark-plus"
+                                         viewBox="0 0 16 16">
+                                        <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z" />
+                                        <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <p>
+                                To create a new note, simply click the blue button. Notes are automatically and securely saved to the cloud, and remain completely private—accessible only to you and anyone you choose to share them with.
+                            </p>
+                        </div>
+                        <div id="intro3">
+                            <div class="col text-center">
+                                <button type="button" class="shadow btn btn-lg bumpUp btn-secondary button4">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                         width="42"
+                                         height="42"
+                                         fill="currentColor"
+                                         class="bi bi-folder-plus"
+                                         viewBox="0 0 16 16">
+                                        <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2Zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672Z" />
+                                        <path d="M13.5 9a.5.5 0 0 1 .5.5V11h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V12h-1.5a.5.5 0 0 1 0-1H13V9.5a.5.5 0 0 1 .5-.5Z" />
+                                    </svg>
+                                </button>
+                            </div>
+                            <p>
+                                To create a new folder, click the pink button. Folders help you organize your notes efficiently and can also be nested within other folders for deeper structure.
+                            </p>
+                        </div>
+                        <div id="intro4">
+                            <div class="col">
+                                <p>Thanks for choosing Noteworks! Here are a couple other features to try:</p>
+                                <!--djlint:off-->
+                                <ul style="list-style: none; padding-left: 0;">
+                                    <li>🎨 Personalize your theme in Settings</li>
+                                    <li>🔍 Quickly find notes with SmartSearch</li>
+                                    <li>🧠 Summarize a note using AI</li>
+                                    <li>🖼️ Choose or update your profile picture</li>
+                                </ul>
+                                <!--djlint:on-->
+                                <p>Enjoy!</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary button1" id="intronext">Next</button>
+                        <button type="button"
+                                class="btn btn-secondary"
+                                data-bs-dismiss="modal"
+                                id="introclose">Skip</button>
+                    </div>
+                </div>
+            </div>
         </div>
-
-        <div id = "intro2">
-          <div class = "col text-center">
-            <button type="button" class="btn btn-lg btn-primary bumpUp button1 shadow" >
-              <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-file-earmark-plus" viewBox="0 0 16 16">
-                <path d="M8 6.5a.5.5 0 0 1 .5.5v1.5H10a.5.5 0 0 1 0 1H8.5V11a.5.5 0 0 1-1 0V9.5H6a.5.5 0 0 1 0-1h1.5V7a.5.5 0 0 1 .5-.5z"/>
-                <path d="M14 4.5V14a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V2a2 2 0 0 1 2-2h5.5L14 4.5zm-3 0A1.5 1.5 0 0 1 9.5 3V1H4a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h8a1 1 0 0 0 1-1V4.5h-2z"/>
-              </svg>
-            </button>
-          </div>
-          <p>To create a new note, simply click the blue button. Notes are automatically and securely saved to the cloud, and remain completely private—accessible only to you and anyone you choose to share them with.</p>
-        </div>
-
-        <div id = "intro3">
-          <div class = "col text-center">
-            <button type="button" class="shadow btn btn-lg bumpUp btn-secondary button4">
-              <svg xmlns="http://www.w3.org/2000/svg" width="42" height="42" fill="currentColor" class="bi bi-folder-plus" viewBox="0 0 16 16">
-                <path d="m.5 3 .04.87a1.99 1.99 0 0 0-.342 1.311l.637 7A2 2 0 0 0 2.826 14H9v-1H2.826a1 1 0 0 1-.995-.91l-.637-7A1 1 0 0 1 2.19 4h11.62a1 1 0 0 1 .996 1.09L14.54 8h1.005l.256-2.819A2 2 0 0 0 13.81 3H9.828a2 2 0 0 1-1.414-.586l-.828-.828A2 2 0 0 0 6.172 1H2.5a2 2 0 0 0-2 2Zm5.672-1a1 1 0 0 1 .707.293L7.586 3H2.19c-.24 0-.47.042-.683.12L1.5 2.98a1 1 0 0 1 1-.98h3.672Z"/>
-                <path d="M13.5 9a.5.5 0 0 1 .5.5V11h1.5a.5.5 0 1 1 0 1H14v1.5a.5.5 0 1 1-1 0V12h-1.5a.5.5 0 0 1 0-1H13V9.5a.5.5 0 0 1 .5-.5Z"/>
-              </svg>
-            </button>
-          </div>  
-          <p>To create a new folder, click the pink button. Folders help you organize your notes efficiently and can also be nested within other folders for deeper structure.</p>
-        </div>
-
-        <div id = "intro4">
-          <div class = "col">
-            <p>Thanks for choosing Noteworks! Here are a couple other features to try:</p>
-              <ul style="list-style: none; padding-left: 0;">
-                <li>🎨 Personalize your theme in Settings</li>
-                <li>🔍 Quickly find notes with SmartSearch</li>
-                <li>🧠 Summarize a note using AI</li>
-                <li>🖼️ Choose or update your profile picture</li>
-              </ul>
-            <p>
-              Enjoy!
-            </p>
-          </div>
-        </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-primary button1" id ="intronext">Next</button>
-        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id = "introclose">Skip</button>
-      </div>
-    </div>
-  </div>
-</div>{% endif %}
-
-{% load static %}
-
-
-
-
+    {% endif %}
+    {% load static %}
 {% endblock %}
-
-
-
