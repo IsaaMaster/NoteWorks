@@ -32,7 +32,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     'noteworks5.onrender.com',           # Old Render URL
-    'web-production-4ce14.up.railway.app', # Your current Railway URL
+    'noteworks.up.railway.app', # Your current Railway URL
     '.up.railway.app',                   # Wildcard for any Railway subdomain
     'localhost',
     '127.0.0.1',
