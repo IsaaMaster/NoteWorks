@@ -19,7 +19,7 @@ Designed with simplicity and usability in mind, Noteworks 5 includes essential n
 
 ### 🚀 Live Demo
 
-👉 [View the live application](https://noteworks5.herokuapp.com/)
+👉 [View the live application](https://https:/noteworks.up.railway.app/)
 
 ## 🛠️ Technical Specifications
 
